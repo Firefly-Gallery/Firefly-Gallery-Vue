@@ -1,0 +1,39 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  transition: background-color 300ms, color 300ms;
+}
+
+button {
+  @apply btn;
+}
+
+html, body, #app {
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+[data-theme='dark'] {
+  --hover: #80fff2;
+}
+[data-theme='light'] {
+  --hover: #2b948c;
+}
+
+a:hover, .theme-toggle {
+  color: var(--hover);
+}
+
+
