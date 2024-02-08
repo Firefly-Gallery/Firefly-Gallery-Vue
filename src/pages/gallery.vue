@@ -38,34 +38,44 @@ header.header-container {
 
 </style>
 
-<script>
-export default {
-  mounted() {
-    let header = document.querySelector('.header-container')
-    this.headerHeight = header.clientHeight;
-    console.log(this.headerHeight)
-    this.cover = document.querySelector('.cover');
+<script setup>
+import { onMounted, onBeforeUnmount, toRaw } from 'vue';
+import { useStore } from 'vuex';
+const store = useStore();
 
-    window.addEventListener('scroll', this.handleScroll);
-  },
-  data() {
-    return {
-      headerHeight: 0,
-      cover: null,
-    };
-  },
-  methods: {
-    handleScroll() {
-      var wScroll = window.scrollY || window.pageYOffset;
+let headerHeight = 0
+let cover = null
+let header = null
+let scroll;
 
-      if (wScroll <= this.headerHeight) {
-        this.cover.style.transform = 'translate(0px, ' + wScroll/2  + 'px)';
-      }
-    },
-  },
-  beforeDestroy() {
-    window.removeEventListener('scroll', this.handleScroll);
-  },
-};
 
+const emit = defineEmits(['changeTransparent'])
+
+onMounted(function() {
+    console.log(toRaw(store.getters.getScroll))
+    scroll = toRaw(store.getters.getScroll);
+    header = document.querySelector('.header-container')
+    headerHeight = header.clientHeight;
+    cover = document.querySelector('.cover');
+
+    scroll.addListener(handleScroll);
+})
+const handleScroll = () => {
+  var wScroll = scroll.scrollTop;
+  
+  if (wScroll <= headerHeight) {
+    cover.style.transform = 'translate(0px, ' + wScroll/2  + 'px)';
+  }
+  
+  var bounding = header.getBoundingClientRect();
+
+  if (bounding.bottom > 0 && bounding.bottom <= (window.innerHeight || document.documentElement.clientHeight)) {
+    emit("changeTransparent", true);
+  } else {
+    emit("changeTransparent", false);
+  }
+}
+onBeforeUnmount( function() {
+    scroll.removeListener(handleScroll);
+});
 </script>

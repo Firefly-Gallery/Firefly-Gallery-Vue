@@ -1,39 +1,5 @@
-<script setup>
-import { SunIcon, MoonIcon } from "@heroicons/vue/24/outline";
-import { themeChange } from 'theme-change'
-import { navigations, home } from "../navigations";
-themeChange()
-</script>
-
-<script>
-export default {
-    data() {
-        return {
-            isLightTheme: false,
-            siteIcon: "/site_logo_round.png"
-        };
-    },
-    methods: {
-        UpdateThemeStatus() {
-            this.isLightTheme = !this.isLightTheme;
-        },
-    },
-    mounted() {
-        this.isLightTheme = localStorage.getItem('theme');
-        if (this.isLightTheme == null) {
-            this.isLightTheme = false;
-            localStorage.setItem('theme', 'dark');
-            console.log("set default dark theme");
-        } else {
-            console.log("local storage theme = " + this.isLightTheme);
-            this.isLightTheme = this.isLightTheme == "light";
-        }
-    },
-};
-</script>
-
 <template>
-    <div class="navbar fixed top-0 bg-base-100/70">
+    <div class="navbar fixed top-0 bg-base-100/70 backdrop-blur-sm shadow-md" :class="{'navbar-transparent': isTransparent }">
 
         <div class="navbar-start">
 
@@ -82,27 +48,67 @@ export default {
         <div class="navbar-end">
 
             <!-- 主题切换 -->
-            <div class="tooltip tooltip-left" data-tip="亮/暗主题">
+            <!-- <div class="tooltip tooltip-left" data-tip="亮/暗主题">
                 
                 <button data-toggle-theme="dark,light" data-act-class="icon-set-light" @click="UpdateThemeStatus" class="theme-toggle btn-circle btn-ghost">
                     <SunIcon v-if="isLightTheme" class="sun h-6 w-6 text-gray-500"/>
                     <MoonIcon v-else class="moon h-6 w-6 text-gray-500" />
                 </button>
 
-            </div>
+            </div> -->
             
         </div>
 
     </div>
 </template>
+
+<script setup>
+// import { SunIcon, MoonIcon } from "@heroicons/vue/24/outline";
+// import { themeChange } from 'theme-change'
+import { navigations, home } from "../navigations";
+
+import { ref, onMounted } from 'vue';
+
+// const isLightTheme = ref(false);
+const isTransparent = ref(true);
+const siteIcon = "/site_logo_round.png";
+
+const updateThemeStatus = () => {
+//   isLightTheme.value = !isLightTheme.value;
+};
+
+const setTransparency = (tr) => {
+  isTransparent.value = tr;
+};
+
+// onMounted(() => {
+//   isLightTheme.value = localStorage.getItem('theme');
+//   if (isLightTheme.value === null) {
+//     isLightTheme.value = false;
+//     localStorage.setItem('theme', 'dark');
+//     console.log("set default dark theme");
+//   } else {
+//     console.log("local storage theme = " + isLightTheme.value);
+//     isLightTheme.value = isLightTheme.value === "light";
+//   }
+// });
+// themeChange();
+
+defineExpose({updateThemeStatus, setTransparency})
+</script>
+
 <style scoped>
 .navbar {
-    backdrop-filter: blur(3px);
     z-index:20;
+    transition: all 250ms ease;
 }
-.dropdown-content {
-    /* backdrop-filter: blur(12px) !important; */
+.navbar-transparent {
+    background-color: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
 }
+
 .theme-toggle:hover svg, button:hover {
     color: var(--hover);
 }

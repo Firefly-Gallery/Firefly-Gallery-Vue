@@ -2,12 +2,27 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
+@font-face {
+  font-family: Star Rail Neue;
+  src: url("/fonts/StarRailNeue-Sans-Regular.ttf");
+}
+
+@font-face {
+  font-family: Hanyiwenhei;
+  src: url("/fonts/hyry-75w.ttf");
+}
+
+@font-face {
+  font-family: hksr;
+  src: url("/fonts/zh-cn.ttf");
+}
+
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: hksr, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
-  font-synthesis: none;
+  /* font-synthesis: none; */
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -17,6 +32,10 @@
 
 button {
   @apply btn;
+}
+
+html {
+  /* filter: grayscale(1); */
 }
 
 html, body, #app {
@@ -34,6 +53,15 @@ html, body, #app {
 
 a:hover, .theme-toggle {
   color: var(--hover);
+}
+
+.scrollbar-track {
+  background-color: transparent!important;
+}
+
+.scrollbar-thumb {
+  background: #b0ffed4e!important;
+  backdrop-filter: drop-shadow(white, 0px, 0px, 10px, 0px);
 }
 
 

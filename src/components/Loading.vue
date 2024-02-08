@@ -1,7 +1,7 @@
 
 <template>
     <div id="loading">
-        <div class="shutter" v-for="index in this.shutterCount" :key="index">
+        <div class="shutter" v-for="index in shutterCount" :key="index">
             <div class="shutter-inner" :style="offsetTransition(index)"></div>
         </div>
     </div>
@@ -10,79 +10,81 @@
     </div> -->
 </template>
 
-<script>
-import KKLoad from './KKLoad.vue';
-export default {
-    name: "Loading",
-    data() {
-        return {
-            // in ms
-            transitionTime: 400,
-            transitionOffset: 60,
-            // number of shutters
-            shutterCount: 8,
-        };
-    },
-    methods: {
-        // 加入
-        in(next) {
-            // 最后一片淡入时长
-            let delay = this.shutterCount * this.transitionOffset + this.transitionTime;
-            let conainer = document.getElementById("loading");
-            conainer.classList.remove("loading_out");
-            // 更新加载状态
-            setTimeout(() => {
-                next();
-                this.$emit('check-loading');
-            }, delay);
-        },
-        // 退出
-        out() {
-            let conainer = document.getElementById("loading");
-            conainer.classList.add("loading_out");
-        },
-        // 设置过渡时间、偏移
-        offsetTransition(index) {
-            let offsetTime = (index * this.transitionOffset);
-            return {
-                transition: `${this.transitionTime}ms cubic-bezier(0, 0, 0.3, 1) ${offsetTime}ms`,
-            };
-        },
-    },
-};
+<script setup>
+import { onMounted } from 'vue';
+
+// in ms
+const transitionTime = 400;
+const transitionOffset = 60;
+// number of shutters
+const shutterCount = 8;
+const delay = shutterCount * transitionOffset + transitionTime;
+
+const emit = defineEmits(['check-loading'])
+
+onMounted(() => {
+    // Define CSS rules
+    const css = `
+        .loading_out {
+            transition: 0s ease ${delay}ms;
+            transform: translateY(100%);
+        }
+    `;
+
+    // Create a style element
+    const style = document.createElement('style')
+    style.appendChild(document.createTextNode(css));
+    
+    // Append the style element to the document's head
+    document.head.appendChild(style);
+})
+
+// 加入
+const inTransition = (next) => {
+    // 最后一片淡入时长
+    let conainer = document.getElementById("loading");
+    conainer.classList.remove("loading_out");
+    // 更新加载状态
+    setTimeout(() => {
+        next();
+        emit("check-loading")
+    }, delay);
+}
+// 退出
+const outTransition = () => {
+    let conainer = document.getElementById("loading");
+    conainer.classList.add("loading_out");
+}
+// 设置过渡时间、偏移
+const offsetTransition = (index) => {
+    let offsetTime = (index * transitionOffset);
+    return {
+        transition: `${transitionTime}ms cubic-bezier(0, 0, 0.3, 1) ${offsetTime}ms`,
+    };
+}
+defineExpose({inTransition, outTransition})
 </script>
 
-
-<style>
+<style scoped>
 #loading {
-    position: fixed;
-    top: -10rem;
-    left: -10rem;
+    @apply
+    fixed top-[-10rem] left-[-10rem] z-[114514]
+    flex flex-row;
+
     min-width: 1920px;
-    width: calc(100vw + 20rem);;
+    width: calc(100vw + 20rem);
     height: calc(100vh + 20rem);
-    z-index: 114514;
-    display: flex;
-    flex-direction: row;
-}
-.loading_out {
-    transition: 0s ease 880ms;
-    transform: translateY(100%);
 }
 .shutter {
-    flex-grow: 1;
+    @apply grow flex items-center justify-center;
     transform: rotate(-15deg);
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 .shutter-inner {
-    background-color: #141414;
-    width: 100%;
-    height: 100%;
+    @apply bg-[#141414]
+    w-full h-full;
 }
 .loading_out .shutter-inner {
-    width: 0%;
+    @apply w-[0%] z-[114514];
 }
 #loading-icon {
     position: fixed;
