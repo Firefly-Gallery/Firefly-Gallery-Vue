@@ -27,10 +27,15 @@
 
 <script setup>
 import { times, log_cn, announce_cn } from '../data/log';
-const ShowNotification = () => {
+const Init = () => {
+  
+  let notified = localStorage.getItem('notify');
+  if (notified === null || notified != times[0]) {
     site_notification.showModal();
+    localStorage.setItem('notify', times[0]);
+  }
 }
-defineExpose({ShowNotification})
+defineExpose({Init})
 </script>
 
 <style scoped>

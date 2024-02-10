@@ -67,7 +67,18 @@
 // import { themeChange } from 'theme-change'
 import { navigations, home } from "../navigations";
 
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, getCurrentInstance } from 'vue';
+
+import { useStore } from 'vuex';
+
+const store = useStore();
+
+onMounted(() => {
+
+    const t = getCurrentInstance
+  store.commit('setNavbar', setTransparency);
+  console.log(setTransparency)
+})
 
 // const isLightTheme = ref(false);
 const isTransparent = ref(true);

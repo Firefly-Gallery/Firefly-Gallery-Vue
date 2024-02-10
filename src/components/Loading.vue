@@ -5,9 +5,9 @@
             <div class="shutter-inner" :style="offsetTransition(index)"></div>
         </div>
     </div>
-    <!-- <div id="loading-icon">
-        <KKLoad></KKLoad>
-    </div> -->
+    <div id="loading_content">
+        <p class="loading-text">对...不起......</p>
+    </div>
 </template>
 
 <script setup>
@@ -42,18 +42,20 @@ onMounted(() => {
 // 加入
 const inTransition = (next) => {
     // 最后一片淡入时长
-    let conainer = document.getElementById("loading");
-    conainer.classList.remove("loading_out");
+    let container = document.getElementById("loading");
+    container.classList.remove("loading_out");
     // 更新加载状态
     setTimeout(() => {
         next();
         emit("check-loading")
+        loading_content.classList.remove("loading_out");
     }, delay);
 }
 // 退出
 const outTransition = () => {
-    let conainer = document.getElementById("loading");
-    conainer.classList.add("loading_out");
+    let container = document.getElementById("loading");
+    container.classList.add("loading_out");
+    loading_content.classList.add("loading_out");
 }
 // 设置过渡时间、偏移
 const offsetTransition = (index) => {
@@ -86,20 +88,38 @@ defineExpose({inTransition, outTransition})
 .loading_out .shutter-inner {
     @apply w-[0%] z-[114514];
 }
-#loading-icon {
+
+#loading_content {
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    z-index: 114515;
+    z-index: 999999;
+    padding: 20px;
     display: flex;
     flex-direction: row;
-    justify-content: center;
-    align-items: center;
+    justify-content: space-between;
+    align-items: flex-end;
+    opacity: 1;
+    transition: opacity 250ms ease;
 }
-#loading-icon svg {
-    width: 6rem;
-    filter: drop-shadow(0px 0px 5px white);
+.loading_out#loading_content {
+    opacity: 0;
+}
+.loading-text {
+    @apply text-xl font-bold;
+    animation: loading-text-animate 1.5s ease infinite;
+}
+@keyframes loading-text-animate {
+    from {
+        opacity:1
+    }
+    50% {
+        opacity:0.3
+    }
+    to {
+        opacity:1
+    }
 }
 </style>

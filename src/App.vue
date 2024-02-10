@@ -9,12 +9,14 @@
   <!-- 其他 -->
   <SiteNotification ref="notifiRef" />
   <Loading ref="loadingRef" @check-loading="CheckLoadingState()" />
+  <BackgroundPlayer :src="'/musics/bgm_instrumental.ogg'" />
 </template>
 
 <script setup>
 import Navbar from './components/Navbar.vue';
 import Loading from "./components/Loading.vue";
 import SiteNotification from './components/SiteNotification.vue';
+import BackgroundPlayer from './components/BackgroundPlayer.vue';
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router';
 import Scrollbar from 'smooth-scrollbar';
@@ -26,8 +28,6 @@ const loadingRef = ref();
 const navbarRef = ref();
 const notifiRef = ref();
 
-let isFirstAccess = true;
-
 const router = useRouter();
 
 const CheckLoadingState = () => {
@@ -37,13 +37,12 @@ const CheckLoadingState = () => {
       // 加载完成
       console.log("page loading completed");
       clearInterval(timer);
+
+      SetNavbarTransparent(true);
       // 淡出
       loadingRef.value.outTransition();
 
-      if (isFirstAccess) {
-        notifiRef.value.ShowNotification();
-        isFirstAccess = false;
-      }
+      notifiRef.value.Init();
     }
   }, 300);
 }

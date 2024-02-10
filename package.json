@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@heroicons/vue": "^2.1.1",
+    "howler": "^2.2.4",
     "smooth-scrollbar": "^8.8.4",
     "theme-change": "^2.5.0",
     "vue": "^3.3.11",
