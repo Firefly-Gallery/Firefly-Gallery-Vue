@@ -12,7 +12,8 @@ const home = {
     component: Home
 }
 
-const navigations = [
+const navigations = 
+[
     {
         displayName: "图库",
         icon: PhotoIcon,
@@ -36,4 +37,11 @@ const navigations = [
     },
 ]
 
-export {navigations, home}
+const GetDisplayName = (page_name) => {
+    let page = navigations.find(item => item["pageName"] === page_name)
+    if(page) {
+        return page["displayName"];
+    } else {return ""}
+};
+
+export {navigations, home, GetDisplayName}

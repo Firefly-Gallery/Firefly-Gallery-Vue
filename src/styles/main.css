@@ -4,17 +4,17 @@
 
 @font-face {
   font-family: Star Rail Neue;
-  src: url("/fonts/StarRailNeue-Sans-Regular.ttf");
+  src: url("@/assets/fonts/StarRailNeue-Sans-Regular.ttf");
 }
 
 @font-face {
   font-family: Hanyiwenhei;
-  src: url("/fonts/hyry-75w.ttf");
+  src: url("@/assets/fonts/hyry-75w.ttf");
 }
 
 @font-face {
   font-family: hksr;
-  src: url("/fonts/zh-cn.ttf");
+  src: url("@/assets/fonts/zh-cn.ttf");
 }
 
 :root {
@@ -64,4 +64,7 @@ a:hover, .theme-toggle {
   backdrop-filter: drop-shadow(white, 0px, 0px, 10px, 0px);
 }
 
+.general-container {
+  @apply pt-20 px-5 md:px-20;
+}
 
