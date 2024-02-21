@@ -2,6 +2,11 @@
     <ParallaxContainer :src="bg_video"
     :isVideoBackground="true" :contentClass="'two-row'"
     w="1920" h="1080">
+        <HelloWorld></HelloWorld>
+    </ParallaxContainer>
+    <ParallaxContainer :src="bg_a"
+    :contentClass="'two-row'"
+    w="1920" h="1080">
         <PoemBlock
         :lines_cn = "['我梦见一片焦土，', '一株破土而生的新蕊；', '它迎着朝阳绽放，', '向我低语呢喃。']"
         :lines_en = "[
@@ -16,7 +21,7 @@
             <a class="firefly-card" target="_blank" href="@/assets/home/card_large.jpg"><img src="@/assets/home/card.jpg"/></a>
         </div>
     </ParallaxContainer>
-    <ParallaxContainer :src="bg_a"
+    <ParallaxContainer :src="bg_b"
     :contentClass="'two-row col-reverse'"
     w="2400" h="1350">
         <Album />
@@ -32,23 +37,25 @@
         <p>背景来源：<a target="_blank" href="https://www.bilibili.com/video/BV1me411n7eu">OP「不眠之夜」</a></p>
         </PoemBlock>
     </ParallaxContainer>
-    <ParallaxContainer :src="bg_b"
+    <ParallaxContainer :src="bg_c"
     :contentClass="'content'"
     w="3048" h="2360">
         <CharacterDescription />
     </ParallaxContainer>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { ParallaxContainer, Album, CharacterDescription, PoemBlock } from "@/components/Home";
+import HelloWorld from "@/components/Home/HelloWorld.vue";
 import bg_video from "@/assets/home/bg_loop.mp4"
-import bg_a from "@/assets/home/bg-2.jpg"
-import bg_b from "@/assets/home/bg-3.jpg"
+import bg_a from "@/assets/home/bg-1.jpg"
+import bg_b from "@/assets/home/bg-2.jpg"
+import bg_c from "@/assets/home/bg-3.jpg"
 </script>
 
 <style>
 .parallax-container .content {
-    @apply w-full h-full;
+    @apply w-full h-full pt-16 md:pt-10;
     background-color: #00000080;
     box-shadow: inset 0px 0px 16px 2px #00000033;
 }

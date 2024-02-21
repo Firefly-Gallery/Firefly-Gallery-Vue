@@ -8,7 +8,7 @@
             <table class="table">
             <tbody>
                 <tr>
-                    <th style="width:30%">性别</th>
+                    <th style="width:100px">性别</th>
                     <td colspan="3">女</td>
                 </tr>
                 <tr style="display:none">
@@ -78,18 +78,18 @@
         <a class="lihui">暂无立绘</a>
         <div class="model-preview-container">
             <div class="overlay" v-if="showOverlay" >
-                <button class="btn-ghost btn-lg" @click="LoadModelPreview()">点击加载模型</button>
+                <button class="btn btn-ghost btn-lg" @click="LoadModelPreview()">点击加载模型</button>
             </div>
             <iframe ref="ModelPreviewer" src="" style="color-scheme: none;" allowtransparency="true"></iframe>
         </div>
     </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 
-import { ref, onMounted } from 'vue';
+import { ref, type Ref, onMounted } from 'vue';
 
-const showOverlay = ref(true);
+const showOverlay: Ref<boolean> = ref(true);
 
 let ModelPreviewer = ref();
 function LoadModelPreview() {
@@ -102,12 +102,12 @@ function LoadModelPreview() {
 <style scoped>
 .chardesc-container {
     @apply relative w-full h-full z-[10]
-    pt-20 px-4 lg:p-20
-    flex-grow flex flex-row gap-5 items-end text-white;
+    pb-4 px-4 xl:px-20 pb-20
+    flex-grow flex flex-col xl:flex-row gap-2 xl:gap-5 items-stretch xl:items-end text-white;
     pointer-events: none;
 }
 .char-name-block {
-    @apply flex flex-col items-center;
+    @apply flex flex-col items-start xl:items-center;
 }
 h2.char-name {
     @apply text-8xl;
@@ -120,7 +120,7 @@ p.char-name-sub {
     font-family: Star Rail Neue;
 }
 .Infos {
-    @apply flex-grow flex flex-row gap-6 items-end;
+    @apply flex-grow flex flex-col gap-2 xl:gap-5 items-end justify-center;
 }
 .char-description {
     @apply p-5 bg-[#00000050] border-2 border-black;
@@ -144,19 +144,19 @@ table>tr>td, table>*>tr>td {
 
 }
 .back {
-    @apply absolute right-[0] top-[0] w-screen h-screen p-20
+    @apply absolute right-[0] top-[0] w-screen h-screen p-0 lg:p-20
     flex flex-row;
     z-index: 0;
 }
 .back .lihui {
-    @apply flex-grow mx-28 text-white text-xl 
-    flex items-center justify-center
+    @apply flex-grow mx-0 xl:mx-[6vw] text-white text-xl 
+    flex items-center justify-center aspect-[1]
     border-2 border-white border-dotted bg-[#ffffff20];
     scale: 1.3;
 }
 .model-preview-container {
-    @apply relative h-full;
-    aspect-ratio: 9/16;
+    @apply hidden xl:block relative h-full
+    aspect-[6/16] xl:aspect-[9/16];
 }
 .model-preview-container iframe {
     @apply w-full h-full

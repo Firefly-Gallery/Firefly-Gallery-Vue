@@ -11,8 +11,8 @@
     </div>
 </template>
 
-<script setup>
-import { defineProps, onMounted } from 'vue';
+<script lang="ts" setup>
+import { onMounted } from 'vue';
 import chroma from 'chroma-js';
 const props = defineProps({
     "lines_cn": {}, "lines_en": {}, "isEnUS": {type: Boolean},

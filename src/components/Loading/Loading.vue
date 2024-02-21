@@ -11,7 +11,7 @@
     </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { onMounted } from 'vue';
 import LoadingIcon from './LoadingIcon.vue';
 
@@ -72,7 +72,7 @@ defineExpose({inTransition, outTransition})
 <style scoped>
 #loading {
     @apply
-    fixed top-[-10rem] left-[-10rem] z-[114514]
+    absolute top-[-10rem] left-[-10rem] z-[114514]
     flex flex-row;
 
     min-width: 1920px;
@@ -92,7 +92,7 @@ defineExpose({inTransition, outTransition})
 }
 
 #loading_content {
-    @apply fixed bottom-0 left-0 
+    @apply absolute bottom-0 left-0 
     flex flex-col items-center z-[114515] p-[20px] gap-3;
     opacity: 1;
     transition: opacity 250ms ease;

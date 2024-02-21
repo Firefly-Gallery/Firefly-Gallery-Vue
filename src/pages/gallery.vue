@@ -6,5 +6,5 @@
 
 </style>
 
-<script setup>
+<script lang="ts" setup>
 </script>

@@ -13,13 +13,13 @@
 
                     <!-- 渲染手机导航列表 -->
                     <li>
-                        <button class="w-full" @click="$router.push(home.pageName)">
+                        <button class="btn w-full" @click="$router.push(home.pageName)">
                             <component :is="home.icon" class="h-5 w-5" /> {{ home.displayName }}
                         </button>
                     </li>
 
                     <li v-for="(navItem, index) in navigations" :key="index">
-                        <button class="w-full" @click="$router.push(navItem.pageName)">
+                        <button class="btn w-full" @click="$router.push(navItem.pageName)">
                             <component :is="navItem.icon" class="icon h-5 w-5" /> {{ navItem.displayName }}
                         </button>
                     </li>
@@ -37,7 +37,7 @@
             <!-- 渲染电脑版导航列表 -->
             <div class="ml-4 hidden sm:flex gap-2" v-for="(navItem, index) in navigations" :key="index">
                 <div class="tooltip tooltip-bottom" :data-tip="navItem.displayName">
-                    <button class="btn-circle btn-ghost" @click="$router.push(navItem.pageName)">
+                    <button class="btn btn-circle btn-ghost" @click="$router.push(navItem.pageName)">
                         <component :is="navItem.icon" class="icon h-5 w-5" />
                     </button>
                 </div>
@@ -56,7 +56,7 @@
                 </button>
 
             </div> -->
-            <button class="settings btn-circle btn-ghost">
+            <button class="settings btn btn-circle btn-ghost" @click="openWindow('setting');">
                 <Cog6ToothIcon class="icon h-6 w-6"></Cog6ToothIcon>
             </button>
             
@@ -65,20 +65,23 @@
     </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { SunIcon, MoonIcon, Cog6ToothIcon } from "@heroicons/vue/24/outline";
 import { themeChange } from 'theme-change'
-import { navigations, home } from "@/navigations";
+import { navigations, home } from "@/navigations/index";
 
-import { ref, onMounted, defineProps } from 'vue';
+import { ref, onMounted, defineProps, getCurrentInstance } from 'vue';
 
-import { useStore } from 'vuex';
+import { openWindow } from '@/assets/scripts/popup'
 
-const store = useStore();
+import componentsVar from '@/store/componentsVar'
+// import { useStore } from 'vuex';
+
+// const store = useStore();
 
 onMounted(() => {
-  store.commit('setNavbar', setTransparency);
-  console.log(setTransparency)
+    componentsVar.SetNavbarTransparent = setTransparency;
+
 })
 
 const prop = defineProps({

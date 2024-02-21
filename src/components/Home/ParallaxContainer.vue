@@ -15,14 +15,16 @@
     </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { ref, onMounted, onBeforeUnmount, toRaw, defineProps } from 'vue';
-import { useStore } from 'vuex';
+// import { useStore } from 'vuex';
+import componentsVar from '@/store/componentsVar'
+import viewport from "./store/viewport";
 
 const bgRef = ref(null);
 const containerRef = ref(null)
 
-const store = useStore();
+// const store = useStore();
 
 const props = defineProps({
     w: {type:String},
@@ -69,7 +71,7 @@ function UpdatePos() {
 }
 
 onMounted(() => {
-    const scroll = toRaw(store.getters.getScroll);
+    const scroll = toRaw(componentsVar.scroll);
     SetRealHeight();
     UpdatePos();
     window.addEventListener('resize', function() {

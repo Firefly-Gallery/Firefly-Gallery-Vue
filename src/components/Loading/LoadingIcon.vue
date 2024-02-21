@@ -1,5 +1,6 @@
+<!-- https://github.com/blacktunes/sr-message-maker/blob/master/src/components/Loading.vue -->
 <template>
-  <transition name="fade">
+  <Transition name="fade">
     <div
       class="loadingIcon"
       v-if="isLoading"
@@ -19,10 +20,10 @@
         </div>
       </div>
     </div>
-  </transition>
+  </Transition>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { defineProps } from 'vue';
 const props = defineProps(["isLoading"]);
 </script>

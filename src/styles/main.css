@@ -2,6 +2,36 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
+:root {
+  --text-color: #040406;
+  --title-color: #121212;
+  --info-color: #6a6a6a;
+  --notice-color: #949595;
+  --message-text-hover-color: var(--text-color);
+  --message-icon-hover-color: #050505;
+  --message-item-name-color: #6b6b6b;
+  --message-item-background-color: #cecece;
+  --message-item-img-width: 280px;
+  --message-item-avatar-width: 140px;
+  --message-item-avatar-margin: 35px;
+  --message-menu-background-color: #cccacd;
+  --menu-text-color: #afaeb3;
+  --menu-icon-background-color: #e3e3e3;
+  --menu-btn-hover: #e4d89b;
+  --meni-icon-shadow: 0 0 0px 5px rgba(255, 255, 255, 0.8);
+  --border-color: #595556;
+  --border-hover-color: #b5b5b5;
+  --box-background-color: #d8d8d8;
+  --menu-border: 5px solid var(--border-color);
+  --menu-border-hover: 5px solid var(--border-hover-color);
+  --menu-border-highlight: 5px solid #f3f4f6;
+  --option-background-color: #ece9ec;
+  --option-background--hover-color: #cccccc;
+  --avatar-background: #505050;
+  --avatar-image-clip-path-bilibiliwiki-only: circle(46%);
+  --popup-ease: cubic-bezier(0.25, 1.5, 0.6, 1);
+}
+
 @font-face {
   font-family: Star Rail Neue;
   src: url("@/assets/fonts/StarRailNeue-Sans-Regular.ttf");
@@ -18,9 +48,9 @@
 }
 
 :root {
-  font-family: hksr, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  /* font-family: Noto Sans SC, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif; */
   line-height: 1.5;
-  font-weight: 400;
+  font-weight: 700;
 
   /* font-synthesis: none; */
   text-rendering: optimizeLegibility;
@@ -30,10 +60,6 @@
   transition: background-color 300ms, color 300ms;
 }
 
-button {
-  @apply btn;
-}
-
 html {
   /* filter: grayscale(1); */
 }
@@ -41,7 +67,7 @@ html {
 html, body, #app {
   width: 100%;
   min-height: 100vh;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 [data-theme='dark'] {
@@ -68,3 +94,121 @@ a:hover, .theme-toggle {
   @apply pt-20 px-5 md:px-20;
 }
 
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #c6c6c6;
+  margin: 20px 0;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #545454;
+}
+
+.fade-in-enter-active {
+  transition: all 0.2s;
+}
+.fade-in-enter-from {
+  opacity: 0;
+}
+.fade-out-leave-active {
+  transition: opacity 0.5s 1s linear;
+}
+.fade-out-leave-to {
+  opacity: 0;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 250ms ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+.fade-enter-to,
+.fade-leave-from {
+  opacity: 1;
+}
+
+.slide-left-enter-active {
+  transition: all 0.5s ease-out;
+}
+.slide-left-enter-from {
+  opacity: 0;
+  transform: translateX(50%);
+}
+.slide-right-enter-active {
+  transition: all 0.5s ease-out;
+}
+.slide-right-enter-from {
+  opacity: 0;
+  transform: translateX(-50%);
+}
+@-moz-keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
+@-webkit-keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
+@-o-keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
+@-moz-keyframes open {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+@-webkit-keyframes open {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+@-o-keyframes open {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+@keyframes open {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
