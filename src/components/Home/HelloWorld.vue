@@ -7,18 +7,18 @@
                 一个简单的同人图站。
             </p>
             <div class="btn-group">
-                <Btn name="浏览图库" class="btn_" @click=""></Btn>
-                <Btn name="角色介绍" class="btn_"></Btn>
+                <Btn name="浏览图库" class="btn_" @click="$router.push('/gallery')"></Btn>
+                <Btn name="角色介绍" class="btn_" @click="$router.push('/about-firefly')"></Btn>
             </div>
         </div>
     </div>
     <div class="firefly-card-container">
-        <button class="firefly-card" @click="openWindow('viewer', {title: 'firefly-card', 'src': card})"><img src="@/assets/home/card.jpg"/></button>
+        <button class="firefly-card" @click="openWindow('imageViewer', {title: 'firefly-card', 'src': card})"><img src="@/assets/home/card.jpg"/></button>
     </div>
 </template>
 <script lang='ts' setup>
 import card from '@/assets/home/card.jpg'
-import { openWindow } from '@/assets/scripts/popup';
+import { openWindow } from '@/components/Popup';
 import Btn from '../UI/Btn.vue';
 </script>
 <style>

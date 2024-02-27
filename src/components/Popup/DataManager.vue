@@ -76,7 +76,7 @@ import { setting } from '@/store/setting'
 // import { character } from '@/store/character'
 import { zhLocale, setLocale, Parameter } from '@ckpack/parameter'
 // import { avatar } from '@/store/avatar'
-import { openWindow } from '@/assets/scripts/popup'
+import { openWindow } from '@/components/Popup'
 import { compressToUint8Array, decompressFromUint8Array } from 'lz-string'
 
 const props = defineProps<{

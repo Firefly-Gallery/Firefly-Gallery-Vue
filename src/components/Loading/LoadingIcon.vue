@@ -24,7 +24,6 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps } from 'vue';
 const props = defineProps(["isLoading"]);
 </script>
 
@@ -45,7 +44,8 @@ const props = defineProps(["isLoading"]);
     animation-delay 1s
 
     .circle-group-1, .circle-group-2
-      @apply w-full h-full;
+      width 100%
+      height 100%
       position absolute
       top 0
       left 0

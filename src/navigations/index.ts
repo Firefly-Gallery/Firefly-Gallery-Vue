@@ -1,4 +1,5 @@
 import Home from '@/pages/home.vue';
+import AboutFirefly from '@/pages/about-firefly.vue';
 import Gallery from '@/pages/gallery.vue';
 import Links from '@/pages/links.vue';
 import About from '@/pages/about.vue';
@@ -23,6 +24,15 @@ const navigations =
         component: Gallery
     },
     {
+        displayName: "角色介绍",
+        icon: undefined,
+        pageName: "About Firefly",
+        path: "/about-firefly",
+        component: AboutFirefly,
+        hidden: true,
+        noHeader: true
+    },
+    {
         displayName: "链接",
         icon: LinkIcon,
         pageName: "links",
@@ -38,11 +48,11 @@ const navigations =
     },
 ]
 
-const GetDisplayName = (page_name: RouteRecordName | null | undefined) => {
+const GetPage = (page_name: RouteRecordName | null | undefined) => {
     let page = navigations.find(item => item["pageName"] === page_name)
     if(page) {
-        return page["displayName"];
-    } else {return ""}
+        return page;
+    } else {return {}}
 };
 
-export {navigations, home, GetDisplayName}
+export {navigations, home, GetPage}

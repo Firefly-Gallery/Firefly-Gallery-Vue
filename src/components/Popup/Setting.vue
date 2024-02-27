@@ -86,7 +86,7 @@ import Btn from '@/components/UI/Btn.vue'
 import Icon from '@/components/UI/Icon.vue'
 import { watch, ref, computed } from 'vue'
 import { setting } from '@/store/setting'
-import { enterCallback, openWindow } from '@/assets/scripts/popup'
+import { enterCallback, openWindow } from '@/components/Popup'
 
 let showWindow = ref(true);
 

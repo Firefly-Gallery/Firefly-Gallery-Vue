@@ -49,7 +49,7 @@ import Popup from '@/components/UI/Popup.vue'
 import Window from '@/components/UI/Window.vue'
 import Btn from '@/components/UI/Btn.vue'
 import { confirmData } from './'
-import { enterCallback } from '@/assets/scripts/popup'
+import { enterCallback } from '@/components/Popup'
 
 const props = defineProps<{
   name: string

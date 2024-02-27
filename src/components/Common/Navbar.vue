@@ -18,11 +18,13 @@
                         </button>
                     </li>
 
-                    <li v-for="(navItem, index) in navigations" :key="index">
-                        <button class="btn w-full" @click="$router.push(navItem.pageName)">
-                            <component :is="navItem.icon" class="icon h-5 w-5" /> {{ navItem.displayName }}
-                        </button>
-                    </li>
+                    <template v-for="(navItem, index) in navigations" :key="index">
+                        <li v-if="!navItem.hidden">
+                            <button class="btn w-full" @click="$router.push(navItem.pageName)">
+                                <component :is="navItem.icon" class="icon h-5 w-5" /> {{ navItem.displayName }}
+                            </button>
+                        </li>
+                    </template>
                     
                 </ul>
 
@@ -35,12 +37,14 @@
             </div>
 
             <!-- 渲染电脑版导航列表 -->
-            <div class="ml-4 hidden sm:flex gap-2" v-for="(navItem, index) in navigations" :key="index">
-                <div class="tooltip tooltip-bottom" :data-tip="navItem.displayName">
-                    <button class="btn btn-circle btn-ghost" @click="$router.push(navItem.pageName)">
-                        <component :is="navItem.icon" class="icon h-5 w-5" />
-                    </button>
-                </div>
+            <div class="ml-4 hidden sm:flex gap-2">
+                <template v-for="(navItem, index) in navigations" :key="index">
+                    <div class="tooltip tooltip-bottom" v-if="!navItem.hidden" :data-tip="navItem.displayName">
+                        <button class="btn btn-circle btn-ghost" @click="$router.push(navItem.pageName)">
+                            <component :is="navItem.icon" class="icon h-5 w-5" />
+                        </button>
+                    </div>
+                </template>
             </div>
 
         </div>
@@ -70,9 +74,9 @@ import { SunIcon, MoonIcon, Cog6ToothIcon } from "@heroicons/vue/24/outline";
 import { themeChange } from 'theme-change'
 import { navigations, home } from "@/navigations/index";
 
-import { ref, onMounted, defineProps, getCurrentInstance } from 'vue';
+import { ref, onMounted, getCurrentInstance } from 'vue';
 
-import { openWindow } from '@/assets/scripts/popup'
+import { openWindow } from '@/components/Popup'
 
 import componentsVar from '@/store/componentsVar'
 // import { useStore } from 'vuex';

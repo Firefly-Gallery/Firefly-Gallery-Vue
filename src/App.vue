@@ -4,8 +4,8 @@
   <Navbar ref="navbarRef" />
   <!-- 页面视图 -->
   <div id="SmoothScrollContainer" ref="SmoothScrollContainer">
-    <Header v-if="$route.name != 'home'" ref="headerRef"
-    :title="GetDisplayName($route.name)" :subTitle="$route.name" />
+    <Header v-if="!($route.name == 'home' || GetPage($route.name).noHeader)" ref="headerRef"
+    :title="GetPage($route.name).displayName" :subTitle="$route.name" />
     <router-view />
   </div>
   <!-- 加载 -->
@@ -30,8 +30,8 @@ import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import Scrollbar from 'smooth-scrollbar';
 import componentsVar from '@/store/componentsVar';
-import { GetDisplayName } from "@/navigations/index";
-import { closeWindow, popupComponents } from '@/assets/scripts/popup';
+import { GetPage } from "@/navigations/index";
+import { closeWindow, popupComponents } from '@/components/Popup';
 
 const router = useRouter();
 

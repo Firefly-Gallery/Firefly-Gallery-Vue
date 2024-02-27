@@ -234,39 +234,45 @@ const close = () => {
         align-content center
         justify-content center
 
-.fade-enter-active .window,
-.fade-leave-active .window
-  transition all 350ms ease
+.fade-enter-active,
+.fade-leave-active
+  .window
+    transition all 350ms ease
+
+  .box
+    transition all 350ms var(--popup-ease);
+
+  .bg
+    transition all 250ms ease
+    transition-delay 50ms
+    transform-origin bottom
 
 
-.fade-enter-active .box, .fade-leave-active .box
-  transition all 350ms var(--popup-ease);
+.fade-enter-from
+  .box
+    transform translateY(10%)
 
-.fade-enter-from .box, .fade-leave-to .box
-  transform translateY(10%)
+  .bg
+    transform scaleY(0)
 
+  .btn-list
+    opacity 0
 
-.fade-enter-active .bg, .fade-leave-active .bg
-  transition all 250ms ease
-  transition-delay 50ms
-  transform-origin bottom
+.fade-leave-to
+  .box
+    transform translateY(10%)
 
-.fade-enter-from .bg
-  transform scaleY(0)
+  .bg
+    transform scaleY(0) translateY(30%)
 
-.fade-leave-to .bg
-  transform scaleY(0) translateY(30%)
+  .btn-list
+    opacity 0
 
 .fade-enter-active .btn-list
   transition all 350ms ease
   transition-delay 150ms
 
-.fade-enter-from .btn-list
-  opacity 0
-
 .fade-leave-active .btn-list
   transition all 200ms ease
 
-.fade-leave-to .btn-list
-  opacity 0
 </style>

@@ -29,7 +29,7 @@
   --option-background--hover-color: #cccccc;
   --avatar-background: #505050;
   --avatar-image-clip-path-bilibiliwiki-only: circle(46%);
-  --popup-ease: cubic-bezier(0.25, 1.5, 0.6, 1);
+  --popup-ease: cubic-bezier(0.39, 1.22, 0.6, 1);
 }
 
 @font-face {

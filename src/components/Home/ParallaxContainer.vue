@@ -4,14 +4,14 @@
         <video autoplay loop muted v-if="isVideoBackground"
         class="parallax-bg" 
         :w="w" :h="h" 
-        :src="src" ref="bgRef" />
+        :src="src" ref="bgRef" :style="{zIndex: props.imageZ}" />
 
         <img v-else
         class="parallax-bg" 
         :w="w" :h="h"
-        :src="src" ref="bgRef" />
+        :src="src" ref="bgRef" :style="{zIndex: props.imageZ}" />
 
-        <div :class="`content ${contentClass}`"><slot /></div>
+        <div :class="`${contentClass}`"><slot /></div>
     </div>
 </template>
 
@@ -19,7 +19,7 @@
 import { ref, onMounted, onBeforeUnmount, toRaw, defineProps } from 'vue';
 // import { useStore } from 'vuex';
 import componentsVar from '@/store/componentsVar'
-import viewport from "./store/viewport";
+import viewport from "@/store/viewport";
 
 const bgRef = ref(null);
 const containerRef = ref(null)
@@ -32,7 +32,8 @@ const props = defineProps({
     src: {type:String},
     contentClass: {type:String},
     isVideoBackground: {type:Boolean, default:false},
-    margin: {type: Number, default: 256}
+    margin: {type: Number, default: 256},
+    imageZ: {type: Number, default: -1},
 });
 
 function GetViewportSize() {
@@ -93,6 +94,5 @@ onMounted(() => {
   top: 0;
   left: 0;
   object-fit: cover;
-  z-index: -1; /* Ensure video stays behind other content */
 }
 </style>
