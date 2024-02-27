@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, onBeforeUnmount, toRaw, defineProps } from 'vue';
+import { ref, onMounted, onBeforeUnmount, toRaw } from 'vue';
 // import { useStore } from 'vuex';
 import componentsVar from '@/store/componentsVar'
 import viewport from "@/store/viewport";

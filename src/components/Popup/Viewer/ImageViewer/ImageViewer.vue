@@ -62,7 +62,7 @@ const SetZoom = () => {
 const imageContainerRef = ref();
 
 const downloadImage = () => {
-  saveAs(imageViewerData.src, `${imageViewerData.title}.${getFileExtension(imageViewerData.src)}`);
+  saveAs(imageViewerData.src[0], `${imageViewerData.title}.${getFileExtension(imageViewerData.src[0])}`);
 }
 
 

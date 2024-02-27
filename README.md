@@ -8,5 +8,7 @@ This template should help get you started developing with Vue 3 in Vite. The tem
 
 ## Referenced Repositories
 - [FileSaver.js](https://github.com/eligrey/FileSaver.js) By [eligrey](https://github.com/eligrey)
-- [sr-message-maker](https://github.com/sr-message-maker/sr-message-maker) By [sr-message-maker](https://github.com/sr-message-maker)
+- [FileSaver.js](https://github.com/eligrey/FileSaver.js) By [eligrey](https://github.com/eligrey)
+- [vue-next-masonry](https://github.com/DaPotatoMan/vue-next-masonry) By [DaPotatoMan](https://github.com/DaPotatoMan)
+- [aplayer](https://github.com/DIYgod/APlayer) By [DIYgod](https://github.com/DIYgod)
 

@@ -9,3 +9,4 @@ interface Log {
   }[]
 }
 declare module 'aplayer';
+declare module 'vue-next-masonry';
