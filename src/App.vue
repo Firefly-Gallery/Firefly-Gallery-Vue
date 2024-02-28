@@ -61,7 +61,7 @@ const CheckLoadingState = () => {
 
       // 由于App.vue的onMounted再子组件之后，头部（依赖于smooth-scroll实例）初始化需要后置
       if(headerRef.value) {
-        headerRef.value.Init();
+        headerRef.value.Init(scrollBar);
       }
 
     }
@@ -72,7 +72,7 @@ onMounted(() => {
   scrollBar = Scrollbar.init(SmoothScrollContainer.value, {"damping": 0.05});
   
   componentsVar.scroll = scrollBar;
-  headerRef.value.Init();
+  headerRef.value.Init(scrollBar);
 
   CheckLoadingState();
   // 切换页面时接入加载动画

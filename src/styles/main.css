@@ -42,11 +42,6 @@
   src: url("@/assets/fonts/hyry-75w.ttf");
 }
 
-@font-face {
-  font-family: hksr;
-  src: url("@/assets/fonts/zh-cn.ttf");
-}
-
 :root {
   /* font-family: Noto Sans SC, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif; */
   line-height: 1.5;

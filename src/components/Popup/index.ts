@@ -7,7 +7,7 @@ import { inputClose, inputOpen } from './Input'
 import InputVue from './Input/Input.vue'
 
 import { imageViewerClose, imageViewerOpen } from './Viewer/ImageViewer'
-import ImageViewerVue from './Viewer/IMageViewer/ImageViewer.vue'
+import ImageViewerVue from './Viewer/ImageViewer/ImageViewer.vue'
 
 import ModelViewerVue from './Viewer/ModelViewer/ModelViewer.vue'
 

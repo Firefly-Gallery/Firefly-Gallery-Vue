@@ -2,9 +2,9 @@
   <div class="aplayer"></div>
 </template>
 
-<script lang="ts" setup>
+<script setup>
 import 'aplayer/dist/APlayer.min.css';
-import * as APlayer from 'aplayer';
+import APlayer from 'aplayer';
 import music_instrumental from '@/assets/sounds/bgm_instrumental.mp3'
 import music from '@/assets/sounds/bgm.mp3'
 import music_lrc from '@/assets/sounds/lyric.lrc'

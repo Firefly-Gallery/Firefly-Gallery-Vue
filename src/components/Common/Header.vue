@@ -1,6 +1,6 @@
 <template>
-  <header class="header-container">
-    <div class="cover">
+  <header class="header-container" ref="headerRef">
+    <div class="cover" ref="coverRef">
       <div class="title-container darken">
         <h1 class="title">{{ title }}</h1>
         <p class="subtitle">{{ subTitle }}</p>
@@ -55,7 +55,7 @@ header.header-container {
 </style>
   
 <script lang="ts" setup>
-import { onMounted, onBeforeUnmount, toRaw } from 'vue';
+import { onMounted, onBeforeUnmount, toRaw, ref } from 'vue';
 import componentsVar from '@/store/componentsVar'
 import type SmoothScrollbar from 'smooth-scrollbar';
 
@@ -74,36 +74,42 @@ const props = defineProps({
   }
 })
 
-let headerHeight = 0
-let cover: Element | null = null
-let header: Element | null = null
+let headerHeight = -1
+
+const coverRef = ref()
+const headerRef = ref()
+
 let scroll: SmoothScrollbar | null = null
 
-const Init = () => {
-  scroll = toRaw(componentsVar.scroll);
-  header = document.querySelector('.header-container')
-  headerHeight = header.clientHeight;
-  cover = document.querySelector('.cover');
+const Init = (scroll: SmoothScrollbar) => {
 
   scroll.addListener(handleScroll);
 }
 const handleScroll = () => {
-  var wScroll = scroll.scrollTop;
-  
-  if (wScroll <= headerHeight) {
-    cover.style.transform = 'translate(0px, ' + wScroll/2  + 'px)';
+  if(headerHeight < 0) {
+    headerHeight = coverRef.value.clientHeight;
   }
-  
-  var bounding = header.getBoundingClientRect();
+  if(scroll) {
 
-  if (bounding.bottom > 0 && bounding.bottom <= (window.innerHeight || document.documentElement.clientHeight)) {
-    componentsVar.SetNavbarTransparent(true);
-  } else {
-    componentsVar.SetNavbarTransparent(false);
+    var wScroll = scroll.scrollTop;
+    
+    if (wScroll <= headerHeight) {
+      coverRef.value.style.transform = 'translate(0px, ' + wScroll/2  + 'px)';
+    }
+  }
+
+  if(headerRef.value && componentsVar.SetNavbarTransparent) {
+    var bounding = headerRef.value.getBoundingClientRect();
+
+    if (bounding.bottom > 0 && bounding.bottom <= (window.innerHeight || document.documentElement.clientHeight)) {
+      componentsVar.SetNavbarTransparent(true);
+    } else {
+      componentsVar.SetNavbarTransparent(false);
+    }
   }
 }
 onBeforeUnmount( function() {
-  scroll.removeListener(handleScroll);
+  scroll?.removeListener(handleScroll);
 });
 
 defineExpose({Init})
