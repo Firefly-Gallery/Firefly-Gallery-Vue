@@ -8,6 +8,11 @@
       "path": "./tsconfig.app.json"
     }
   ],
+  "exclude": [
+    "node_modules",
+    "src/**/*.vue",
+    "src/**/*.js"
+  ],
   "compilerOptions": {
     "target": "es5",
     "module": "esnext",

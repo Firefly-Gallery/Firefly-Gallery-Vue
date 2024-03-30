@@ -61,7 +61,7 @@ html {
 
 html, body, #app {
   width: 100%;
-  min-height: 100vh;
+  height: 100vh;
   overflow: hidden;
 }
 
@@ -76,31 +76,8 @@ a:hover, .theme-toggle {
   color: var(--hover);
 }
 
-.scrollbar-track {
-  background-color: transparent!important;
-}
-
-.scrollbar-thumb {
-  background: #b0ffed4e!important;
-  backdrop-filter: drop-shadow(white, 0px, 0px, 10px, 0px);
-}
-
 .general-container {
-  @apply pt-20 px-5 md:px-20;
-}
-
-
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-::-webkit-scrollbar-track {
-  background: #c6c6c6;
-  margin: 20px 0;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #545454;
+  @apply py-20 px-5 md:px-20;
 }
 
 .fade-in-enter-active {

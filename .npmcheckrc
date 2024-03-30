@@ -1,0 +1,15 @@
+{
+    "depcheck": {
+        "ignoreMatches": [
+            "@vue/eslint-config-prettier",
+            "@vue/eslint-config-typescript",
+            "autoprefixer",
+            "eslint",
+            "npm-run-all",
+            "postcss",
+            "prettier",
+            "tailwindcss",
+            "vue-tsc"
+        ]
+    }
+}

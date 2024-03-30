@@ -7,8 +7,10 @@ export const setting = reactive<{
   transition: boolean
   /** 视差背景 */
   parallax_bg: boolean
+  scrollbar_damping: number
 }>({
   loading: true,
   transition: true,
-  parallax_bg: true
+  parallax_bg: true,
+  scrollbar_damping: 0.05
 })

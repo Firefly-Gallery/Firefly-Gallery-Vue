@@ -134,3 +134,11 @@ export const closeWindow = async <T extends ComponentKeys>(
   }
   return res
 }
+
+
+document.addEventListener('keydown', (e) => {
+  switch (e.key) {
+    case 'Escape':
+      closeCurrentWindow()
+  }
+});

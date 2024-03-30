@@ -40,8 +40,8 @@ const props = defineProps(["isLoading"]);
     position relative
     width 120px
     height 120px
-    animation spin 6s infinite cubic-bezier(0.55, 0.09, 0.68, 0.53)
-    animation-delay 1s
+    animation spin 6s infinite cubic-bezier(0.27, 0, 0.15, 1.28)
+    animation-delay 0.8s
 
     .circle-group-1, .circle-group-2
       width 100%
@@ -85,7 +85,7 @@ const props = defineProps(["isLoading"]);
           animation-delay 0.75s
 
     .circle-group-2
-      animation spin 6s infinite ease-in-out
+      animation spin 6s infinite cubic-bezier(0.48, 0, 0.2, 1)
 
       .circle
         width 8px

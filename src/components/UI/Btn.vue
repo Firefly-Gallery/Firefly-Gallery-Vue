@@ -79,6 +79,7 @@ defineProps<{
   &:active
     background rgba(255, 255, 255, 0.8)
     border 2.5px solid #ffffff
+    scale 0.97
 
   .icon
     display flex

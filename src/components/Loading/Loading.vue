@@ -1,101 +1,106 @@
 
 <template>
-    <div id="loading">
-        <div class="shutter" v-for="index in shutterCount" :key="index">
-            <div class="shutter-inner" :style="offsetTransition(index)"></div>
-        </div>
-    </div>
-    <div id="loading_content">
+    <div id="loading" ref="loading_anim">
+      <div class="shutter shutter-sub"></div>
+      <div class="shutter"></div>
+      <div id="loading_content" ref="loading_icon">
         <LoadingIcon :isLoading="true" />
         <p>加载中...</p>
+      </div>
     </div>
 </template>
 
 <script lang="ts" setup>
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue'
 import LoadingIcon from './LoadingIcon.vue';
 
 // in ms
 const transitionTime = 400;
-const transitionOffset = 60;
-// number of shutters
-const shutterCount = 8;
-const delay = shutterCount * transitionOffset + transitionTime;
+const transitionOffset = 50;
+const delay = transitionOffset + transitionTime;
 
 const emit = defineEmits(['check-loading'])
+const loading_anim = ref<HTMLDivElement>()
+const loading_icon = ref<HTMLDivElement>()
 
 onMounted(() => {
-    // Define CSS rules
-    const css = `
-        .loading_out {
-            transition: 0s ease ${delay}ms;
-            transform: translateY(100%);
-        }
-    `;
-
-    // Create a style element
-    const style = document.createElement('style')
-    style.appendChild(document.createTextNode(css));
-    
-    // Append the style element to the document's head
-    document.head.appendChild(style);
 })
 
 // 加入
-const inTransition = (next) => {
-    // 最后一片淡入时长
-    let container = document.getElementById("loading");
-    container.classList.remove("loading_out");
-    // 更新加载状态
-    setTimeout(() => {
-        next();
-        emit("check-loading")
-        loading_content.classList.remove("loading_out");
-    }, delay);
+const inTransition = (next: Function) => {
+  // 最后一片淡入时长
+  loading_anim.value?.classList.remove("loading_out");
+  // 更新加载状态
+  setTimeout(() => {
+    next();
+    emit("check-loading")
+    loading_icon.value?.classList.remove("loading_out");
+  }, delay);
 }
 // 退出
 const outTransition = () => {
-    let container = document.getElementById("loading");
-    container.classList.add("loading_out");
-    loading_content.classList.add("loading_out");
-}
-// 设置过渡时间、偏移
-const offsetTransition = (index) => {
-    let offsetTime = (index * transitionOffset);
-    return {
-        transition: `${transitionTime}ms cubic-bezier(0, 0, 0.3, 1) ${offsetTime}ms`,
-    };
+  loading_anim.value?.classList.add("loading_out");
+  loading_icon.value?.classList.add("loading_out");
 }
 defineExpose({inTransition, outTransition})
 </script>
-
 <style scoped>
-#loading {
-    @apply
-    absolute top-[-10rem] left-[-10rem] z-[114514]
-    flex flex-row;
+* {
+  --anim-time: 500ms;
+  --sub-delay: 100ms;
+  --main-color: #141414;
+  --inner-color: #498667;
+  --easing-main: cubic-bezier(0, 0, 0, 1);
+  --easing-sub: cubic-bezier(0, 0, 0, 1);
+}
 
-    min-width: 1920px;
-    width: calc(100vw + 20rem);
-    height: calc(100vh + 20rem);
+#loading.loading_out {
+  transition: pointer-events 0s linear calc(var(--anim-time) + var(--sub-delay));
+  pointer-events: none;
 }
+
+#loading {
+  --p: 3px;
+  @apply
+  fixed top-0 z-[114514] w-[100svw] h-[100svh]
+  flex flex-row;
+}
+
 .shutter {
-    @apply grow flex items-center justify-center;
-    transform: rotate(-15deg);
+  @apply fixed grow flex items-center justify-between;
+  top: -20vw;
+  right: -20vw;
+  z-index: 2;
+  width: calc(100svw + 40vw);
+  height: calc(100svh + 40vw);
+  background-color: var(--main-color);
+  transform: rotate(-15deg);
+  transition: width var(--anim-time) var(--easing-sub) var(--sub-delay);
 }
-.shutter-inner {
-    @apply bg-[#141414]
-    w-full h-full;
+.shutter-sub {
+  z-index: 1;
+  background-color: var(--inner-color);
+  transition: width var(--anim-time) var(--easing-main);
 }
-.loading_out .shutter-inner {
-    @apply w-[0%] z-[114514];
+.loading_out .shutter {
+  left: -20vw;
+  right: unset;
+  width: 0;
+  transition: width var(--anim-time) var(--easing-main);
 }
+.loading_out .shutter-sub {
+  left: -20vw;
+  right: unset;
+  transition: width var(--anim-time) var(--easing-sub) var(--sub-delay);
+}
+
+
 
 #loading_content {
-    @apply absolute bottom-0 left-0 
+    @apply absolute bottom-0 left-0
     flex flex-col items-center z-[114515] p-[20px] gap-3;
     opacity: 1;
-    transition: opacity 250ms ease;
+    transition: all 250ms ease;
 }
 #loading_content p {
     @apply text-xl font-bold;

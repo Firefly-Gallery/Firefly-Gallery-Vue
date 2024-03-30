@@ -1,21 +1,37 @@
-import Home from '@/pages/home.vue';
-import AboutFirefly from '@/pages/about-firefly.vue';
-import Gallery from '@/pages/gallery.vue';
-import Links from '@/pages/links.vue';
-import About from '@/pages/about.vue';
-import { PhotoIcon, LinkIcon, InformationCircleIcon, HomeIcon } from "@heroicons/vue/24/outline";
+const Home = () => import('@/pages/home.vue');
+const NotFound = () => import('@/pages/not_found.vue');
+const FireflyProfile = () => import('@/pages/firefly_profile.vue');
+const Gallery = () => import('@/pages/gallery.vue');
+const About = () => import('@/pages/about.vue');
+import {
+    PhotoIcon,
+    InformationCircleIcon,
+    HomeIcon,
+    UserCircleIcon,
+} from "@heroicons/vue/24/outline";
 import { type RouteRecordName } from 'vue-router';
 
-const home = {
-    displayName: "首页",
-    icon: HomeIcon,
-    pageName: "home",
-    path: "/home",
-    component: Home
+interface RouteRecord {
+    displayName: string;
+    icon?: any;
+    pageName: string;
+    path: string;
+    component: any;
+    hidden?: boolean;
+    noHeader?: boolean;
 }
 
-const navigations = 
+const navigations: RouteRecord[] =
 [
+    {
+        displayName: "首页",
+        icon: HomeIcon,
+        pageName: "Error",
+        path: "/home",
+        component: Home,
+        hidden: true,
+        noHeader: true
+    },
     {
         displayName: "图库",
         icon: PhotoIcon,
@@ -24,20 +40,12 @@ const navigations =
         component: Gallery
     },
     {
-        displayName: "角色介绍",
-        icon: undefined,
-        pageName: "About Firefly",
-        path: "/about-firefly",
-        component: AboutFirefly,
-        hidden: true,
+        displayName: "介绍",
+        icon: UserCircleIcon,
+        pageName: "profile",
+        path: "/profile",
+        component: FireflyProfile,
         noHeader: true
-    },
-    {
-        displayName: "链接",
-        icon: LinkIcon,
-        pageName: "links",
-        path: "/links",
-        component: Links
     },
     {
         displayName: "关于",
@@ -46,13 +54,26 @@ const navigations =
         path: "/about",
         component: About
     },
+    {
+        displayName: "找不到页面",
+        pageName: "Page Not Found",
+        path: "/:catchAll(.*)",
+        component: NotFound,
+        hidden: true,
+        noHeader: true,
+    }
 ]
 
-const GetPage = (page_name: RouteRecordName | null | undefined) => {
-    let page = navigations.find(item => item["pageName"] === page_name)
+// 第一项是主页
+const home: RouteRecord = navigations[0]
+// 最后一项是错误页
+const ErrorPage: RouteRecord = navigations[navigations.length - 1]
+
+const GetPage = (page_name: RouteRecordName | null | undefined): RouteRecord | undefined => {
+    const page = navigations.find(item => item["pageName"] === page_name)
     if(page) {
         return page;
-    } else {return {}}
+    } else {return undefined}
 };
 
-export {navigations, home, GetPage}
+export {navigations, home, ErrorPage, GetPage}

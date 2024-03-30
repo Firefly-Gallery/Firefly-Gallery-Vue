@@ -72,7 +72,7 @@
           name="保存"
           type="check"
           :disable="false"
-          @click="showWindow=false"
+          @click="openDevConsole"
         />
       </template>
     </Window>
@@ -87,6 +87,10 @@ import Icon from '@/components/UI/Icon.vue'
 import { watch, ref, computed } from 'vue'
 import { setting } from '@/store/setting'
 import { enterCallback, openWindow } from '@/components/Popup'
+
+function openDevConsole() {
+  debugger;
+}
 
 let showWindow = ref(true);
 

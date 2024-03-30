@@ -9,4 +9,6 @@ interface Log {
   }[]
 }
 declare module 'aplayer';
+declare module 'chroma-js'
 declare module 'vue-next-masonry';
+declare module "@tsparticles/vue3";

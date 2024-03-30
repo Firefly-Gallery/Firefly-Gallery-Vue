@@ -9,7 +9,20 @@ export default {
   },
   plugins: [require("daisyui")],
   daisyui: {
-    themes: ["dark", "light"],
-    // themes: ["dark"],
+    themes: ["dark", "light",
+      {
+        dark_firefly: {
+          "primary": "#6ee7b7",
+          "secondary": "#fde047",
+          "accent": "#76ABAE",
+          "neutral": "#1f2937",
+          "base-100": "#212625",
+          "info": "#a3e635",
+          "success": "#22c55e",
+          "warning": "#fb923c",
+          "error": "#ef4444",
+        },
+      },
+    ],
   },
 }

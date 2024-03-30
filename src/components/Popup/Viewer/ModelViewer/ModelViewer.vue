@@ -1,5 +1,5 @@
 <template>
-  <Viewer :index="props.index" :show="props.show" @close="close">
+  <Viewer :index="props.index" :show="props.show" @close="close" :loaded="loaded">
     <template v-slot:title>
       <CubeIcon class="logo" />
       <span class="title-text">模型</span>
@@ -10,9 +10,6 @@
     <div class="viewer-container" ref="imageContainerRef">
       <iframe src="https://model.firefly-gallery.cn/"
       ref="iframeRef" @load="loaded=true" v-show="loaded" allowtransparency="true"></iframe>
-      <div class="loading-overlay" v-show="!loaded">
-        <LoadingIcon :isLoading="true"></LoadingIcon>
-      </div>
     </div>
   </Viewer>
 </template>
@@ -68,10 +65,6 @@ span.title-text
   iframe
     flex-grow 1
     color-scheme none
-
-  .loading-overlay
-    @apply absolute w-full h-full flex justify-center items-center;
-    background-color #00000070
 
 
 </style>

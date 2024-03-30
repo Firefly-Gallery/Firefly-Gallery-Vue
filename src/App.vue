@@ -3,11 +3,15 @@
   <!-- 导航栏 -->
   <Navbar ref="navbarRef" />
   <!-- 页面视图 -->
-  <div id="SmoothScrollContainer" ref="SmoothScrollContainer">
-    <Header v-if="!($route.name == 'home' || GetPage($route.name).noHeader)" ref="headerRef"
-    :title="GetPage($route.name).displayName" :subTitle="$route.name" />
+  <custom-scrollbar :class="'scrollContainer'" ref="scroll"
+                    :autoHideDelay="1000" :thumbWidth="10">
+<!--  <div class="overflow-x-hidden overflow-y-auto h-screen">-->
+    <Header v-if="!(GetPage($route.name)?.noHeader)" ref="headerRef"
+    :title="GetPage($route.name)?.displayName" :subTitle="$route.name" />
     <router-view />
-  </div>
+    <Footer ref="footerRef" />
+<!--  </div>-->
+  </custom-scrollbar>
   <!-- 加载 -->
   <Loading ref="loadingRef" @check-loading="CheckLoadingState()" />
   <!-- 弹窗组件 -->
@@ -20,27 +24,28 @@
     @close="closeWindow"
   />
   <!-- aplayer -->
-  <Player />
+  <!-- <Player /> -->
 </template>
 
 <script lang="ts" setup>
-import { Navbar, Header, Player } from "@/components/Common";
+import { Navbar, Header, Footer } from "@/components/Common";
+// import { Player } from "./components/Common";
 import { Loading } from "@/components/Loading";
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, nextTick } from 'vue'
 import { useRouter } from 'vue-router';
-import Scrollbar from 'smooth-scrollbar';
 import componentsVar from '@/store/componentsVar';
-import { GetPage } from "@/navigations/index";
+import { GetPage } from '@/navigations';
 import { closeWindow, popupComponents } from '@/components/Popup';
+import { setting } from '@/store/setting'
 
 const router = useRouter();
 
 const loadingRef = ref();
 const navbarRef = ref();
-const SmoothScrollContainer = ref();
-const headerRef = ref();
+const scroll = ref<{ scrollEl: HTMLDivElement; }>();
 
-let scrollBar: Scrollbar;
+const headerRef = ref();
+const footerRef = ref();
 
 const CheckLoadingState = () => {
   // 每300毫秒检查页面是否加载完成
@@ -57,27 +62,47 @@ const CheckLoadingState = () => {
       loadingRef.value.outTransition();
 
       // 回顶
-      scrollBar.scrollTo(0, 0)
-
-      // 由于App.vue的onMounted再子组件之后，头部（依赖于smooth-scroll实例）初始化需要后置
-      if(headerRef.value) {
-        headerRef.value.Init(scrollBar);
+      if(scroll.value) {
+        scroll.value.scrollEl.scrollTop = 0;
+        // 由于App.vue的onMounted再子组件之后，头部（依赖于页面滚动）初始化需要后置
+        if(headerRef.value) {
+          headerRef.value.Init(scroll.value.scrollEl);
+        }
       }
+
 
     }
   }, 500);
 }
-
+const isMobile = () => {
+  if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+    return true
+  } else {
+    return false
+  }
+}
 onMounted(() => {
-  scrollBar = Scrollbar.init(SmoothScrollContainer.value, {"damping": 0.05});
-  
-  componentsVar.scroll = scrollBar;
-  headerRef.value.Init(scrollBar);
+  console.log(scroll.value)
+  if(isMobile()) {
+    setting.scrollbar_damping = 0.006;
+  }
+  if(scroll.value) {
+    componentsVar.scroll = scroll.value.scrollEl;
+    headerRef.value.Init(scroll.value.scrollEl);
+  }
 
   CheckLoadingState();
   // 切换页面时接入加载动画
   router.beforeEach((to, from, next) => {
     loadingRef.value.inTransition(next);
+  });
+  const DEFAULT_TITLE = '首页 | 流萤图站';
+  router.afterEach((to, from) => {
+    // Use next tick to handle router history correctly
+    // see: https://github.com/vuejs/vue-router/issues/914#issuecomment-384477609
+    nextTick(() => {
+      document.title = to.meta.title || DEFAULT_TITLE;
+    });
   });
 });
 
@@ -85,8 +110,6 @@ defineExpose({CheckLoadingState});
 
 </script>
 <style lang="stylus" scoped>
-#SmoothScrollContainer
-  @apply w-screen h-screen overflow-x-hidden overflow-y-auto;
 
 #popup-container
   position fixed
@@ -94,4 +117,22 @@ defineExpose({CheckLoadingState});
   left 0
   transform-origin left top
 
+</style>
+<style lang="stylus">
+.scrollContainer
+  @apply w-screen h-screen overflow-x-hidden overflow-y-scroll;
+  height 100svh
+  //perspective 1px
+  //transform-style preserve-3d
+  //.scrollbar__content
+  //  position relative
+  //  transform-style inherit
+.scrollbar__thumbPlaceholder
+  z-index 20
+  .scrollbar__thumb
+    background-color inherit!important
+    background linear-gradient(to bottom, #68ffba50, #71efff50)
+  &:not(.scrollbar__thumbPlaceholder--scrolling, :hover)
+    pointer-events none
+    opacity 0!important
 </style>
