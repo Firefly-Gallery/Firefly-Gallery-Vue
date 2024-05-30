@@ -463,37 +463,28 @@ watch(
   </div>
 </template>
 
-<style lang="scss">
-.pinch-scroll-zoom {
-  position: relative;
-  touch-action: none;
-  user-select: none;
-  user-zoom: none;
-  overflow: hidden;
-  :active {
-    cursor: all-scroll;
-  }
-
-  &--zoom-in {
-    cursor: zoom-in;
-  }
-
-  &--zoom-out {
-    cursor: zoom-out;
-  }
-
-  &__content {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    img {
-      -webkit-user-drag: none;
-      -khtml-user-drag: none;
-      -moz-user-drag: none;
-      -o-user-drag: none;
-    }
-  }
-}
+<style lang="stylus">
+.pinch-scroll-zoom
+  position relative
+  touch-action none
+  user-select none
+  user-zoom none
+  overflow hidden
+  :active
+    cursor all-scroll
+.pinch-scroll-zoom--zoom-in
+	cursor zoom-in
+.pinch-scroll-zoom--zoom-out
+	cursor zoom-out
+.pinch-scroll-zoom__content
+	position absolute
+	top 0
+	left 0
+	width 100%
+	height 100%
+	img
+		-webkit-user-drag none
+		-khtml-user-drag none
+		-moz-user-drag none
+		-o-user-drag none
 </style>

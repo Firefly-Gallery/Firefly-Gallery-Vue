@@ -81,7 +81,7 @@ const prop = defineProps({
 })
 
 const isTransparent = ref(true)
-const siteIcon = '/static/site_logo_round.png'
+const siteIcon = '/icon/icon_128.png'
 
 const updateThemeStatus = () => {
   prop.isLightTheme = !prop.isLightTheme

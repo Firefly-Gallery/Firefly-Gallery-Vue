@@ -2,25 +2,15 @@
     <div class="title-container">
         <div class="title">
             <h2><i>崩坏:星穹铁道——</i></h2>
-            <h1>流萤图站</h1>
+            <h1>流萤の专属相册</h1>
             <p>
                 一个简单的同人图站。
             </p>
-            <div class="btn-group">
-                <Btn name="浏览图库" class="btn_" @click="$router.push('/gallery')"></Btn>
-                <Btn name="角色介绍" class="btn_" @click="$router.push('/profile')"></Btn>
-            </div>
             <span class="text-xs font-medium ml-2">背景：
               <a href="https://www.bilibili.com/video/BV1WK421y7k8/" target="_blank">@神猫子Mineko</a> |
               <a href="https://www.bilibili.com/video/BV1zJ4m1s71R/" target="_blank">@-夜莺Night</a>
             </span>
         </div>
-    </div>
-    <div class="firefly-card-container">
-        <button class="firefly-card"
-        @click="openWindow('imageViewer', {title: 'firefly-card', 'src': [card]})">
-          <Image :src="'/Home_Card.jpg'" :alt="'firefly-card'" />
-        </button>
     </div>
 </template>
 <script lang='ts' setup>

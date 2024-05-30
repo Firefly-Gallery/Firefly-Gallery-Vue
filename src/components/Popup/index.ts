@@ -2,7 +2,6 @@ import ChangeLogVue from './ChangeLog.vue'
 import { confirmClose, confirmOpen } from './Confirm'
 import ConfirmVue from './Confirm/Confirm.vue'
 import DataManagerVue from './DataManager.vue'
-import FontManagerVue from './FontManager.vue'
 import { inputClose, inputOpen } from './Input'
 import InputVue from './Input/Input.vue'
 
@@ -11,16 +10,12 @@ import ImageViewerVue from './Viewer/ImageViewer/ImageViewer.vue'
 
 import ModelViewerVue from './Viewer/ModelViewer/ModelViewer.vue'
 
-import SettingVue from './Setting.vue'
-
 import { computed, markRaw, reactive, ref, type Component, type ComputedRef } from 'vue'
 
 const components = {
   input: InputVue,
   confirm: ConfirmVue,
-  setting: SettingVue,
   log: ChangeLogVue,
-  font: FontManagerVue,
   data: DataManagerVue,
   imageViewer: ImageViewerVue,
   modelViewer: ModelViewerVue

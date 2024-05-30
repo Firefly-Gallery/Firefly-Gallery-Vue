@@ -1,0 +1,177 @@
+<html>
+    <style>
+        html, body {
+            background-color: black;
+        }
+        #firefly-logo-outline {
+            overflow: unset;
+            width: 75%;
+        }
+        #firefly-logo-outline g:not(.firefly-color-layer) {
+            transform-origin: center;
+            filter: drop-shadow(4px 5px 1px rgba(255, 255, 255, 0));
+            stroke-width: 2px;
+        }
+        .firefly-logo-liu {
+            opacity: 0;
+            transform: rotate(-16deg) translate(-380px, -420px);
+        }
+        .firefly-logo-ying {
+            opacity: 0;
+            transform: rotate(14deg) translate(520px, 180px);
+        }
+        .firefly-logo-eng {
+            opacity: 0;
+            transform: translate(0px, -1000px);
+        }
+        #firefly-logo-outline.active g:not(.firefly-color-layer) {
+            transform: unset;
+            opacity: 1;
+            filter: drop-shadow(3px 4px 1px rgba(255, 255, 255, 0.5));
+        }
+
+        #firefly-logo-outline.active g.firefly-logo-liu {
+            transition:
+                    opacity 1200ms cubic-bezier(0, 1.08, 0.5, 1) 50ms,
+                    transform 1200ms cubic-bezier(0, 1.08, 0.5, 1) 50ms,
+                    filter 500ms ease 500ms;
+        }
+
+        #firefly-logo-outline.active g.firefly-logo-ying {
+            transition:
+                    opacity 1200ms cubic-bezier(0, 1.08, 0.5, 1) 100ms,
+                    transform 1200ms cubic-bezier(0, 1.08, 0.5, 1) 100ms,
+                    filter 500ms ease 500ms;
+        }
+
+        #firefly-logo-outline.active g.firefly-logo-eng {
+            transition:
+                    opacity 1200ms cubic-bezier(0, 1, 0, 1) 0ms,
+                    transform 1200ms cubic-bezier(0, 1, 0, 1) 0ms,
+                    filter 500ms ease 500ms;
+        }
+
+        #firefly-logo-outline.active g:not(.firefly-color-layer) path {
+            stroke-dashoffset: 0!important;
+            transition: stroke-dashoffset 1000ms ease-out, fill 0ms linear 1200ms;
+        }
+        .firefly-color-layer {
+            transform: translate(0px, -16px);
+            mix-blend-mode:multiply;
+            opacity: 0;
+        }
+        #firefly-logo-outline.active g.firefly-color-layer {
+            opacity: 1;
+            transition: opacity 2000ms ease 700ms;
+        }
+    </style>
+    <body style="display: flex; justify-content: center; align-items: center; width: 100vw; height: 100lvh; margin: 0; padding: 0; overflow: hidden;">
+        <svg id="firefly-logo-outline" width="753" height="422" viewBox="0 0 753 422" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g class="firefly-logo-eng">
+                <path class="f" fill-rule="evenodd" clip-rule="evenodd" d="M167 350.5L161 364H158C158 364 161.5 359.5 159.5 356.5H143.5C143.5 356.5 121 416.5 66.0002 419.5C43.5001 420.727 33.417 405.5 32.0002 388.5C30.5834 371.5 44 353.598 68.5002 352C91.5 350.5 116 383.5 116 383.5C119.5 376.5 129 360.5 99.0002 356.5L102 350.5H140.5C140.5 350.5 145.5 326 178 313.5C186.5 310.231 186.886 313.422 183.5 318.5C180.5 323 179 328 177 328C175 328 180.829 318.971 178 318.5C175.172 318.029 157.5 316.5 146.5 350.5H167ZM114.5 356.5H137.5C137.5 356.5 119 414.5 69.5 414.5C54.5 414.5 35.5 403.553 35.5 385.5C35.5 376 42 355.5 64.5 355.5C89.5 355.5 112.5 392.5 112.5 392.5H113.5C113.5 392.5 123.5 379.017 123.5 371.5C123.5 363.5 114.5 356.5 114.5 356.5Z" stroke="white"/>
+                <path class="i" d="M189.5 344.5C187.888 343.694 172.5 349.72 172.5 351C172.5 352.5 180.577 349 180 351.5C178.846 356.5 159.501 383.5 159.5 390.5C159.5 392 174 386 174 384.5C174 382 170.5 385.167 168.5 384.5C165 383.333 191.5 345.5 189.5 344.5Z" stroke="white"/>
+                <path class="i2" d="M191 332.5C191.5 331 193.684 328.802 195.5 329.5C196.62 329.931 197.383 331.926 196 334C195 335.5 193.5 336.5 192 336C191.051 335.684 190.293 334.621 191 332.5Z" stroke="white"/>
+                <path class="r" d="M200 353.5C198.332 353.5 195.5 354.5 195 354C193 352 206.5 346 209 348C210.952 349.562 204.5 358.5 204.5 358.5C204.5 358.5 219.5 345 224 345C228.5 345 200 359.5 190 387.5C188.995 390.313 184.112 390.806 182.5 390C180.887 389.194 203 353.5 200 353.5Z" stroke="white"/>
+                <path class="e" d="M221.5 390.5C236.5 390.5 253.5 368 250.5 367C247.5 366 239.031 384.079 226.5 385C208.723 386.307 250 337 254.5 349.5C255.58 352.5 249.725 360.086 238 361C235.5 361.195 234 362 235 363.5C236 365 247 362.5 253 357.5C256.75 354.375 257.912 347.59 253.5 345.5C244 341 215.5 373 215.5 385.5C215.5 388 215.5 390.5 221.5 390.5Z" stroke="white"/>
+                <path class="fl" d="M272.5 349C251.5 382.5 245.5 416 223.5 415.5C219.064 415.399 217.5 414.5 217.63 417.301C217.63 421 221.191 421 223 421C238 421 253.5 390 253.5 390L257 390L278.5 349L287.5 349L288 347H280C280 347 286.5 329 300.5 322.5C312.346 317 319 315.5 315 322C313.166 324.981 288 356.5 277.5 386.5C277.005 387.916 276.5 390.5 280.5 390.5C285.525 390.5 295.5 382.333 294.5 381C293.153 379.203 286.5 388 285.5 384.5C284.066 379.48 316.004 329.121 324.5 318.5C328.5 313.5 311.5 314.5 299.5 320.5C286.286 327.107 272.5 347 272.5 347H267V349H272.5Z" stroke="white"/>
+                <path class="y" d="M316.5 354C316.391 351.82 311 356.081 311 354.5C311 352 318.5 348.7 322 351.5C324.5 353.5 319.5 369 319.5 369C319.5 369 333.789 350.839 348.5 349C352.5 348.5 354.5 348.5 352 354.5C343.389 375.167 319.5 393.5 309 396.5C300.135 399.033 286 400.5 286 408C286 411.684 290 413.5 294.5 413.5C304 413.5 305.75 410 306.5 411.5C307.5 413.5 299.723 417.911 294.5 417.5C289.205 417.084 283.712 415.308 283.5 410C283 397.5 299 392 310 391C331.202 389.073 352.5 353.161 343 353.5C329 354 308 391.225 305 390.5C302 389.775 317 364 316.5 354Z" stroke="white"/>
+            </g>
+            <g class="firefly-logo-ying">
+                <path class="lt" d="M451.5 122.5L369.5 128.5L370.5 137.5L450.5 131.5L449 159.5L490 157L491.5 127.5L510 127L513 118L492.5 119.5L494.5 88L453 98.5L451.5 122.5Z" stroke="white"/>
+                <path class="rt" d="M535.5 124.5L539 115.5L556.5 114L557.5 89.9999L600 79.9999L598 111.5L644.5 107C657 93.9999 677 88.9999 677 88.9999C661.5 97.4999 662.725 103.341 669 102.5C676.609 101.48 685.276 96.9999 699.5 84.4999C699.5 84.4999 717.5 72.5 725 72.5C729.196 72.5 731 73.5 731 73.5C731 73.5 718.159 70.8337 705.5 94.9999C694.5 116 677 131 663 137.5C656.626 140.459 645.5 148.5 656.5 148.5C659.351 148.5 661.5 148 668 144.5C691 132.115 697 125.5 720 120.5V122.5C691.5 131.5 677 147 659.5 175.5C645.5 198.3 569 218.5 549 216.5C615.5 200 622.5 165.5 622.5 165.5L419 180.5C419 180.5 414.5 224 386.5 224C372.428 224 368.5 210 368.5 205C368.5 187.5 388.5 176.5 388.5 176.5C388.5 176.5 380.5 183 379.5 188.5C379.5 188.5 387.089 185.364 391 182C414.256 162 410.148 152.38 411.5 149C412.1 147.5 416 147.5 416.5 149C417 150.5 419 171.5 419 171.5C419 171.5 609 157.625 613.5 156.5C618.79 155.177 638.832 146.204 654.5 137.5C672.5 127.5 678 114 678 114L597 120L595.5 148L554 152L555.5 123.5L535.5 124.5Z" stroke="white"/>
+                <path class="chong" fill-rule="evenodd" clip-rule="evenodd" d="M399 325C399 325 415.002 305.426 415.5 290.5C416.5 260.5 419 208 419 208L448.5 224C448.5 224 442.5 247.5 456.5 265.5C452.622 269.676 442.5 283.5 442.5 289C442.5 293.5 449 292.565 454 292.5C492.5 292 507 266.5 507 260.5C507 255 491 232.5 457.5 232.5V230.5L500.5 228.5L502.5 194.5L544.5 184L541.5 224.5C640.094 222.5 640.5 200 663 189C663 189 650.5 201 640.5 220C632.868 234.5 629.983 238.142 623 247.5L620.5 288.5L578.5 301.5L590 283.5C588.5 266.5 580 257 580 257C596.5 238 595.507 230.445 592.5 230C553 224.158 529.5 253.5 529.5 260.5C529.5 268 550 291.5 576 289.5L575.5 291.5L536.5 294L534.5 331.5L587.5 327.5L382 377.5L401 341.5L493.5 335.5L496 298L454 300.5L453.5 307L399 325ZM510.5 241.5C510.5 249.629 519 260.5 519 260.5C519 260.5 529.5 249.978 529.5 241.5C529.5 233.5 527 228.5 520 228.5C513 228.5 510.5 234.5 510.5 241.5ZM507.5 286.5C507.5 275.5 518 266.5 518 266.5C518 266.5 527.5 275.859 527.5 286.5C527.5 294.5 523.5 298.5 518 298.5C512.5 298.5 507.5 295.5 507.5 286.5Z" stroke="white"/>
+                <path class="dian" d="M545 315V313C545 313 560.534 312 570.5 312C607.5 312 627 327 627 327L614.5 312C614.5 312 644.5 327 644.5 354C644.5 373 630.983 384.5 614 384.5C601 384.5 588 377 588 365C588 360.5 587.5 353.5 595 353.5C599 353.5 614.27 365.049 611.5 351C604.5 315.5 545 315 545 315Z" stroke="white"/>
+                <path class="huoxing" d="M750 63.5001C747.775 63.5002 738.5 71.499 738.5 71.499C738.5 71.499 750.244 72.2771 751.5 65.999C751.8 64.5 751 63.5 750 63.5001Z" stroke="white"/>
+            </g>
+            <g class="firefly-logo-liu">
+                <path class="lt" d="M93 42.5C76.6899 31.6266 32.5 10.5 32.5 10.5C32.5 10.5 43.5 76.5 72 90C72 90 53 98 49 110.5C47.4527 115.335 47.7981 122.596 50.5 128C60 147 64.3217 157.252 66.5 172.5C69.4286 193 67.5 228 61 236.5H61.5C70.5 221 78.8751 200.543 77.5 173.5H79C85.5 198 84.5 205 84.5 205C84.5 205 104 167.5 104 151C104 135.992 66 114 63.5 111C61 108 61 104.5 65 102C69 99.5 74 97 83.5 97C93 97 95 99.5 104 99.5C113 99.5 118 98.5 118.5 84C118.5 64 99 46.5 93 42.5Z" stroke="white"/>
+                <path class="lb" d="M123.5 140.5C123.5 140.5 125.5 196.5 105.5 259C105.5 259 117.912 236 118.5 224C120 246.5 108.696 280.523 87.5 308C74 325.5 53 329 49 329.5C73.8223 319.748 69 298.5 40 322C36.2979 325 32.1551 328.164 27 331.5C19.5 336.353 11.8131 338.798 10.5 339C4 340 0.5 339 0.5 339C0.5 339 6.57364 339.523 13.5 333.5C25 323.5 20.2308 321.342 29 312.5C89.5 251.5 123.5 140.5 123.5 140.5Z" stroke="white"/>
+                <path class="dian" d="M232.5 59C236.5 58.5 251.19 51.0522 250.5 39.5C248.798 10.9956 214.499 2.49759 205.5 1C205.5 1 222 7 227 14.5C227 14.5 204 4.50054 186 2.5C198.5 16 203.52 33.1627 205.5 39.5C208 47.5 211.981 56.5581 221.5 59C225.661 60.0674 228.238 59.5328 232.5 59Z" stroke="white"/>
+                <path class="rm" d="M313 57.0001L134.5 71.5001L136 79.5001L209.5 74.5001C209.5 74.5001 200 91 149.5 129C149.5 129 172.697 126.542 187 122.5C219.5 113.315 250 90.5 265 78L231 72.5001L345 63.5001C345 63.5001 336.5 74.3333 316 88C291.25 104.5 282.5 103.5 264.5 103.5V106.5L280 117.5C280 117.5 227 125.5 143.5 134.5L153.5 169.5C153.5 169.5 216.5 150 284.5 125.5C284.5 125.5 289.5 131 290.5 137C292.5 149 299.5 160.5 312.5 160.5C320.252 160.5 325.835 155.598 328 148C329.805 141.665 324.543 135.69 325 131.5C328 104 359.5 94.5 359.5 94.5C359.5 94.5 348 95.5 338 100.5C334.179 102.411 319 109.385 315.5 109C309.5 108.34 304.554 101.775 311.5 97C343.5 75 363.886 59.7754 368.5 56C379.5 47 382.5 43.2083 385.5 38.5C396.332 21.5 410.5 15.5 410.5 15.5C403.5 15 384.367 28.3308 381 31.5001C364 47.5001 345.5 52.5 343.5 47C342 42 358.5 32.5001 358.5 32.5001C358.5 32.5001 344 33.5001 313 57.0001Z" stroke="white"/>
+                <path class="l1" d="M193 177.5L154 188C150 226 151 276.5 101 316.5L103.5 318.5C185.5 286 193 216.5 193 177.5Z" stroke="white"/>
+                <path class="l2" d="M211.5 184.5L249 171L241.5 284.5C241.5 284.5 213.5 292 189.5 301.5C196.287 294.819 202.771 284 204 273.5C207.979 239.5 211.5 184.5 211.5 184.5Z" stroke="white"/>
+                <path class="l3" d="M302 172L264.5 185.5C264.5 185.5 260.5 250 259.5 292C259.202 304.496 268.65 306.5 276 306.5H288C298.5 306.5 347.5 291 347.5 291V277.5C347.5 263 360.252 246.382 391.5 238.5C392.636 238.213 391.5 235.5 391.5 235.5L297.5 265L302 172Z" stroke="white"/>
+                <path class="huoxing" d="M387.787 82.3211C387.5 81.6522 385.727 81.7367 384.816 82.3212C377.884 86.7686 366 91.7102 366 91.7102C366 91.7102 373 91.5 377.5 90C383.5 88 389 85.1455 387.787 82.3211Z" stroke="white"/>
+                <path class="ltd" d="M71.5 39C56 31.5 42.5 22.5 42.5 22.5C42.5 22.5 49.5 42 55.5 51.5M71.5 39C89.5 47.7097 94.5 51 103.5 64C112.5 77 113 77.5 113 77.5M71.5 39L87 68.5M87 68.5L104 84M87 68.5C87 68.5 67.6063 57.9437 55.5 51.5M55.5 51.5C62.5 62.5833 63.5 80 101 91" stroke="white"/>    
+            </g>
+            <!-- -->
+            <g class="firefly-color-layer">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M125.5 0H415V115L348.5 157.5V256.5L406 248L348.5 328H151.5L113 364H72.5L132 279L125.5 0Z" fill="url(#paint0_linear_7_28)"/>
+                <path d="M0 0V364H72.5L132 279L125.5 0H0Z" fill="url(#paint1_linear_7_28)"/>
+                <path d="M0 0V364H72.5L132 279L125.5 0H0Z" fill="url(#paint2_linear_7_28)"/>
+                <path d="M415 115L348.5 157.5V256.5L406 248L348.5 328L367.5 402L654.5 442L762 68L415 115Z" fill="url(#paint3_linear_7_28)"/>
+                <path d="M348.5 328H151.5L113 364H72.5H0V454H317.5L367.5 402L348.5 328Z" fill="url(#paint4_linear_7_28)"/>
+            </g>
+            <defs>
+            <linearGradient id="paint0_linear_7_28" x1="410.5" y1="35.5" x2="-3.00001" y2="364" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#E57219"/>
+            <stop offset="0.166862" stop-color="#EDCC87"/>
+            <stop offset="0.405" stop-color="#B4E6CD"/>
+            <stop offset="0.61" stop-color="#69F0E1"/>
+            <stop offset="0.977757" stop-color="#47F1E8"/>
+            </linearGradient>
+            <linearGradient id="paint1_linear_7_28" x1="410.5" y1="35.5" x2="-3.00001" y2="364" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#E57219"/>
+            <stop offset="0.166862" stop-color="#EDCC87"/>
+            <stop offset="0.405" stop-color="#B4E6CD"/>
+            <stop offset="0.61" stop-color="#69F0E1"/>
+            <stop offset="0.977757" stop-color="#47F1E8"/>
+            </linearGradient>
+            <linearGradient id="paint2_linear_7_28" x1="381" y1="0" x2="381" y2="454" gradientUnits="userSpaceOnUse">
+            <stop offset="0.285" stop-color="#CAF0D7"/>
+            <stop offset="1" stop-color="#4CF3E9"/>
+            </linearGradient>
+            <linearGradient id="paint3_linear_7_28" x1="762" y1="127" x2="350.5" y2="420" gradientUnits="userSpaceOnUse">
+            <stop offset="0.06" stop-color="#E57219"/>
+            <stop offset="0.26" stop-color="#EDCC87"/>
+            <stop offset="0.52" stop-color="#B4E6CD"/>
+            <stop offset="0.76" stop-color="#69F0E1"/>
+            <stop offset="0.977757" stop-color="#47F1E8"/>
+            </linearGradient>
+            <linearGradient id="paint4_linear_7_28" x1="161.5" y1="333" x2="161.5" y2="445.5" gradientUnits="userSpaceOnUse">
+            <stop offset="0.075" stop-color="#FBCC7C"/>
+            <stop offset="1" stop-color="#EC972D"/>
+            </linearGradient>
+            </defs>
+        </svg>
+    </body>
+    <script>
+        // Wait for SVG to load
+        document.getElementById('firefly-logo-outline').addEventListener('load', function() {
+            var svgDoc = this;
+            console.log(svgDoc)
+            var paths = svgDoc.querySelectorAll('path');
+
+            // Loop through each path
+            paths.forEach(function(path) {
+                // Calculate path length
+                var length = path.getTotalLength();
+                length = parseInt(length * 2) + 1
+
+                path.setAttribute("length", parseInt(length * 2) + 1)
+
+                // Apply stroke dash array and offset
+                path.style.strokeDasharray = length / 2;
+                path.style.strokeDashoffset = length / 2;
+
+                // Trigger reflow to apply initial styling
+                path.getBoundingClientRect();
+            });
+            document.getElementById('firefly-logo-outline').classList.add('active')
+        });
+
+        function replay() {
+          const el = document.getElementById('firefly-logo-outline')
+          el.classList.remove('active')
+          setTimeout(function(){
+            el.classList.add('active')
+          },10);
+        }
+
+        window.addEventListener('message', (event) => {
+          if (event.data === 'reload') {
+            replay()
+          }
+        });
+    </script>
+</html>

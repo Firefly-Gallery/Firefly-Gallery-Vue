@@ -1,7 +1,6 @@
 const Home = () => import('@/pages/home.vue');
 const NotFound = () => import('@/pages/not_found.vue');
 const FireflyProfile = () => import('@/pages/firefly_profile.vue');
-const Gallery = () => import('@/pages/gallery.vue');
 const About = () => import('@/pages/about.vue');
 import {
     PhotoIcon,
@@ -31,13 +30,6 @@ const navigations: RouteRecord[] =
         component: Home,
         hidden: true,
         noHeader: true
-    },
-    {
-        displayName: "图库",
-        icon: PhotoIcon,
-        pageName: "gallery",
-        path: "/gallery",
-        component: Gallery
     },
     {
         displayName: "介绍",
