@@ -4,12 +4,11 @@
     <div class="chardesc-container">
         <div class="Up">
             <div class="char-name-block">
-                <h2 class="char-name">流萤</h2>
-                <p class="char-name-sub">Firefly</p>
+              <Image src="/Introduction_FireflyIconWhite.svg" class="h-[200px] drop-shadow-md" />
                 <div class="icons">
-                    <Image src="/Introduction_FiveStarsIcon.svg" class="h-7" :otherFormats="[]" />
-                    <Image src="/Introduction_FireIcon.png" class="w-10 h-10" />
-                    <Image src="/Introduction_DestinyIcon.png" class="w-10 h-10" />
+                    <Image src="/Introduction_FiveStarsIcon.svg" class="h-7 drop-shadow-md" :otherFormats="[]" />
+                    <Image src="/Introduction_FireIcon.png" class="w-10 h-10 drop-shadow-md" />
+                    <Image src="/Introduction_DestinyIcon.png" class="w-10 h-10 drop-shadow-md" />
                 </div>
             </div>
             <div class="top-right">
@@ -20,31 +19,26 @@
         <div class="Down">
             <table class="table">
             <tbody>
-                <tr>
-                    <th style="width:100px">性别</th>
-                    <td colspan="3">女</td>
-                </tr>
                 <tr style="display:none">
                     <th>全名/本名</th>
                     <td colspan="3"></td>
                 </tr>
                 <tr>
-                    <th>稀有度</th>
-                    <td colspan="3">未知</td>
+                    <th style="width:100px">稀有度</th>
+                    <td colspan="3">★ ★ ★ ★ ★</td>
                 </tr>
                 <tr>
                     <th>命途</th>
-                    <td colspan="3">未知</td>
+                    <td colspan="3">毁灭</td>
                 </tr>
                 <tr>
                     <th>战斗属性</th>
-                    <td colspan="3">未知</td>
+                    <td colspan="3">火</td>
                 </tr>
                 <tr>
                     <th>阵营</th>
                     <td colspan="3">
-                        <a href="https://wiki.biligame.com/sr/%E5%8C%B9%E8%AF%BA%E5%BA%B7%E5%B0%BC"
-                        target="_blank" title="匹诺康尼">匹诺康尼</a>
+                        星核猎手
                     </td>
                 </tr>
                 <tr>
@@ -61,13 +55,21 @@
                 <div class="join">
                     <button class="btn2">wiki</button>
                     <button class="btn2" 
-                    @click="openWindow('imageViewer', {title: '立绘', 'src': [largeAvatarPortrait]})"
+                    @click="openWindow('imageViewer', {
+                      title: '立绘',
+                      'src': [
+                        largeAvatarPortrait,
+                        avatarPosterA,
+                        avatarPosterB
+                      ]
+                    })"
                     >立绘</button>
                     <button class="btn2" @click="openWindow('modelViewer')">模型</button>
                 </div>
                 <p class="char-description">
-                    自称是鸢尾花家系的新人艺者，现实中患有「失熵症」的神秘少女。<br>
-                    被猎犬家系成员当作偷渡犯，后为报答开拓者出手解围主动担任导游一职。
+                  星核猎手成员，身着机械装甲「萨姆」的少女。<br>
+                  以兵器的身份诞生，因基因改造罹患「失熵」的痛苦。<br>
+                  为寻求生命的意义加入星核猎手，不断追逐违抗命运的方式。
                 </p>
             </div>
         </div>
@@ -80,6 +82,8 @@
 import { ref, type Ref, onMounted } from 'vue';
 import ParallaxContainer from '../Common/ParallaxContainer.vue';
 import largeAvatarPortrait from '@/assets/extra/Introduction_AvatarPortrait.png'
+import avatarPosterA from '@/assets/extra/Introduction_AvatarPoster2.jpg'
+import avatarPosterB from '@/assets/extra/Introduction_AvatarPoster1.jpg'
 import { openWindow } from '@/components/Popup';
 import Image from '@/components/UI/Image.vue'
 
@@ -120,7 +124,7 @@ function LoadModelPreview() {
 .quote {
     @apply relative z-[10] pb-1 md:pb-[15px]
     text-lg md:text-lg lg:text-xl;
-    background: linear-gradient(to right, #94e1c8, #ebe1a3);
+    background: linear-gradient(to right, #9dffdf, #fff1a8);
     text-shadow: 0px 2px 5px #9f9f9f5a;
     color: #ffffff;
     font-weight: 700;
