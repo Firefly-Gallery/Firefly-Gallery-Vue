@@ -1,13 +1,13 @@
 <template>
   <section class="parallax-container" ref="containerRef">
 
-    <video autoplay loop muted v-if="videoSrc!=''"
-           class="parallax-bg"
-           @loadeddata="onVideoLoad"
-           ref="bgRef" :style="bgStyle" />
+    <div :class="{'parallax-bg': true, 'hide': !isExtraLoaded}"
+      ref="bgRef" :style="bgStyle">
+      <slot name="content"></slot>
+    </div>
 
     <Image
-           :class="{'parallax-bg': true, 'hide': isVideoLoaded}"
+           :class="{'parallax-bg': true, 'hide': isExtraLoaded}"
            @load="onImageLoad"
            :src="src" ref="imgBgRef" :style="bgStyle" />
 
@@ -18,21 +18,21 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, onBeforeUnmount, toRaw, reactive, type Ref } from 'vue'
+import { ref, onMounted, onBeforeUnmount, toRaw, reactive, type Ref, watch } from 'vue'
 import componentsVar from '@/store/componentsVar'
 import viewport from '@/store/viewport'
 import Image from '../UI/Image.vue'
 
-const isVideoLoaded = ref(false)
+const isExtraLoaded = ref(false)
 
 interface StyleRef {
   [key: string]: string;
 }
 
-let bgValue: HTMLImageElement | HTMLVideoElement | undefined
+let bgValue: HTMLElement | undefined
 const containerRef = ref<HTMLDivElement>()
 
-const bgRef = ref<HTMLImageElement>()
+const bgRef = ref<HTMLElement>()
 const imgBgRef = ref<typeof Image>()
 
 const props = defineProps({
@@ -40,7 +40,7 @@ const props = defineProps({
   h: { type: String },
   src: { type: String },
   contentClass: { type: String },
-  videoSrc: { type: String, default: "" },
+  extraContent: { type: Boolean, default: false },
   margin: { type: Number, default: 256 },
   imageZ: { type: Number, default: -1 }
 })
@@ -59,12 +59,19 @@ function GetBGSize() {
   if(bgValue instanceof HTMLVideoElement) {
     return {
       w: bgValue?.videoWidth ?? 1,
-      h: bgValue?.videoWidth ?? 1
+      h: bgValue?.videoHeight ?? 1
     }
   }
-  return {
-    w: bgValue?.naturalWidth ?? 1,
-    h: bgValue?.naturalWidth ?? 1
+  else if(bgValue instanceof HTMLImageElement) {
+    return {
+      w: bgValue?.naturalWidth ?? 1,
+      h: bgValue?.naturalHeight ?? 1
+    }
+  } else {
+    return {
+      w: bgValue?.offsetWidth ?? 1,
+      h: bgValue?.offsetHeight ?? 1
+    }
   }
 }
 
@@ -105,20 +112,23 @@ function UpdatePos() {
   }
 }
 
-function onVideoLoad() {
-  bgValue = bgRef.value;
-  SetRealHeight()
-  // UpdatePos()
-  isVideoLoaded.value = true
-}
+watch(() => props.extraContent, (newValue, oldValue) => {
+  isExtraLoaded.value = newValue
+  if(newValue) {
+    bgValue = bgRef.value;
+    SetRealHeight()
+    UpdatePos()
+  } else {
+    if(imgBgRef.value) {
+      bgValue = imgBgRef.value.imgRef
+    }
+    SetRealHeight()
+    UpdatePos()
+  }
+})
+
 function onImageLoad() {
   SetRealHeight()
-}
-
-function fillSrc() {
-  if(bgRef.value) {
-    bgRef.value.src = props.videoSrc
-  }
 }
 
 onMounted(() => {
@@ -126,17 +136,6 @@ onMounted(() => {
     bgValue = imgBgRef.value.imgRef
   }
 
-  if(props.videoSrc != "") {
-    if (document.readyState === "complete") {
-      fillSrc()
-    } else {
-      document.addEventListener('readystatechange', () => {
-        if (document.readyState === "complete") {
-          fillSrc()
-        }
-      });
-    }
-  }
   const scroll = componentsVar.scroll
   UpdatePos()
   window.addEventListener('resize', function() {
@@ -146,7 +145,8 @@ onMounted(() => {
   scroll?.addEventListener('scroll', function() {
     requestAnimationFrame(UpdatePos)
   })
-})
+});
+
 </script>
 
 <style>
@@ -163,7 +163,12 @@ onMounted(() => {
   left: 0;
   object-fit: cover;
   overflow: hidden;
-  transition: opacity 0.4s, transform 0.02s ease;
+  transition: opacity 0.4s;
+}
+
+div.parallax-bg {
+  right: 0;
+  bottom: 0;
 }
 
 .hide {

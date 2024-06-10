@@ -1,0 +1,46 @@
+<html>
+    <head>
+        <title>Spine Player</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://unpkg.com/@esotericsoftware/spine-player@4.2.*/dist/iife/spine-player.js"></script>
+        <link rel="stylesheet" href="https://unpkg.com/@esotericsoftware/spine-player@4.2.*/dist/spine-player.css">
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+                background-color: rgba(0, 0, 0, 0);
+            }
+        </style>
+    </head>
+    <body>
+        
+        <div id="player-container" style="width: 100%; height: 100vh;"></div>
+
+        <script>
+        new spine.SpinePlayer("player-container", {
+            skeleton: "/static/spine/liuyinga.json",
+            atlas: "/static/spine/liuyinga.atlas",
+            animation: "idle",
+            // showControls: false,
+            alpha: true,
+            backgroundColor: "#00000000",
+            viewport: {
+                x: -205,
+                y: -530,
+                width: 1200,
+                height: 1200,
+            },
+            premultipliedAlpha: false,
+            debugRender: true,
+            success: function (player) {
+              // player.setAnimation("idle", true);
+              window.parent.postMessage({
+                'message': 'spineCompleteLoad'
+              }, "*");
+            }
+        });
+        </script>
+    </body>
+</html>

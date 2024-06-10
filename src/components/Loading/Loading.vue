@@ -12,7 +12,7 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
 import LoadingIcon from './LoadingIcon.vue';
-import loadingAnim from "../../assets/extra/firefly_anim.html"
+import loadingAnim from "../../assets/extra/firefly_icon_anim.html"
 
 // in ms
 

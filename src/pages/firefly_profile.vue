@@ -1,6 +1,6 @@
 <template>
-    <ParallaxContainer :src="'/Introduction_Background_00.jpg'"
-    :contentClass="'darken_only'" :margin="512">
+    <ParallaxContainer :src="'/Introduction_Background_00.png'"
+    :contentClass="'no-dark'" :margin="512">
         <CharacterDescription />
     </ParallaxContainer>
     <ParallaxContainer :src="'/Introduction_Background_01.jpg'"

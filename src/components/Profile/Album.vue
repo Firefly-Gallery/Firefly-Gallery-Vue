@@ -12,6 +12,11 @@
     </div>
 </template>
 
+<script setup lang="ts">
+import Image from '@/components/UI/Image.vue'
+import spine_anim_src from "@/assets/extra/firefly_spine_anim.html"
+</script>
+
 <style scoped>
 .album-wrapper {
     @apply h-auto md:h-full grow w-full md:w-auto
@@ -85,6 +90,3 @@
     }
 }
 </style>
-<script setup lang="ts">
-import Image from '@/components/UI/Image.vue'
-</script>

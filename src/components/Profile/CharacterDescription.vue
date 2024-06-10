@@ -1,6 +1,10 @@
 <template>
-  <ParallaxContainer :src="'/Introduction_AvatarPortrait.png'"
-  :contentClass="'content-nodark'" :margin="256" :imageZ="0">
+  <ParallaxContainer :src="'/Introduction_AvatarPortrait.png'" :extraContent="spineLoaded"
+  :contentClass="'content-nodark'" :margin="300" :imageZ="0" ref="portraitLayer">
+    <template v-slot:content>
+      <iframe ref="spineAnim" class="w-full h-screen"></iframe>
+    </template>
+
     <div class="chardesc-container">
         <div class="Up">
             <div class="char-name-block">
@@ -64,7 +68,8 @@
                       ]
                     })"
                     >立绘</button>
-                    <button class="btn2" @click="openWindow('modelViewer')">模型</button>
+                  <button :disabled="changePortraitBtnDisabled" class="btn2" @click="changePortrait()">切换模式</button>
+                  <button class="btn2" @click="openWindow('modelViewer')">模型</button>
                 </div>
                 <p class="char-description">
                   星核猎手成员，身着机械装甲「萨姆」的少女。<br>
@@ -86,14 +91,65 @@ import avatarPosterA from '@/assets/extra/Introduction_AvatarPoster2.jpg'
 import avatarPosterB from '@/assets/extra/Introduction_AvatarPoster1.jpg'
 import { openWindow } from '@/components/Popup';
 import Image from '@/components/UI/Image.vue'
+import spine_anim_src from '@/assets/extra/firefly_spine_anim.html'
 
 const showOverlay: Ref<boolean> = ref(true);
+const portraitLayer = ref()
+const spineLoaded: Ref<boolean> = ref(false);
+const changePortraitBtnDisabled: Ref<boolean> = ref(true);
+let srcFilled = false
 
-let ModelPreviewer = ref();
+const ModelPreviewer = ref();
+const spineAnim = ref()
 function LoadModelPreview() {
     ModelPreviewer.value.src = "https://firefly-render-three.pages.dev/index.html"
     showOverlay.value = false
 }
+
+const fillSrc = () => {
+  spineAnim.value.src = spine_anim_src;
+  srcFilled = true;
+  changePortraitBtnDisabled.value = true;
+}
+
+
+const receiveMessage = (ev: any) => {
+  console.log(ev.data)
+  if(ev.data.message === 'spineCompleteLoad' && srcFilled) {
+    setTimeout(() => {
+      spineLoaded.value = true;
+      changePortraitBtnDisabled.value = false;
+    }, 100)
+  }
+}
+
+const changePortrait = () => {
+  if(srcFilled) {
+    changePortraitBtnDisabled.value = true;
+    srcFilled = false;
+    spineLoaded.value = false;
+    setTimeout(() => {
+      spineAnim.value.src = "";
+      changePortraitBtnDisabled.value = false;
+    }, 400)
+  } else {
+    fillSrc()
+  }
+
+}
+
+onMounted(() => {
+  if (document.readyState === "complete") {
+    fillSrc()
+  } else {
+    document.addEventListener('readystatechange', () => {
+      if (document.readyState === "complete") {
+        fillSrc()
+      }
+    });
+  };
+  window.addEventListener('message', receiveMessage)
+})
 
 </script>
 
@@ -105,6 +161,10 @@ function LoadModelPreview() {
 </style>
 
 <style scoped>
+iframe {
+  color-scheme: none;
+  @apply w-full h-full;
+}
 .chardesc-container {
     @apply relative w-full h-full z-[10]
     pb-4 px-4 lg:px-10 pb-10
@@ -124,12 +184,9 @@ function LoadModelPreview() {
 .quote {
     @apply relative z-[10] pb-1 md:pb-[15px]
     text-lg md:text-lg lg:text-xl;
-    background: linear-gradient(to right, #9dffdf, #fff1a8);
-    text-shadow: 0px 2px 5px #9f9f9f5a;
+    text-shadow: 0px 2px 5px rgba(0, 0, 0, 0.51);
     color: #ffffff;
     font-weight: 700;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
     /* text-decoration: underline rgba(255, 255, 255, 0.404); */
     font-family: Hanyiwenhei;
 }
