@@ -57,7 +57,7 @@ const close = () => {
 <style lang="stylus" scoped>
 .viewer-bg
   @apply w-full h-full;
-  background: rgba(255,255,255,.1);
+  background: rgba(255,255,255,.2);
   transition background 150ms ease;
   &.bg-black
     background-color #000000e0;

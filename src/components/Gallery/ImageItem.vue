@@ -1,10 +1,10 @@
 <template>
     <div class="image-item-container preloading"
     ref="containerRef"
-    :style="{aspectRatio: useMasonry ? imageData.metadata.width / imageData.metadata.height : 1}"
-    @click="openWindow('imageViewer', {title: imageData.title, src: imageData.imageUrl})">
+    :style="{aspectRatio: useMasonry ? imageData.width / imageData.height : 1}"
+    @click="openWindow('imageViewer', {title: imageData.id, src: imageData.img})">
         <Image ref="imageRef" :src="imgSrc" :class="`image-item ${useMasonry? '':'square'}`"
-               :img-alt="imageData.title" @onload="showImage" />
+               :img-alt="imageData.id" @onload="showImage" />
     </div>
 </template>
 
@@ -14,10 +14,11 @@ import { ref, onMounted, toValue } from 'vue';
 import { openWindow } from '@/components/Popup';
 import Image from '@/components/UI/Image.vue'
 import axios from 'axios';
+import { type Artwork } from '@/assets/data/artworks'
 
 const props = withDefaults(
   defineProps<{
-    imageData: {title:string, metadata:{width:number, height:number}, imageUrl: string[], thumbnailUrl: string[]}
+    imageData: Artwork
     index: number
     useMasonry: boolean
   }>(),
@@ -33,8 +34,8 @@ const containerRef = ref();
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
-      console.log(props.imageData.thumbnailUrl[0])
-      fillSrc(props.imageData.thumbnailUrl[0]);
+      console.log(props.imageData.thumb)
+      fillSrc(props.imageData.thumb);
       observer.unobserve(entry.target);
     }
   });
@@ -52,8 +53,8 @@ onMounted(() => {
   }
 })
 
-const fillSrc = (data: string) => {
-  imgSrc.value = data;
+const fillSrc = (url: string) => {
+  imgSrc.value = url;
 }
 
 
@@ -71,16 +72,16 @@ const showImage = () => {
   max-width: 100%;
   overflow hidden
   outline 4px solid transparent
-  border-radius 0 18px
+  border-radius 18px
   margin-bottom 8px
   @apply shadow-xl cursor-pointer;
   transition scale 250ms ease, outline 250ms ease, aspect-ratio 250ms ease
   @media screen and (min-width: 700px)
-    margin-bottom 15px
+    margin-bottom 20px
 
   &:hover
     scale 1.05
-    box-shadow 0px 0px 0px 0px white
+    box-shadow 0 0 0 0 white
     outline 4px solid white
     z-index 10
     @apply shadow-cyan-500/50;

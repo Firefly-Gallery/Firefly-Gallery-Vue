@@ -16,7 +16,7 @@ const aplayer_options = {
   fixed: true,
   autoplay: true,
   loop: 'one',
-  lrcType: 3,
+  // lrcType: 3,
   audio: [
     {
       name: '使一颗心免于哀伤-完整',

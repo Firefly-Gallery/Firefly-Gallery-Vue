@@ -1,6 +1,6 @@
 <template>
   <ParallaxContainer :src="'/Home_VideoPreview.jpg'"
-  :contentClass="'home-content'">
+  :contentClass="'home-content'" ref="headerRef">
       <HelloWorld></HelloWorld>
   </ParallaxContainer>
 
@@ -9,7 +9,7 @@
                                                                               v-model="useMasonry" checked /><p>Original</p></div>
     <masonry
       :cols="{default: 6, 1440: 5, 1200: 4, 720: 3, 512: 2}"
-      :gutter="{default: '15px', 700: '8px'}"
+      :gutter="{default: '20px', 700: '8px'}"
     >
       <ImageItem v-for="(item, index) in galleryData" :imageData="item" :index="index" :useMasonry="useMasonry" ref="containersRef" ></ImageItem>
     </masonry>
@@ -32,18 +32,41 @@ import { ParallaxContainer } from "@/components/Common";
 import HelloWorld from "@/components/Home/HelloWorld.vue";
 import bg_video from "@/assets/videos/home_bg.webm"
 import ImageItem from "@/components/Gallery/ImageItem.vue";
+import { Artwork } from '@/assets/data/artworks'
+import componentsVar from '@/store/componentsVar'
 
-const galleryData = ref([])
+const galleryData = ref<Artwork[]>([])
 let page_data = galleryData.value.slice(0, 50)
 // Declare a reactive reference to store the input value
 const useMasonry = ref(true);
 
+const headerRef = ref();
+
+
+const fields = ['author', 'img', 'size', 'src', 'thumb', 'time']
+const handleScroll = () => {
+  if(headerRef.value && componentsVar.SetNavbarTransparent) {
+    var bounding = headerRef.value.getContentRect();
+
+    if (bounding.bottom > 0 && bounding.bottom <= (window.innerHeight || document.documentElement.clientHeight)) {
+      componentsVar.SetNavbarTransparent(true);
+    } else {
+      componentsVar.SetNavbarTransparent(false);
+    }
+  }
+}
 onMounted(() => {
+  const scroll = componentsVar.scroll
+  scroll.addEventListener("scroll", handleScroll);
   fetch('/metadata.json')
     .then(response => response.json()) // Parse JSON response
     .then(data => {
-      // Assign fetched data to fetchedData
-      galleryData.value = data;
+      // Assign fetched data to galleryData
+      const artworks: Artwork[] = [];
+      Object.entries(data).forEach(([key, value]) => {
+        artworks.push(new Artwork(key, value))
+      });
+      galleryData.value = artworks.reverse();
     })
     .catch(error => {
       console.error('Error fetching data:', error);
@@ -69,7 +92,7 @@ onMounted(() => {
     @apply text-sm opacity-[0.5];
 }
 .gallery-container {
-  @apply px-2 md:px-16 lg:px-20 py-20 w-full min-h-[200vh];
+  @apply px-2 md:px-16 lg:px-20 pb-20 pt-8 w-full min-h-[200vh];
 }
 .pagination-container {
   @apply w-full flex justify-center mt-10;

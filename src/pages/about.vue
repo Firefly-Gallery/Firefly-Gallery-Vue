@@ -16,7 +16,7 @@
     <div class="content flex flex-col xl:flex-row items-center justify-around gap-10">
       <div class="grow max-w-[820px] flex flex-col min-h-[100vh]">
         <div class="quote">
-          <i><p>欢迎来到萤门的专属图库！这是专属于流萤的迷人世界，我们汇聚了大量精选的图片，展现她的美貌与温柔；<br>
+          <i><p>欢迎来到萤门的专属相册（流萤图站）！这是专属于流萤的迷人世界，我们汇聚了大量精选的图片，展现她的美貌与温柔；<br>
             这也是属于所有萤门信徒的世界，你可以浏览和保存和你喜爱的流萤美图，与大家一起沉浸在流萤小姐的美貌之中。<br>
             愿萤火照亮开拓之旅，愿流萤永远有着幸福的明天！</p>
             <p>萤门！</p></i>
@@ -108,6 +108,11 @@
         <div class="sidebar-card">
           <h2>反馈社区</h2>
           <a class="sidebar-link-share"
+             target="_blank" href="https://github.com/Firefly-Gallery/Firefly-Gallery-Backend/issues">
+            <i class="fa-brands fa-github"></i>
+            Github Issues
+          </a>
+          <a class="sidebar-link-share"
              target="_blank" href="https://pd.qq.com/s/ftb23afp3">
             <i class="fa-solid fa-link"></i>
             QQ频道【流萤小姐后援会🌟(萤门)】
@@ -115,7 +120,7 @@
           <a class="sidebar-link-share"
              target="_blank" href="https://discord.gg/EDTq3eu7">
             <i class="fa-solid fa-link"></i>
-            Discord频道【Firefly Gallery】（墙）
+            <span class="line-through text-gray-600">Discord频道【Firefly Gallery】（墙）（已弃用）</span>
           </a>
           <a class="sidebar-link-share"
              target="_blank" href="https://dby.miyoushe.com/chat/18581/221407">

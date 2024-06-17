@@ -25,7 +25,7 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     },
   },
-  assetsInclude: ["**/*.lrc", "**/*.avif", "**/*.webp", "**/*.html"],
+  assetsInclude: ["**/*.lrc", "**/*.avif", "**/*.webp", "src/**/*.html"],
   build: {
     assetsInlineLimit: 0,
     rollupOptions: {

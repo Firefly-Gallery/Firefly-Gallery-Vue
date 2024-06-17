@@ -91,7 +91,7 @@ import avatarPosterA from '@/assets/extra/Introduction_AvatarPoster2.jpg'
 import avatarPosterB from '@/assets/extra/Introduction_AvatarPoster1.jpg'
 import { openWindow } from '@/components/Popup';
 import Image from '@/components/UI/Image.vue'
-import spine_anim_src from '@/assets/extra/firefly_spine_anim.html'
+import spine_anim_src from '@/assets/extra/firefly_spine_anim.html?url'
 
 const showOverlay: Ref<boolean> = ref(true);
 const portraitLayer = ref()
@@ -157,6 +157,9 @@ onMounted(() => {
 .parallax-container .content-nodark {
     @apply w-full h-full pt-20;
     background: none;
+}
+.rwd {
+  @apply ml-52;
 }
 </style>
 
@@ -234,7 +237,7 @@ table {
     border-radius: 0px;
 }
 table>tr>th, table>*>tr>th {
-    background-color: rgb(40 35 30 / 84%);
+    background-color: rgba(0, 0, 0, 0.37);
     text-align: center;
     color: #e5e5e5;
     @apply px-4 py-2;

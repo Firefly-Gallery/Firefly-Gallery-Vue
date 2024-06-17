@@ -11,7 +11,7 @@
            @load="onImageLoad"
            :src="src" ref="imgBgRef" :style="bgStyle" />
 
-    <div :class="`${contentClass}`">
+    <div ref="parallax_content" :class="`${contentClass}`">
       <slot />
     </div>
   </section>
@@ -22,6 +22,9 @@ import { ref, onMounted, onBeforeUnmount, toRaw, reactive, type Ref, watch } fro
 import componentsVar from '@/store/componentsVar'
 import viewport from '@/store/viewport'
 import Image from '../UI/Image.vue'
+import { gsap } from "gsap";
+
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const isExtraLoaded = ref(false)
 
@@ -31,6 +34,7 @@ interface StyleRef {
 
 let bgValue: HTMLElement | undefined
 const containerRef = ref<HTMLDivElement>()
+const parallax_content = ref<HTMLDivElement>()
 
 const bgRef = ref<HTMLElement>()
 const imgBgRef = ref<typeof Image>()
@@ -75,40 +79,21 @@ function GetBGSize() {
   }
 }
 
+function getContentRect() {
+  if(parallax_content.value) return parallax_content.value.getBoundingClientRect();
+  return null
+}
+
+defineExpose({getContentRect})
+
 function SetRealHeight() {
   const { w, h } = GetViewportSize()
   if (bgValue && containerRef.value) {
-    let realH = (h + props.margin)
+    let realH = (h + props.margin / 8)
     bgStyle.height = realH + 'px'
     let bgSize = GetBGSize()
     let realW = realH / bgSize.h * bgSize.w
     bgStyle.width = Math.max(realW, w) + 'px'
-  }
-}
-const throttle = <T extends (...args: any[]) => void>(
-  func: T,
-  timeout: number
-): ((...args: Parameters<T>) => void) => {
-  let isWaiting: boolean;
-
-  return function (this: any, ...args: Parameters<T>) {
-    if (!isWaiting) {
-      func.apply(this, args);
-      isWaiting = true;
-      setTimeout(() => {
-        isWaiting = false;
-      }, timeout);
-    }
-  };
-};
-
-function UpdatePos() {
-  const { w, h } = GetViewportSize()
-  if (bgValue && containerRef.value) {
-    var bounding = containerRef.value.getBoundingClientRect()
-    let fac = bounding.bottom / h
-    fac = 1 - (fac * 2)
-    bgStyle.transform = `translateY(${(fac * props.margin / 2)}px)`
   }
 }
 
@@ -117,13 +102,15 @@ watch(() => props.extraContent, (newValue, oldValue) => {
   if(newValue) {
     bgValue = bgRef.value;
     SetRealHeight()
-    UpdatePos()
+    // UpdatePos()
+    setScrollAnimation();
   } else {
     if(imgBgRef.value) {
       bgValue = imgBgRef.value.imgRef
+      setScrollAnimation();
     }
     SetRealHeight()
-    UpdatePos()
+    // UpdatePos()
   }
 })
 
@@ -136,16 +123,38 @@ onMounted(() => {
     bgValue = imgBgRef.value.imgRef
   }
 
-  const scroll = componentsVar.scroll
-  UpdatePos()
+  // UpdatePos()
   window.addEventListener('resize', function() {
     SetRealHeight()
   })
-  const f = throttle(UpdatePos, 100)
-  scroll?.addEventListener('scroll', function() {
-    requestAnimationFrame(UpdatePos)
-  })
+  // const f = throttle(UpdatePos, 100)
+  // scroll?.addEventListener('scroll', function() {
+    // requestAnimationFrame(UpdatePos)
+    // ScrollTrigger.refresh( )
+  // })
+  SetRealHeight()
+  setScrollAnimation();
 });
+
+const setScrollAnimation = () => {
+  const scroll = componentsVar.scroll
+  gsap.registerPlugin(ScrollTrigger)
+  gsap.fromTo(bgValue, {
+    translateY: `${-props.margin}px`,
+  }, {
+    translateY: `${props.margin}px`,
+    ease: 'none',
+    // duration: 10,
+    scrollTrigger: {
+      scroller: scroll,
+      trigger: containerRef.value,
+      // start: 'top bottom',
+      // end: 'bottom top',
+      scrub: true,
+    }
+  })
+
+}
 
 </script>
 
@@ -159,6 +168,7 @@ onMounted(() => {
 
 .parallax-container .parallax-bg {
   position: absolute;
+  transform-origin: center center;
   top: 0;
   left: 0;
   object-fit: cover;
