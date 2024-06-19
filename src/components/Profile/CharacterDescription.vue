@@ -8,9 +8,9 @@
     <div class="chardesc-container">
         <div class="Up">
             <div class="char-name-block">
-              <Image src="/Introduction_FireflyIconWhite.svg" class="h-[200px] drop-shadow-md" />
+              <Image src="/Introduction_FireflyIconWhite.svg" class="h-[200px] min-w-[350px] drop-shadow-md" />
                 <div class="icons">
-                    <Image src="/Introduction_FiveStarsIcon.svg" class="h-7 drop-shadow-md" :otherFormats="[]" />
+                    <Image src="/Introduction_FiveStarsIcon.svg" class="h-7 min-w-[110px] drop-shadow-md" :otherFormats="[]" />
                     <Image src="/Introduction_FireIcon.png" class="w-10 h-10 drop-shadow-md" />
                     <Image src="/Introduction_DestinyIcon.png" class="w-10 h-10 drop-shadow-md" />
                 </div>
@@ -56,20 +56,26 @@
             </tbody>
             </table>
             <div class="bottom-right">
-                <div class="join">
-                    <button class="btn2">wiki</button>
+                <div class="flex gap-2">
+                    <a target="_blank"
+                       href="https://bbs.mihoyo.com/sr/wiki/content/2674/detail?bbs_presentation_style=no_header"
+                       class="btn2">
+                      <LinkIcon class="h-6 w-6 text-gray-500" />
+                    </a>
                     <button class="btn2" 
                     @click="openWindow('imageViewer', {
                       title: '立绘',
-                      'src': [
-                        largeAvatarPortrait,
-                        avatarPosterA,
-                        avatarPosterB
-                      ]
-                    })"
-                    >立绘</button>
-                  <button :disabled="changePortraitBtnDisabled" class="btn2" @click="changePortrait()">切换模式</button>
-                  <button class="btn2" @click="openWindow('modelViewer')">模型</button>
+                      'src': [largeAvatarPortrait, avatarPosterA, avatarPosterB]
+                    })">
+                      <ArrowsPointingOutIcon class="h-6 w-6 text-white" />
+                    </button>
+                  <button :disabled="changePortraitBtnDisabled" class="btn2" @click="changePortrait()">
+                    <PhotoIcon v-if="spineIframeSrcFilled" class="h-6 w-6 text-white" />
+                    <SparklesIcon v-else class="h-6 w-6 text-white" />
+                  </button>
+                  <button class="btn2" @click="openWindow('modelViewer')">
+                    <CubeIcon class="h-6 w-6 text-white" />
+                  </button>
                 </div>
                 <p class="char-description">
                   星核猎手成员，身着机械装甲「萨姆」的少女。<br>
@@ -92,30 +98,38 @@ import avatarPosterB from '@/assets/extra/Introduction_AvatarPoster1.jpg'
 import { openWindow } from '@/components/Popup';
 import Image from '@/components/UI/Image.vue'
 import spine_anim_src from '@/assets/extra/firefly_spine_anim.html?url'
+import {
+  CubeIcon,
+  PhotoIcon,
+  SparklesIcon,
+  ArrowsPointingOutIcon,
+  LinkIcon
+} from "@heroicons/vue/24/outline";
 
-const showOverlay: Ref<boolean> = ref(true);
+
+// const showOverlay: Ref<boolean> = ref(true);
 const portraitLayer = ref()
 const spineLoaded: Ref<boolean> = ref(false);
 const changePortraitBtnDisabled: Ref<boolean> = ref(true);
-let srcFilled = false
+let spineIframeSrcFilled = false
 
-const ModelPreviewer = ref();
+// const ModelPreviewer = ref();
 const spineAnim = ref()
-function LoadModelPreview() {
-    ModelPreviewer.value.src = "https://firefly-render-three.pages.dev/index.html"
-    showOverlay.value = false
-}
+// function LoadModelPreview() {
+//     ModelPreviewer.value.src = "https://firefly-render-three.pages.dev/index.html"
+//     showOverlay.value = false
+// }
 
 const fillSrc = () => {
   spineAnim.value.src = spine_anim_src;
-  srcFilled = true;
+  spineIframeSrcFilled = true;
   changePortraitBtnDisabled.value = true;
 }
 
 
 const receiveMessage = (ev: any) => {
   console.log(ev.data)
-  if(ev.data.message === 'spineCompleteLoad' && srcFilled) {
+  if(ev.data.message === 'spineCompleteLoad' && spineIframeSrcFilled) {
     setTimeout(() => {
       spineLoaded.value = true;
       changePortraitBtnDisabled.value = false;
@@ -124,9 +138,9 @@ const receiveMessage = (ev: any) => {
 }
 
 const changePortrait = () => {
-  if(srcFilled) {
+  if(spineIframeSrcFilled) {
     changePortraitBtnDisabled.value = true;
-    srcFilled = false;
+    spineIframeSrcFilled = false;
     spineLoaded.value = false;
     setTimeout(() => {
       spineAnim.value.src = "";
@@ -147,13 +161,13 @@ onMounted(() => {
         fillSrc()
       }
     });
-  };
+  }
   window.addEventListener('message', receiveMessage)
 })
 
 </script>
 
-<style>
+<style lang="postcss">
 .parallax-container .content-nodark {
     @apply w-full h-full pt-20;
     background: none;
@@ -163,23 +177,21 @@ onMounted(() => {
 }
 </style>
 
-<style scoped>
+<style scoped lang="postcss">
 iframe {
   color-scheme: none;
   @apply w-full h-full;
 }
 .chardesc-container {
     @apply relative w-full h-full z-[10]
-    pb-4 px-4 lg:px-10 pb-10
+    pb-4 px-4 lg:px-10
     flex-grow flex flex-col gap-2 lg:gap-5 items-stretch text-white;
 }
 .Up {
     @apply flex-grow flex flex-col md:flex-row gap-2 md:gap-5 items-start justify-center h-auto md:h-[100%];
 }
 .top-right {
-    @apply w-full md:w-auto p-2 ;
-    /* border-2 border-black ;
-    background: #0000004c; */
+    @apply w-full md:w-auto p-2;
 }
 .icons {
     @apply flex flex-row items-center h-8 ml-2 my-5 gap-3;
@@ -187,11 +199,10 @@ iframe {
 .quote {
     @apply relative z-[10] pb-1 md:pb-[15px]
     text-lg md:text-lg lg:text-xl;
-    text-shadow: 0px 2px 5px rgba(0, 0, 0, 0.51);
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.51);
     color: #ffffff;
     font-weight: 700;
-    /* text-decoration: underline rgba(255, 255, 255, 0.404); */
-    font-family: Hanyiwenhei;
+    font-family: Hanyiwenhei, Arial, sans-serif;
 }
 .quote span {
     @apply text-2xl;
@@ -211,19 +222,19 @@ iframe {
 }
 h2.char-name {
     @apply text-8xl;
-    text-shadow: 0px 3px 15px #ffffff5a;
-    font-family: Hanyiwenhei;
+    text-shadow: 0 3px 15px #ffffff5a;
+    font-family: Hanyiwenhei, Arial, sans-serif;
 }
 p.char-name-sub {
     @apply text-xl pt-2 pl-3;
-    text-shadow: 0px 3px 15px #ffffff5a;
-    font-family: Star Rail Neue;
+    text-shadow: 0 3px 15px #ffffff5a;
+    font-family: Hanyiwenhei, Arial, sans-serif;
 }
 .char-description {
     @apply p-5 bg-[#00000050] border-2 border-black w-full lg:w-auto;
 }
 .btn2 {
-    @apply btn btn-ghost grow btn-sm lg:btn-md lg:w-auto lg:px-8 join-item;
+    @apply btn btn-ghost grow btn-sm lg:btn-md lg:w-auto lg:px-5;
 }
 .bottom-right {
     @apply flex flex-col-reverse lg:flex-col w-full lg:w-auto items-stretch lg:items-end gap-3;
@@ -234,7 +245,7 @@ table {
     border: 2px solid #000000;
     color: #fff;
     min-width: 300px;
-    border-radius: 0px;
+    border-radius: 0;
 }
 table>tr>th, table>*>tr>th {
     background-color: rgba(0, 0, 0, 0.37);

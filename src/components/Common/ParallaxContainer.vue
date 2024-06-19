@@ -9,7 +9,7 @@
     <Image
            :class="{'parallax-bg': true, 'hide': isExtraLoaded}"
            @load="onImageLoad"
-           :src="src" ref="imgBgRef" :style="bgStyle" />
+           :src="src? src: ''" ref="imgBgRef" :style="bgStyle" />
 
     <div ref="parallax_content" :class="`${contentClass}`">
       <slot />
@@ -45,6 +45,7 @@ const props = defineProps({
   src: { type: String },
   contentClass: { type: String },
   extraContent: { type: Boolean, default: false },
+  static: { type: Boolean, default: false },
   margin: { type: Number, default: 256 },
   imageZ: { type: Number, default: -1 }
 })
@@ -127,29 +128,26 @@ onMounted(() => {
   window.addEventListener('resize', function() {
     SetRealHeight()
   })
-  // const f = throttle(UpdatePos, 100)
-  // scroll?.addEventListener('scroll', function() {
-    // requestAnimationFrame(UpdatePos)
-    // ScrollTrigger.refresh( )
-  // })
   SetRealHeight()
   setScrollAnimation();
 });
 
 const setScrollAnimation = () => {
+  if(!bgValue) {return;}
+  let start = -props.margin;
+  let end = props.margin;
+  if(props.static) {return;}
   const scroll = componentsVar.scroll
   gsap.registerPlugin(ScrollTrigger)
   gsap.fromTo(bgValue, {
-    translateY: `${-props.margin}px`,
+    translateY: `${start}px`,
   }, {
-    translateY: `${props.margin}px`,
+    translateY: `${end}px`,
     ease: 'none',
     // duration: 10,
     scrollTrigger: {
       scroller: scroll,
       trigger: containerRef.value,
-      // start: 'top bottom',
-      // end: 'bottom top',
       scrub: true,
     }
   })
@@ -160,7 +158,7 @@ const setScrollAnimation = () => {
 
 <style>
 .parallax-container {
-  @apply relative overflow-hidden
+  @apply overflow-hidden relative
   w-screen h-screen;
   width: 100svw;
   height: 100svh;
@@ -174,6 +172,7 @@ const setScrollAnimation = () => {
   object-fit: cover;
   overflow: hidden;
   transition: opacity 0.4s;
+  max-width: unset;
 }
 
 div.parallax-bg {

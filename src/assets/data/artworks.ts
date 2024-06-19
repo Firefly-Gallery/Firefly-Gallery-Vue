@@ -19,6 +19,7 @@ export class Artwork {
     this.width = data[2][0];
     this.height = data[2][1];
     this.src = data[3];
+    this.src = formatSrcURL(this.src);
     this.thumb = GetThumbnailURL(data[4]);
     this.time = data[5];
   }
@@ -31,4 +32,8 @@ export function GetThumbnailURL(thumb:string):string {
 }
 export function GetImageURL(path:string):string {
   return images_cdn + "/" + path
+}
+
+export function formatSrcURL(src:string):string {
+  return src.replace("pid://", "https://pixiv.net/artworks/")
 }

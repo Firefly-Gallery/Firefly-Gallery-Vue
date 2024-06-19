@@ -1,4 +1,3 @@
-
 <template>
     <div id="loading" ref="loading_anim">
       <iframe ref="iframeRef" :src="loadingAnim"></iframe>
@@ -44,6 +43,7 @@ const outTransition = () => {
   loading_icon.value?.classList.add("loading_out");
   setTimeout(() => {
     loading_anim.value?.classList.add("loading_out");
+    if('onLoadingEnd' in window) window.onLoadingEnd();
   }, 750);
 }
 defineExpose({inTransition, outTransition})

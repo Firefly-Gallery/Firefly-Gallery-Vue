@@ -6,14 +6,13 @@
     </template>
     <template v-slot:top_right>
       <a class="download-link" @click="downloadImage">
-        <DocumentArrowDownIcon class="w-9 h-9"/>
       </a>
     </template>
 
     <template v-slot:middle>
       <div class="image-switch-container">
         <div id="switch-left"
-             :class="`image-switch ${imageViewerData.currentPage == 0 || imageViewerData.src.length <= 1? 'disable':''}`"
+             :class="`image-switch ${imageViewerData.currentPage == 0 || pageCount <= 1? 'disable':''}`"
         @click="imageViewerData.currentPage -= 1">
           <svg width="32" height="57" viewBox="0 0 32 57" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M2.5 54L28.622 29.3566C28.8283 29.1619 28.8316 28.8347 28.629 28.636L2.5 3" stroke="white" stroke-width="5" stroke-linecap="round"/>
@@ -21,7 +20,7 @@
           </svg>
         </div>
         <div id="switch-right"
-             :class="`image-switch ${imageViewerData.currentPage >= imageViewerData.src.length-1? 'disable':''}`"
+             :class="`image-switch ${imageViewerData.currentPage >= pageCount-1? 'disable':''}`"
         @click="imageViewerData.currentPage += 1">
           <svg width="32" height="57" viewBox="0 0 32 57" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M2.5 54L28.622 29.3566C28.8283 29.1619 28.8316 28.8347 28.629 28.636L2.5 3" stroke="white" stroke-width="5" stroke-linecap="round"/>
@@ -29,8 +28,32 @@
           </svg>
         </div>
       </div>
-    </template>
+      <div class="image-info-container">
+        <div :class="`image-info ${showDetails? 'detail':''}`" ref="infoContainer">
+          <p v-if="showDetails" class="m-3 mt-4">
+            画师：@{{ imageAuthor }}
+          </p>
+          <p v-if="showDetails" class="m-3">
+            原链接：<a class="underline text-secondary" target="_blank" :href="imageLink">{{ imageLink }}</a>
+          </p>
+          <div class="info-bottom">
+            <p class="page-indicator">
+              {{imageViewerData.currentPage+1}} / {{pageCount}}
+            </p>
+            <div class="flex flex-nowrap">
+              <a class="btn btn-circle btn-sm btn-ghost" @click="downloadImage">
+                <ArrowDownTrayIcon class="h-5 w-5" />
+              </a>
+              <button class="btn btn-circle btn-sm btn-ghost" :disabled="isAnimating"
+                      @click="toggleDetails" v-if="imageViewerData.artwork">
+                <EllipsisVerticalIcon class="h-6 w-6"/>
+              </button>
+            </div>
 
+          </div>
+        </div>
+      </div>
+    </template>
 
     <div class="viewer-container" ref="imageContainerRef">
       <PinchScrollZoom
@@ -47,7 +70,7 @@
         :max-scale="6"
         :class="`zoomer ${loaded? '':'disable'}`"
       >
-        <img :src="currentImageUrl"
+        <img :src="currentImageUrl" alt="无法加载图片..."
         @load="loaded=true">
       </PinchScrollZoom>
     </div>
@@ -57,21 +80,76 @@
 <script lang="ts" setup>
 import './PinchScrollZoom/psz.css';
 import Viewer from '../Common/Viewer.vue';
-import { ref, onMounted, reactive, computed, watch } from 'vue'
-import { PhotoIcon, DocumentArrowDownIcon } from "@heroicons/vue/24/outline";
+import { ref, onMounted, reactive, computed, watch, nextTick } from 'vue'
+import {
+  PhotoIcon,
+  ArrowDownTrayIcon,
+  EllipsisVerticalIcon
+} from "@heroicons/vue/24/outline";
 import { imageViewerData } from './'
-import { saveAs } from 'file-saver'
 import PinchScrollZoom, {
   type PinchScrollZoomEmitData,
   type PinchScrollZoomExposed
 } from './PinchScrollZoom';
+import { gsap } from 'gsap';
+
+const infoContainer = ref()
+
+const toggleDetails = () => {
+  if(!infoContainer.value) return;
+  const container = infoContainer.value;
+  const previousWidth = container.clientWidth;
+  const previousHeight = container.clientHeight;
+  showDetails.value = !showDetails.value;
+
+  nextTick(() => {
+    let newWidth = container.clientWidth;
+    const newHeight = container.clientHeight;
+    let ease = "back.out(1)"
+    if(!showDetails.value) {
+      ease = "power2.out"
+    }
+    isAnimating.value = true
+    gsap.fromTo(container, {
+        width: previousWidth,
+        height: previousHeight
+      }, {
+        width: newWidth,
+        height: newHeight,
+        duration: 0.4,
+        ease: ease,
+        onComplete: () => {
+          isAnimating.value = false
+          gsap.killTweensOf(container)
+          resetStyles(container)
+        }
+      }
+    );
+  });
+}
+const resetStyles = (container:HTMLElement) => {
+  container.style.transform = "";
+  container.style.translate = "";
+  container.style.rotate = "";
+  container.style.scale = "";
+  container.style.opacity = "";
+  container.style.transition = "";
+  container.style.width = "";
+  container.style.height = "";
+};
 
 const zoomer = ref<PinchScrollZoomExposed>();
 
 const scrWidth = ref<number>(1920);
 const scrHeight = ref<number>(960);
+const pageCount = ref<number>(0);
 
 const hideBars = ref<boolean>(false);
+const showDetails = ref<boolean>(false);
+const isAnimating = ref<boolean>(false);
+
+const imageAuthor = ref<string>("Unset")
+const imageLink = ref<string>("Unset")
 
 const UpdateScreenSize = () => {
   scrWidth.value = window.innerWidth;
@@ -109,22 +187,42 @@ function onEvent(name: string, e: PinchScrollZoomEmitData): void {
 const loaded = ref(false);
 const currentImageUrl = computed(() => {
   // Retrieve the image URL based on the current index value
+  if(!imageViewerData.src) return "";
   return imageViewerData.src[imageViewerData.currentPage];
 });
 
-watch(imageViewerData, (newValue, oldValue) => {
-  console.log("changed")
+// viewer每次事件初始化入口
+watch(imageViewerData, () => {
+  if(imageViewerData.artwork) {
+    imageViewerData.src = imageViewerData.artwork.img;
+    imageAuthor.value = imageViewerData.artwork.author;
+    imageLink.value = imageViewerData.artwork.src;
+    imageViewerData.title = imageViewerData.artwork.id
+  }
+  if(showDetails.value) {toggleDetails()}
+  if(!imageViewerData.src) {return}
+  pageCount.value = imageViewerData.src.length;
   loaded.value = false;
 });
 
-function getFileExtension(url: string) {
-  const parts = url.split('.');
-  if (parts.length > 0) {
-      const extension = parts.pop()!.toLowerCase();
-      return extension;
-  } else {
-      console.error("Invalid URL format");
-  }
+const saveAsBlob = (imageUrl:string, filename:string) => {
+  fetch(imageUrl, {
+    method: "GET",
+  }).then(response => {
+      console.log(response)
+      return response.blob()
+    })
+    .then(blob => {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename; // Set the desired file name
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    })
+    .catch(err => console.error('Failed to download image', err));
 }
 
 const props = withDefaults(
@@ -141,7 +239,10 @@ defineProps<{
 const imageContainerRef = ref();
 
 const downloadImage = () => {
-  saveAs(imageViewerData.src[0], `${imageViewerData.title}.${getFileExtension(imageViewerData.src[0])}`);
+  if(!imageViewerData.src) return "";
+  const imageSrc = imageViewerData.src[imageViewerData.currentPage]
+  const imageName = imageSrc.substring(imageSrc.lastIndexOf('/')+1)
+  saveAsBlob(imageSrc, imageName);
 }
 
 const emits = defineEmits<{
@@ -185,7 +286,7 @@ a.download-link
   }
   &::-webkit-scrollbar-track {
     background: transparent;
-    margin: 0px 0;
+    margin: 0 0;
   }
 
   &::-webkit-scrollbar-thumb {
@@ -233,6 +334,35 @@ a.download-link
         fill #a26b00
     *
       transition all 350ms cubic-bezier(0, 0, 0, 1)
+
+.image-info-container
+  @apply absolute bottom-0 left-0 right-0 flex justify-center items-center;
+  z-index 100
+  .image-info
+    @apply m-3 bg-base-200/75 rounded-3xl p-2 flex flex-col justify-end items-stretch;
+    backdrop-filter blur(16px)
+    box-shadow 0 7px 17px 0 #000000c2
+    pointer-events all
+    overflow hidden
+    >p
+      overflow hidden
+      white-space nowrap
+      //text-overflow ellipsis
+      transition all 250ms ease;
+    .info-bottom
+      @apply flex justify-between items-center gap-2
+      .page-indicator
+        overflow none
+        white-space nowrap
+        @apply px-4 pb-1;
+
+    &.detail
+      .info-bottom
+        @apply mt-2;
+        .page-indicator
+          @apply px-3;
+
+
 
 .disable
   pointer-events none!important

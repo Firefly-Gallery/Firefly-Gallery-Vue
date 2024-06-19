@@ -1,8 +1,9 @@
 <template>
-  <picture>
+  <picture :class="{'skeleton': !loaded}">
     <source v-for="(img_url, index) in image_urls" :key="index"
             :type="`image/${otherFormats[index]}`" :srcset="img_url">
-    <img :src="realSrc" ref="imgRef" v-bind="$attrs" />
+    <img :src="realSrc" ref="imgRef" :draggable="draggable"
+         :class="{'opacity-0': !loaded}" v-bind="$attrs" />
   </picture>
 </template>
 
@@ -10,6 +11,7 @@
 import { computed, defineEmits, onMounted, ref, watch } from 'vue'
 
 const imgRef = ref<HTMLElement>();
+const loaded = ref(false);
 
 function getFileName(url: string) {
   const parts = url.split('.');
@@ -26,10 +28,12 @@ const prop = withDefaults(
   defineProps<{
     src: string;
     otherFormats?: string[];
+    draggable?: boolean;
   }>(),
   {
     otherFormats: () => ['avif', 'webp'],
-    imgAlt: "图片加载失败"
+    imgAlt: "图片加载失败",
+    draggable: false
   }
 )
 
@@ -95,6 +99,7 @@ const updateSrc = (src: string) => {
 
   if(imgRef.value) {
     imgRef.value.onload = () => {
+      loaded.value = true;
       emit('onload')
     }
   }
@@ -109,5 +114,7 @@ defineExpose({imgRef})
 </script>
 
 <style scoped lang="stylus">
+picture, img
+  transition all 250ms ease;
 
 </style>

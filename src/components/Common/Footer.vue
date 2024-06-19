@@ -25,8 +25,9 @@
 <style scoped>
 footer {
   @apply w-full h-auto flex flex-row justify-center items-center py-3;
-  background-color: #00000099;
+  background-color: #000000;
   box-shadow: #00000040 0 -2px 10px 1px;
+  z-index: 20;
 }
 .footer-item {
   @apply flex flex-col justify-center items-center
@@ -44,7 +45,7 @@ footer {
 .title {
   @apply text-2xl font-bold;
   background: linear-gradient(to right, #ebe1a3, #94e1c8);
-  text-shadow: 0px 3px 15px #ffffff3a;
+  text-shadow: 0 3px 15px #ffffff3a;
   color: #ffffffc0;
   background-clip: text;
   -webkit-background-clip: text;
@@ -53,7 +54,8 @@ footer {
 </style>
 <style>
 .title-container .site-icon {
-  @apply w-32 h-32;
+  @apply h-32;
+  filter: drop-shadow(0 0 4px white);
   max-width: none;
 }
 </style>

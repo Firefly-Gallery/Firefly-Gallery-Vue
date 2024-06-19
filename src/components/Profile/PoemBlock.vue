@@ -46,7 +46,7 @@ const gradientColors = chroma
     text-[6vw] md:text-2xl lg:text-4xl xl:text-5xl
     font-bold;
     /* font-family: sans-serif; */
-    text-shadow: 0px 3px 15px #ffffff3a;
+    text-shadow: 0 3px 15px #ffffff3a;
     color: #ffffffc0;
 }
 .title-poem p {

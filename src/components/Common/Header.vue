@@ -99,7 +99,7 @@ const handleScroll = () => {
   if(scroll) {
 
     var wScroll = scroll.scrollTop;
-    
+
     if (wScroll <= headerHeight) {
       coverRef.value.style.transform = 'translate(0px, ' + wScroll/2  + 'px)';
       titleRef.value.style.transform = `translate(0px, ${-wScroll/10}px)`;

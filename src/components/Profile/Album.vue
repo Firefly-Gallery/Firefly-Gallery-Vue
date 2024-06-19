@@ -14,7 +14,6 @@
 
 <script setup lang="ts">
 import Image from '@/components/UI/Image.vue'
-import spine_anim_src from "@/assets/extra/firefly_spine_anim.html"
 </script>
 
 <style scoped>
@@ -35,7 +34,7 @@ import spine_anim_src from "@/assets/extra/firefly_spine_anim.html"
 .album-cover {
     aspect-ratio: 1;
     width: 100%;
-    box-shadow: 0px 0px 10px 0px #243b3981;
+    box-shadow: 0 0 10px 0 #243b3981;
     position: relative;
     z-index: 1;
     outline: transparent solid 3px;
@@ -50,7 +49,7 @@ import spine_anim_src from "@/assets/extra/firefly_spine_anim.html"
     height: 100%;
     background: radial-gradient(circle at -100%-100%, #ffffff38 37%, #ffffff54 80%, #fff0 81%) no-repeat;
     border: 2px solid #ffffff99;
-    box-shadow: inset 0px 0px 3px 0px #ffffff;
+    box-shadow: inset 0 0 3px 0 #ffffff;
     z-index: 2;
 }
 .disc {
@@ -61,7 +60,7 @@ import spine_anim_src from "@/assets/extra/firefly_spine_anim.html"
     height: 86%;
 
     border-radius: 999px;;
-    box-shadow: 0px 0px 10px 0px #243b3981;
+    box-shadow: 0 0 10px 0 #243b3981;
     outline: transparent solid 3px;
 
     z-index: 0;

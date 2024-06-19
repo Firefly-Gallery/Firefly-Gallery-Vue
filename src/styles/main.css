@@ -30,6 +30,7 @@
   --avatar-background: #505050;
   --avatar-image-clip-path-bilibiliwiki-only: circle(46%);
   --popup-ease: cubic-bezier(0.39, 1.22, 0.6, 1);
+  /*--hover: #3dffd2;*/
 }
 
 @font-face {
@@ -65,11 +66,11 @@ html, body, #app {
   overflow: hidden;
 }
 
-[data-theme='dark'] {
-  --hover: #80fff2;
+[data-theme='dark'] * {
+  --hover: #73ffc5;
 }
 [data-theme='light'] {
-  --hover: #2b948c;
+  --hover: #00ba78;
 }
 
 a:hover, .theme-toggle {

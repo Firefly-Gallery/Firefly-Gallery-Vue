@@ -9,20 +9,33 @@ export default {
   },
   plugins: [require("daisyui")],
   daisyui: {
-    themes: ["dark", "light",
+    themes: [
       {
-        dark_firefly: {
+        "dark": {
           "primary": "#6ee7b7",
           "secondary": "#fde047",
           "accent": "#76ABAE",
-          "neutral": "#1f2937",
-          "base-100": "#212625",
-          "info": "#a3e635",
-          "success": "#22c55e",
-          "warning": "#fb923c",
-          "error": "#ef4444",
-        },
+          "neutral": "#0e0e0e",
+          "base-100": "rgb(28,28,28)",
+          "info": "#3de36c",
+          "success": "#4cc679",
+          "warning": "#ffb174",
+          "error": "#ef6161",
+        }
       },
+      {
+        "light": {
+          "primary": "#6ee7b7",
+          "secondary": "#fde047",
+          "accent": "#76ABAE",
+          "neutral": "#cacaca",
+          "base-100": "rgb(255,255,255)",
+          "info": "#3de36c",
+          "success": "#4cc679",
+          "warning": "#ffb174",
+          "error": "#ef6161",
+        },
+      }
     ],
   },
 }

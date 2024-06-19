@@ -45,12 +45,13 @@ const props = withDefaults(
 
 <style lang="stylus" scoped>
 .popup
+  @apply select-none;
   position absolute
   top 0
   right 0
   bottom 0
   left 0
   overflow hidden
-  backdrop-filter blur(10px)
+  backdrop-filter blur(16px)
   
 </style>

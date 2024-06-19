@@ -1,8 +1,8 @@
 <template>
-    <div class="image-item-container preloading"
+    <div :class="`image-item-container skeleton`"
     ref="containerRef"
     :style="{aspectRatio: useMasonry ? imageData.width / imageData.height : 1}"
-    @click="openWindow('imageViewer', {title: imageData.id, src: imageData.img})">
+    @click="openWindow('imageViewer', {artwork: imageData})">
         <Image ref="imageRef" :src="imgSrc" :class="`image-item ${useMasonry? '':'square'}`"
                :img-alt="imageData.id" @onload="showImage" />
     </div>
@@ -13,8 +13,8 @@
 import { ref, onMounted, toValue } from 'vue';
 import { openWindow } from '@/components/Popup';
 import Image from '@/components/UI/Image.vue'
-import axios from 'axios';
 import { type Artwork } from '@/assets/data/artworks'
+import componentsVar from '@/store/componentsVar'
 
 const props = withDefaults(
   defineProps<{
@@ -27,69 +27,104 @@ const props = withDefaults(
   }
 )
 
+const emit = defineEmits(['mounted'])
+
 const imageRef = ref();
 const imgSrc = ref("")
 const containerRef = ref();
 
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      console.log(props.imageData.thumb)
-      fillSrc(props.imageData.thumb);
-      observer.unobserve(entry.target);
-    }
-  });
-});
+let srcFilled = false;
+
+let container:any;
 
 onMounted(() => {
-  if (document.readyState === "complete") {
-      observer.observe(containerRef.value);
-  } else {
-    document.addEventListener('readystatechange', () => {
-      if (document.readyState === "complete") {
-        observer.observe(containerRef.value);
-      }
-    });
-  }
+  const scroll = componentsVar.scroll
+  if (!scroll || !containerRef.value) {return}
+  container = containerRef.value;
+
+  srcFilled = false;
+  emit('mounted', container)
 })
 
-const fillSrc = (url: string) => {
-  imgSrc.value = url;
+const fillSrc = () => {
+  srcFilled = true;
+  console.log(props.imageData.thumb)
+  imgSrc.value = props.imageData.thumb;
 }
 
+const handleEffects = (e:any) => {
+  const scroll = componentsVar.scroll
+  if (!scroll || !container) {return}
+
+  setTimeout(function(){
+    const x = e.pageX - container.offsetLeft;
+    const y = e.pageY - container.offsetTop - (window.innerHeight - scroll?.scrollTop);
+    const ox = (container.offsetWidth / 2 - x);
+    const oy = (container.offsetHeight / 2 - y);
+    container.style.setProperty('--ox', -ox + "px")
+    container.style.setProperty('--oy', -oy + "px")
+    container.style.setProperty('--mx', x + "px")
+    container.style.setProperty('--my', y + "px")
+  }, 100)
+
+}
 
 const showImage = () => {
-  if (containerRef.value) {
-    containerRef.value.classList.remove("preloading");
+  if (container) {
+    container.onmousemove = handleEffects;
+    container.classList.remove("skeleton");
   }
 }
 
+const getContainer = () => {
+  return containerRef.value;
+}
+const isFading = ref(false);
+const setFading = (f:boolean) => {isFading.value = f}
+
+defineExpose({getContainer, srcFilled, fillSrc, isFading, setFading})
 </script>
 
 
 <style lang="stylus" scoped>
 .image-item-container
-  max-width: 100%;
-  overflow hidden
-  outline 4px solid transparent
+  @apply relative max-w-full overflow-hidden shadow-xl cursor-pointer;
   border-radius 18px
-  margin-bottom 8px
-  @apply shadow-xl cursor-pointer;
-  transition scale 250ms ease, outline 250ms ease, aspect-ratio 250ms ease
+  z-index: 5
+  outline 0 solid transparent
+  margin-bottom 8px;
+  transform translate(0, 0)
+  transform-origin center center
+  transition scale 250ms ease, outline 250ms ease, aspect-ratio 250ms ease, opacity 250ms ease, transform 100ms linear, box-shadow 250ms ease
   @media screen and (min-width: 700px)
     margin-bottom 20px
 
   &:hover
-    scale 1.05
-    box-shadow 0 0 0 0 white
-    outline 4px solid white
-    z-index 10
     @apply shadow-cyan-500/50;
+    scale 1.12
+    z-index 20
+    outline 5px solid #80ffce
+    transform translate(calc(var(--ox) / 40), calc(var(--oy) / 45))
+    &:before
+      opacity 0.4
 
   &:active
-    scale 1.01
-    outline 4px solid white
-    z-index 10
+    scale 1.10
+    z-index 20
+    opacity 0.7
+
+  &:before
+    content ""
+    position absolute
+    top var(--my)
+    left var(--mx)
+    transform translate(-50%, -50%)
+    background radial-gradient(rgba(255, 255, 255, 0.5), transparent, transparent)
+    width 700px
+    height 700px
+    opacity 0
+    transition opacity 250ms ease;
+    pointer-events none
 
 </style>
 <style lang="stylus">
@@ -103,7 +138,7 @@ const showImage = () => {
     width 100%
     height 100%
 
-&.preloading
+&.skeleton
   @apply bg-base-300;
   .image-item
     opacity 0

@@ -3,12 +3,15 @@
   <!-- 导航栏 -->
   <Navbar ref="navbarRef" />
   <!-- 页面视图 -->
-  <div class="page-main" ref="scroll">
+<!--  <div class="page-main" ref="scroll">-->
+  <custom-scrollbar :class="'scrollContainer'" ref="scroll"
+                    :autoHideDelay="1000" :thumbWidth="10">
     <Header v-if="!(GetPage($route.name)?.noHeader)" ref="headerRef"
     :title="GetPage($route.name)?.displayName" :subTitle="$route.name" />
     <router-view />
     <Footer ref="footerRef" />
-  </div>
+  </custom-scrollbar>
+<!--  </div>-->
   <!-- 加载 -->
   <Loading ref="loadingRef" @check-loading="CheckLoadingState()" />
   <!-- 弹窗组件 -->
@@ -39,7 +42,8 @@ const router = useRouter();
 
 const loadingRef = ref();
 const navbarRef = ref();
-const scroll = ref<HTMLDivElement>();
+const scroll = ref<{ scrollEl: HTMLDivElement; }>();
+// const scroll = ref<HTMLDivElement>();
 
 const headerRef = ref();
 const footerRef = ref();
@@ -60,10 +64,12 @@ const CheckLoadingState = () => {
 
       // 回顶
       if(scroll.value) {
-        scroll.value.scrollTop = 0;
+        scroll.value.scrollEl.scrollTop = 0;
+        // scroll.value.scrollTop = 0;
         // 由于App.vue的onMounted再子组件之后，头部（依赖于页面滚动）初始化需要后置
         if(headerRef.value) {
-          headerRef.value.Init(scroll.value);
+          headerRef.value.Init(scroll.value.scrollEl);
+          // headerRef.value.Init(scroll.value);
         }
       }
 
@@ -84,8 +90,10 @@ onMounted(() => {
     setting.scrollbar_damping = 0.006;
   }
   if(scroll.value) {
-    componentsVar.scroll = scroll.value;
-    headerRef.value.Init(scroll.value);
+    // componentsVar.scroll = scroll.value;
+    // headerRef.value.Init(scroll.value);
+    componentsVar.scroll = scroll.value.scrollEl;
+    headerRef.value.Init(scroll.value.scrollEl);
   }
 
   CheckLoadingState();
@@ -116,6 +124,22 @@ defineExpose({CheckLoadingState});
 
 </style>
 <style lang="stylus">
+.scrollContainer
+  @apply w-screen h-screen overflow-x-hidden overflow-y-scroll;
+  height 100svh
+//perspective 1px
+//transform-style preserve-3d
+//.scrollbar__content
+//  position relative
+//  transform-style inherit
+.scrollbar__thumbPlaceholder
+  z-index 20
+  .scrollbar__thumb
+    background-color inherit!important
+    background linear-gradient(to bottom, #68ffba50, #71efff50)
+  &:not(.scrollbar__thumbPlaceholder--scrolling, :hover)
+    pointer-events none
+    opacity 0!important
 .page-main
   @apply overflow-x-hidden overflow-y-auto h-screen;
   transform-style: preserve-3d;
@@ -123,6 +147,6 @@ defineExpose({CheckLoadingState});
 
   /* width */
   &::-webkit-scrollbar
-    width: 0px;
+    width: 0;
 
 </style>

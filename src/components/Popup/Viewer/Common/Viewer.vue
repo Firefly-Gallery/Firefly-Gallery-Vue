@@ -57,7 +57,7 @@ const close = () => {
 <style lang="stylus" scoped>
 .viewer-bg
   @apply w-full h-full;
-  background: rgba(255,255,255,.2);
+  background: rgba(120,120,120,.1);
   transition background 150ms ease;
   &.bg-black
     background-color #000000e0;
@@ -65,22 +65,22 @@ const close = () => {
     content ""
     z-index -1
     position absolute
-    top 0px
-    right 0px
-    bottom 0px
-    left 0px
-    background url("@/assets/UI/Interface_SquareBackground.webp")
-    background-size 8px 8px
-    opacity 0.15
+    top 0
+    right 0
+    bottom 0
+    left 0
+    background url("@/assets/UI/Interface_SquareBackground.png")
+    background-size 9px 9px
+    opacity 0.03
   .img 
     z-index -1
     overflow hidden
     position absolute
-    top 0px
-    left 0px
+    top 0
+    left 0
     width 280px
     height 230px
-    opacity .5
+    opacity .5sdaw
     pointer-events none
     -webkit-user-select none
     user-select none

@@ -1,23 +1,123 @@
 <template>
-    <div class="title-container">
-        <div class="title">
+    <div class="title-container relative">
+        <div class="title" ref="titleRef">
             <h2><i>崩坏:星穹铁道——</i></h2>
-            <h1>流萤の专属相册</h1>
-            <p>
-                一个简单的同人图站。
-            </p>
-            <span class="text-xs font-medium ml-2">背景：
-              <a href="https://www.bilibili.com/video/BV1WK421y7k8/" target="_blank">@神猫子Mineko</a> |
-              <a href="https://www.bilibili.com/video/BV1zJ4m1s71R/" target="_blank">@-夜莺Night</a>
+            <h1 @mouseenter="hoverChanged('hover')"
+                @mouseleave="hoverChanged('unhover')">流萤の专属相册</h1>
+            <p class="subtitle">Firefly's Album</p>
+            <span v-if="activeArtwork" class="text-xs font-medium ml-2">背景：
+              <a :href="activeArtwork.src" target="_blank">
+                @{{ activeArtwork.author }}
+              </a>
             </span>
         </div>
     </div>
+  <div class="absolute bottom-0 left-0 right-0 flex p-2 justify-center items-center z-[-1]">
+    <ChevronDoubleDownIcon class="h-6 w-6 text-white ud_animatiom" />
+  </div>
 </template>
 <script lang='ts' setup>
-import card from '@/assets/extra/Home_CardLarge.jpg'
-import { openWindow } from '@/components/Popup';
-import Btn from '../UI/Btn.vue';
-import Image from '@/components/UI/Image.vue'
+
+import { onMounted, ref } from 'vue'
+import { gsap } from 'gsap'
+import componentsVar from '@/store/componentsVar'
+import { ChevronDoubleDownIcon } from "@heroicons/vue/24/outline";
+import type { Artwork } from '@/assets/data/artworks'
+
+const emit = defineEmits(['hover', 'unhover'])
+const titleRef = ref();
+
+const props = withDefaults(
+  defineProps<{
+    activeArtwork: Artwork;
+  }>(),
+  {
+  }
+)
+
+let hoverControl = true
+let animationPlayed = false;
+
+const hoverChanged = (s:string) => {
+  if (!hoverControl) return;
+  if(s === "hover") {
+    emit("hover")
+  } else {
+    emit("unhover")
+  }
+}
+const playAnimations = () => {
+  if(animationPlayed) return;
+  animationPlayed = true;
+  const titleH1 = document.querySelector(".title h1")
+  if(!titleH1) return;
+  const title = document.querySelector(".title")
+  if(!title) return;
+  const subtitle = document.querySelector(".subtitle")
+  if(!subtitle) return;
+  console.log("Animation")
+  gsap.from(titleH1, {
+    fontSize: "50px",
+    letterSpacing: "7vw",
+    duration: 1,
+    ease: "circ.inOut",
+    onComplete: () => {
+      gsap.killTweensOf(titleH1)
+      titleH1.style.fontSize = ""
+      titleH1.style.letterSpacing = ""
+    }
+  });
+  gsap.from(subtitle, {
+    fontSize: "50px",
+    letterSpacing: "3vw",
+    duration: 1,
+    ease: "circ.inOut",
+    onComplete: () => {
+      gsap.killTweensOf(subtitle)
+      subtitle.style.fontSize = ""
+      subtitle.style.letterSpacing = ""
+    }
+  });
+  gsap.fromTo(title, {
+    fontSize: "10px",
+    opacity: "0.01"
+  }, {
+    duration: 2,
+    opacity: "1.0",
+    ease: "circ.out",
+    onComplete: () => {
+      gsap.killTweensOf(titleH1)
+    }
+  });
+}
+const handleScroll = () => {
+  if(!titleRef.value) return;
+  const scroll = componentsVar.scroll
+  if(!scroll) return
+  let headerHeight = window.innerHeight;
+
+  var wScroll = scroll.scrollTop;
+  if(wScroll > headerHeight / 3) {
+    emit('hover')
+    hoverControl = false
+  } else if (!hoverControl) {
+    emit('unhover')
+    hoverControl = true
+  }
+  if (wScroll <= headerHeight) {
+    titleRef.value.style.transform = `translate(0px, ${wScroll/2}px)`;
+  }
+}
+window.onLoadingEnd = () => {
+  setTimeout(() => {
+    console.log(1)
+    playAnimations()
+  }, 250);
+}
+onMounted(() => {
+  const scroll = componentsVar.scroll
+  scroll?.addEventListener("scroll", handleScroll);
+})
 </script>
 <style>
 
@@ -34,28 +134,38 @@ import Image from '@/components/UI/Image.vue'
 .title {
   @apply text-white gap-5
   flex flex-col justify-center;
-  opacity: 0.8;
+  opacity: 0;
 }
 .title h1 {
   @apply z-[10] pb-1 md:pb-[15px]
-  text-8xl md:text-7xl lg:text-8xl
-  font-bold;
-  background: linear-gradient(to right, #ebe1a3, #94e1c8);
+  text-[10vw] sm:text-7xl md:text-8xl lg:text-9xl
+  font-bold tracking-normal md:tracking-wider;
+  background: linear-gradient(to right, #ff8b4d, #5affcc);
   text-shadow: 0 3px 15px #ffffff3a;
-  color: #ffffffc0;
+  color: rgb(255, 255, 255);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  text-wrap: nowrap;
 }
 .title h2 {
   @apply z-[10]
-  text-2xl md:text-lg lg:text-3xl
+  text-[4vw] sm:text-[1.5rem] md:text-2xl lg:text-3xl
   font-bold;
   text-shadow: 0 3px 15px #ffffff3a;
   color: #ffffffc0;
 }
 .title p{
-  @apply text-sm lg:text-lg ml-2;
+  @apply text-[1.5vw] sm:text-[1rem] lg:text-lg
+  w-full text-center tracking-normal md:tracking-[10px] lg:tracking-[16px];
+}
+p.subtitle {
+  @apply mb-0
+  relative top-[-24px]
+  xl:text-3xl md:text-xl sm:text-[0.8rem] text-lg
+  font-bold;
+  opacity: 0.6;
+  font-family: Star Rail Neue, serif;
 }
 .btn-group {
   @apply mt-0 md:mt-2 flex flex-col lg:flex-row gap-5 justify-center md:justify-start;
@@ -68,32 +178,18 @@ import Image from '@/components/UI/Image.vue'
   hidden md:flex justify-center items-center;
   perspective: 1200px;
 }
-.firefly-card {
-  max-width: 350px;
-  min-width: 200px;
-  width: 40%;
-  border: 6px solid white;
-  border-bottom: 40px solid white;
-  transform: rotate3d(1.2, 0, 0.8, 20deg);
-  box-shadow: 0 0 10px 0 #243b3981;
-  opacity: 0.8;
-  outline: transparent solid 3px;
-  transition: all 250ms ease;
+.ud_animatiom {
+  animation: ud 2s cubic-bezier(0.15, 0.00, 0.85, 1.00) infinite;
 }
-.firefly-card:hover {
-  transform: rotate3d(0, 0, 0, 20deg);
-  scale: 1.1;
-  box-shadow: 0 0 20px 0 #c0fff9;
-  opacity: 1.0;
-  outline: rgb(0, 242, 255) solid 3px;
-  transition: all 250ms ease;
-}
-.firefly-card:active {
-  scale: 0.97;
-  opacity: 0.9;
-  box-shadow: 0 0 10px 0 #c0fff9;
-}
-.firefly-card img {
-  @apply object-contain;
+@keyframes ud {
+  0% {
+    transform: translateY(-10px);
+  }
+  50% {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-10px);
+  }
 }
 </style>
