@@ -28,6 +28,7 @@ src/assets/artifacts
 public/metadata.json
 analysis-chart.html
 
-/deploy_script/
 /src/assets/images/*.avif
 /src/assets/images/*.webp
+
+.env

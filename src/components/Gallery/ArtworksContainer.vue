@@ -21,6 +21,7 @@
       v-for="(item, index) in artworks"
       :imageData="item"
       :index="index"
+      :art_index="index"
       :useMasonry="useMasonry"
       ref="containersRef"
       @mounted="applyObserver"
@@ -29,11 +30,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { nextTick, ref, watch } from 'vue'
 import { gsap } from 'gsap'
 import { Artwork } from '@/assets/data/artworks'
 import ImageItem from '@/components/Gallery/ImageItem.vue'
 import { Squares2X2Icon, AdjustmentsVerticalIcon } from "@heroicons/vue/24/outline";
+import { setting } from '@/store/setting'
 
 const props = withDefaults(
   defineProps<{
@@ -45,30 +47,55 @@ const props = withDefaults(
 
 const useMasonry = ref(true);
 const containersRef = ref<typeof ImageItem[]>([]);
+const artIndexList = ref<number[]>([])
+
+watch(() => props.artworks, () => {
+  nextTick(() => {
+    containersRef.value.forEach((element, index) => {
+      const imageIndex = getElementArtIndex(element.getContainer())
+      if(!imageIndex && imageIndex !== 0) return;
+      artIndexList.value[imageIndex] = index;
+    });
+  })
+})
+
+const getElementArtIndex = (element:Element) => {
+  let imageIndexAttr = element.getAttribute("art_index")
+  if (imageIndexAttr || imageIndexAttr === "0") {return parseInt(imageIndexAttr);} else return undefined;
+}
 
 // const fields = ['author', 'img', 'size', 'src', 'thumb', 'time']
 const toggleMasonry = (v:boolean) => {
   useMasonry.value = v;
 }
 
+
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     const imageElement = entry.target
-    const imageItem = (imageElement as any).__vueParentComponent.exposed;
+    const imageIndex = getElementArtIndex(imageElement)
+    if(!imageIndex && imageIndex !== 0) {return;}
+    const realIndex = artIndexList.value[imageIndex];
+    const imageItem = containersRef.value[realIndex];
     if (entry.isIntersecting) {
-      if(!imageItem.srcFilled) {imageItem.fillSrc()}
-      if(!imageItem.isFading.value) {
+      if(!imageItem.srcFilled) {imageItem.fillSrc();}
+
+      if(setting.transition && !imageItem.isFading) {
         const rect = imageElement.getBoundingClientRect();
         setFadeInAnim(imageItem, (rect.bottom > window.innerHeight) ? 1 : -1)
       }
-    } else {
+    } else if(setting.transition) {
       deleteStyles(imageElement)
     }
   });
 });
 
-const applyObserver = (container:HTMLElement) => {
+const applyObserver = (container:HTMLElement, fill:any) => {
+  if(setting.lazy_load) {
     observer.observe(container);
+  } else {
+    fill();
+  }
 }
 
 const deleteStyles = (container:any) => {

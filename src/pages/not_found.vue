@@ -22,7 +22,7 @@ const goBack = () => {
   }
 }
 </script>
-<style scoped>
+<style scoped lang="postcss">
 
 .error_root {
   @apply sticky top-0 w-screen h-[100svh] flex flex-col gap-5 items-center justify-center;

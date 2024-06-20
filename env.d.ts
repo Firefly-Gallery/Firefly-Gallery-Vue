@@ -1,6 +1,7 @@
 /// <reference types="vite/client" />
 
 interface Window {
+  onLoadingEnd: () => void
   BUILD_TIME: Date
 }
 

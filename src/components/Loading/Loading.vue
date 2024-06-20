@@ -1,5 +1,5 @@
 <template>
-    <div id="loading" ref="loading_anim">
+    <div id="loading" ref="loading_anim loading_out">
       <iframe ref="iframeRef" :src="loadingAnim"></iframe>
       <div id="loading_indicator" ref="loading_icon">
         <LoadingIcon :isLoading="true" />
@@ -13,9 +13,6 @@ import { onMounted, ref } from 'vue'
 import LoadingIcon from './LoadingIcon.vue';
 import loadingAnim from "../../assets/extra/firefly_icon_anim.html?url"
 
-// in ms
-
-let timer: ReturnType<typeof setInterval> | null = null;
 
 const iframeRef = ref<HTMLIFrameElement | null>(null);
 
@@ -23,11 +20,9 @@ const emit = defineEmits(['check-loading'])
 const loading_anim = ref<HTMLDivElement>()
 const loading_icon = ref<HTMLDivElement>()
 
-onMounted(() => {
-})
-
 // 加入
 const inTransition = (next: Function) => {
+  console.log(1123123123123123123123123123123)
   if(iframeRef.value) {iframeRef.value.contentWindow?.postMessage("reload");}
   // 最后一片淡入时长
   loading_anim.value?.classList.remove("loading_out");
@@ -48,7 +43,7 @@ const outTransition = () => {
 }
 defineExpose({inTransition, outTransition})
 </script>
-<style scoped>
+<style scoped lang="postcss">
 * {
   --delay: 1000ms;
 }

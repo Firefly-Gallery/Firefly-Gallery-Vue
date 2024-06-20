@@ -1,9 +1,5 @@
 import ChangeLogVue from './ChangeLog.vue'
-import { confirmClose, confirmOpen } from './Confirm'
-import ConfirmVue from './Confirm/Confirm.vue'
 import DataManagerVue from './DataManager.vue'
-import { inputClose, inputOpen } from './Input'
-import InputVue from './Input/Input.vue'
 
 import { imageViewerClose, imageViewerOpen } from './Viewer/ImageViewer'
 import ImageViewerVue from './Viewer/ImageViewer/ImageViewer.vue'
@@ -13,8 +9,6 @@ import ModelViewerVue from './Viewer/ModelViewer/ModelViewer.vue'
 import { computed, markRaw, reactive, ref, type Component, type ComputedRef } from 'vue'
 
 const components = {
-  input: InputVue,
-  confirm: ConfirmVue,
   log: ChangeLogVue,
   data: DataManagerVue,
   imageViewer: ImageViewerVue,
@@ -23,13 +17,9 @@ const components = {
 
 const callbacks = {
   open: {
-    input: inputOpen,
-    confirm: confirmOpen,
     imageViewer: imageViewerOpen,
   },
   close: {
-    input: inputClose,
-    confirm: confirmClose,
     imageViewer: imageViewerClose,
   },
   enter: {}

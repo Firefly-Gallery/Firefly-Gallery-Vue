@@ -2,8 +2,8 @@
 import { debounce, throttle } from './helper';
 import PinchScrollZoomAxis from './pinch-scroll-zoom-axis';
 import {
-  PinchScrollZoomEmitData,
-  PinchScrollZoomSetData,
+  type PinchScrollZoomEmitData,
+  type PinchScrollZoomSetData,
   PinchScrollZoomKeyAction,
   PinchScrollZoomDefaultControls
 } from './types';

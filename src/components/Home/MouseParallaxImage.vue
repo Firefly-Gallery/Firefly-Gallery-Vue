@@ -7,8 +7,9 @@
 <script setup lang="ts">
 import Image from '@/components/UI/Image.vue'
 import type { Artwork } from '@/assets/data/artworks'
-import { computed, onMounted, reactive, ref, watch } from 'vue'
+import { onMounted, reactive, ref, watch } from 'vue'
 import componentsVar from '@/store/componentsVar'
+import { setting } from '@/store/setting'
 
 function randint(min:number, max:number) { // min and max included
   return Math.floor(Math.random() * (max - min + 1) + min);
@@ -75,7 +76,7 @@ const setBGSize = () => {
 window.onresize = setBGSize;
 
 onMounted(() => {
-  window.onmousemove = handleEffects;
+  if(setting.mouse_animation) window.onmousemove = handleEffects;
 })
 const handleEffects = (e:any) => {
   const scroll = componentsVar.scroll
@@ -106,11 +107,15 @@ const handleEffects = (e:any) => {
   transition: filter 250ms ease, transform 50ms linear;
 }
 
+:root {
+  --ox: 0;
+  --oy: 0;
+}
+
 .mouse-parallax-container .parallax-bg {
   transform-origin: center center;
   object-fit: cover;
   overflow: hidden;
-  transition: opacity 0.4s;
   max-width: unset;
   scale: 1.05;
   transition: opacity 250ms ease, transform 50ms linear;

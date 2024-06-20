@@ -14,24 +14,30 @@
 <script lang="ts" setup>
 import { onMounted } from 'vue';
 import chroma from 'chroma-js';
-const props = defineProps({
-    "lines_cn": {}, "lines_en": {}, "isEnUS": {type: Boolean},
-    "startColor": {
-        type: String,
-        default: '#ebe1a3'
-    },
-    "endColor": {
-        type: String,
-        default: '#94e1c8'
-    }
-});
+import type { Artwork } from '@/assets/data/artworks'
+
+const props = withDefaults(
+  defineProps<{
+    lines_cn: string[];
+    lines_en: string[];
+    isEnUS?: boolean;
+    startColor: string;
+    endColor: string;
+  }>(),
+  {
+    isEnUS: false,
+    startColor: '#ebe1a3',
+    endColor: '#94e1c8'
+  }
+)
+
 const gradientColors = chroma
     .scale([props.startColor, props.endColor])
     .mode('lab')  // lab 颜色插值
     .colors(props.lines_en.length * 2);
 </script>
 
-<style scoped>
+<style scoped lang="postcss">
 
 .title {
     @apply grow flex flex-col

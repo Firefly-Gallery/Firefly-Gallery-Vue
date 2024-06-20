@@ -14,7 +14,7 @@ const cover_url= "https://p2.music.126.net/Pfi059ikYaEkE4c-fe30Xg==/109951169319
 
 const aplayer_options = {
   fixed: true,
-  autoplay: true,
+  // autoplay: true,
   loop: 'one',
   // lrcType: 3,
   audio: [

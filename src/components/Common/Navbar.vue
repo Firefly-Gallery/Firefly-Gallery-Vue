@@ -1,5 +1,5 @@
 <template>
-  <div :class="{'nav-root': true, 'navbar-transparent': isTransparent }">
+  <div :class="{'nav-root': true, 'navbar-transparent': isTransparent, 'backdrop-blur-sm': setting.enable_blur }">
     <div class="navbar-start">
       <!-- 手机版下拉式导航列表 -->
       <div class="dropdown hidden">
@@ -67,6 +67,7 @@ import { navigations, home } from '@/navigations'
 import { ref, onMounted } from 'vue'
 
 import componentsVar from '@/store/componentsVar'
+import { setting } from '@/store/setting'
 
 onMounted(() => {
   componentsVar.SetNavbarTransparent = setTransparency
@@ -110,7 +111,7 @@ defineExpose({ updateThemeStatus, setTransparency })
 
 <style scoped lang="postcss">
 .nav-root {
-  @apply navbar fixed top-0 bg-base-100/70 backdrop-blur-sm shadow-md;
+  @apply navbar fixed top-0 bg-base-100/70 shadow-md;
   z-index: 20;
   transition: all 250ms ease;
 }

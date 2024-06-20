@@ -16,7 +16,7 @@ export const imageViewerData = reactive<{
 
 export const imageViewerOpen = (config: {
   title?: string
-  src: string[]
+  src?: string[]
   tip?: string
   artwork?: Artwork
 }) => {

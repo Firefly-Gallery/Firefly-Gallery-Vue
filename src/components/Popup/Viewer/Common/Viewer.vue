@@ -1,6 +1,6 @@
 <template>
   <Popup :index="index">
-    <div v-if="show" :class="`viewer-bg ${hideBars? 'bg-black':''}`">
+    <div v-if="show" :class="`viewer-bg ${hideBars? 'bg-black':''} ${setting.enable_blur? '':'no-blur'}`">
       <div class="img"><img :src="bg" alt="" data-v-529b66a4=""></div>
       <transition name="fade">
         <div class="overlay" v-if="!hideBars">
@@ -37,6 +37,7 @@ import Close from '@/components/UI/Close.vue'
 import bg from '@/assets/UI/Interface_BackgroundTrail.png'
 import { closeWindow } from '@/components/Popup';
 import LoadingIcon from '../../../Loading/LoadingIcon.vue'
+import { setting } from '@/store/setting'
 
 const props =defineProps<{
   show?: boolean
@@ -57,10 +58,16 @@ const close = () => {
 <style lang="stylus" scoped>
 .viewer-bg
   @apply w-full h-full;
-  background: rgba(120,120,120,.1);
+  background rgba(120,120,120,.1);
   transition background 150ms ease;
+  &.no-blur
+    background rgba(0,0,0,.6);
+
   &.bg-black
     background-color #000000e0;
+
+    &.no-blur
+      background rgba(0,0,0,.9);
   &:before
     content ""
     z-index -1

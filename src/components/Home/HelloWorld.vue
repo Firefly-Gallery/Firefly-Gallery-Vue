@@ -1,9 +1,12 @@
 <template>
     <div class="title-container relative">
         <div class="title" ref="titleRef">
+
             <h2><i>崩坏:星穹铁道——</i></h2>
             <h1 @mouseenter="hoverChanged('hover')"
-                @mouseleave="hoverChanged('unhover')">流萤の专属相册</h1>
+                @mouseleave="hoverChanged('unhover')">
+              流萤の专属相册
+            </h1>
             <p class="subtitle">Firefly's Album</p>
             <span v-if="activeArtwork" class="text-xs font-medium ml-2">背景：
               <a :href="activeArtwork.src" target="_blank">
@@ -12,8 +15,10 @@
             </span>
         </div>
     </div>
-  <div class="absolute bottom-0 left-0 right-0 flex p-2 justify-center items-center z-[-1]">
+  <div class="absolute bottom-0 left-0 right-0 flex p-2 justify-between items-center z-[-1]">
+    <div class="badge badge-primary ml-2 opacity-0">v 1.0</div>
     <ChevronDoubleDownIcon class="h-6 w-6 text-white ud_animatiom" />
+    <div class="badge badge-primary ml-2">v 1.0</div>
   </div>
 </template>
 <script lang='ts' setup>
@@ -23,13 +28,14 @@ import { gsap } from 'gsap'
 import componentsVar from '@/store/componentsVar'
 import { ChevronDoubleDownIcon } from "@heroicons/vue/24/outline";
 import type { Artwork } from '@/assets/data/artworks'
+import { setting } from '@/store/setting'
 
 const emit = defineEmits(['hover', 'unhover'])
 const titleRef = ref();
 
 const props = withDefaults(
   defineProps<{
-    activeArtwork: Artwork;
+    activeArtwork?: Artwork;
   }>(),
   {
   }
@@ -46,16 +52,21 @@ const hoverChanged = (s:string) => {
     emit("unhover")
   }
 }
+const initAnimation = () => {
+  const title: HTMLDivElement | null  = document.querySelector(".title")
+  if(!title) return;
+  title.style.opacity = "0";
+
+}
 const playAnimations = () => {
   if(animationPlayed) return;
   animationPlayed = true;
-  const titleH1 = document.querySelector(".title h1")
-  if(!titleH1) return;
-  const title = document.querySelector(".title")
+  const title: HTMLDivElement | null  = document.querySelector(".title")
   if(!title) return;
-  const subtitle = document.querySelector(".subtitle")
+  const titleH1: HTMLHeadingElement | null = document.querySelector(".title h1")
+  if(!titleH1) return;
+  const subtitle: HTMLParagraphElement | null = document.querySelector(".subtitle")
   if(!subtitle) return;
-  console.log("Animation")
   gsap.from(titleH1, {
     fontSize: "50px",
     letterSpacing: "7vw",
@@ -97,22 +108,30 @@ const handleScroll = () => {
   let headerHeight = window.innerHeight;
 
   var wScroll = scroll.scrollTop;
-  if(wScroll > headerHeight / 3) {
-    emit('hover')
-    hoverControl = false
-  } else if (!hoverControl) {
-    emit('unhover')
-    hoverControl = true
+
+  if(setting.enable_blur) {
+    if(wScroll > headerHeight / 3) {
+      emit('hover')
+      hoverControl = false
+    } else if (!hoverControl) {
+      emit('unhover')
+      hoverControl = true
+    }
   }
-  if (wScroll <= headerHeight) {
-    titleRef.value.style.transform = `translate(0px, ${wScroll/2}px)`;
+
+  if(setting.parallax_bg) {
+    if (wScroll <= headerHeight) {
+      titleRef.value.style.transform = `translate(0px, ${wScroll/2}px)`;
+    }
   }
 }
 window.onLoadingEnd = () => {
-  setTimeout(() => {
-    console.log(1)
-    playAnimations()
-  }, 250);
+  if(setting.animation) {
+    initAnimation();
+    setTimeout(() => {
+      playAnimations()
+    }, 250);
+  }
 }
 onMounted(() => {
   const scroll = componentsVar.scroll
@@ -134,7 +153,6 @@ onMounted(() => {
 .title {
   @apply text-white gap-5
   flex flex-col justify-center;
-  opacity: 0;
 }
 .title h1 {
   @apply z-[10] pb-1 md:pb-[15px]

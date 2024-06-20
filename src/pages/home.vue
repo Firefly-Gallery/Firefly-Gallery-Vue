@@ -1,9 +1,11 @@
 <template>
   <MouseParallaxImage :artworks="galleryData" :blur="blurBG"></MouseParallaxImage>
   <div :class="`home-content ${blurBG ? 'bg-black/70' : 'bg-black/50'}`" ref="headerRef">
-      <HelloWorld @hover="blurBG=true" @unhover="blurBG=false" :active-artwork="activeArtwork"></HelloWorld>
+      <HelloWorld
+        @hover="() => {if(setting.enable_blur){blurBG=true;}}"
+        @unhover="() => {if(setting.enable_blur){blurBG=false;}}" :active-artwork="activeArtwork"></HelloWorld>
   </div>
-  <div class="gallery-container">
+  <div :class="`gallery-container ${setting.enable_blur? 'backdrop-blur-lg' : ''}`">
     <ArtworksContainer ref="artworkContainerRef" :artworks="galleryData"/>
   </div>
 </template>
@@ -12,9 +14,11 @@
 import { computed, onMounted, ref, watch } from 'vue'
 import HelloWorld from "@/components/Home/HelloWorld.vue";
 import componentsVar from '@/store/componentsVar'
-import MouseParallaxImage from '@/components/Common/MouseParallaxImage.vue'
+import MouseParallaxImage from '@/components/Home/MouseParallaxImage.vue'
 import ArtworksContainer from '@/components/Gallery/ArtworksContainer.vue'
 import { Artwork } from '@/assets/data/artworks'
+import { setting } from '@/store/setting'
+import set = gsap.set
 
 const blurBG = ref(false)
 
@@ -65,7 +69,7 @@ onMounted(() => {
 })
 </script>
 
-<style>
+<style lang="postcss">
 
 .home-content {
     @apply w-screen h-[100lvh] p-0 flex;
@@ -84,7 +88,7 @@ onMounted(() => {
 }
 .gallery-container {
   @apply px-2 md:px-16 lg:px-20 pb-20 pt-8 w-full min-h-[200vh]
-  bg-base-300/30 backdrop-blur-lg;
+  bg-base-300/30;
 }
 [data-theme='dark'] .gallery-container {
   @apply bg-base-300/90

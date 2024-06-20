@@ -5,12 +5,22 @@ export const setting = reactive<{
   loading: boolean
   /** 界面过渡动画 */
   transition: boolean
+  /** 界面动画 */
+  animation: boolean
+  /** 模糊 */
+  mouse_animation: boolean
   /** 视差背景 */
   parallax_bg: boolean
-  scrollbar_damping: number
+  /** 模糊 */
+  enable_blur: boolean
+  /** 懒加载 */
+  lazy_load: boolean
 }>({
-  loading: true,
-  transition: true,
-  parallax_bg: true,
-  scrollbar_damping: 0.05
+  loading: false,
+  transition: false,
+  animation: false,
+  mouse_animation: false,
+  parallax_bg: false,
+  enable_blur: false,
+  lazy_load: false
 })

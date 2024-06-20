@@ -10,7 +10,7 @@
   </header>
 </template>
   
-<style scoped>
+<style scoped lang="postcss">
 header.header-container {
   position: relative;
   height: calc(10vw + 300px);
@@ -65,6 +65,7 @@ header.header-container {
 import { onBeforeUnmount, ref } from 'vue';
 import Image from '@/components/UI/Image.vue'
 import componentsVar from '@/store/componentsVar'
+import { setting } from '@/store/setting'
 
 const titleRef = ref();
 
@@ -93,6 +94,7 @@ const Init = (scr: HTMLElement) => {
   scroll.addEventListener("scroll", handleScroll);
 }
 const handleScroll = () => {
+  if(!setting.parallax_bg) return;
   if(headerHeight < 0 && coverRef) {
     headerHeight = coverRef.value.clientHeight;
   }

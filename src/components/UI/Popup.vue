@@ -5,7 +5,7 @@
   >
     <template v-if="props.useShow">
       <div
-        class="popup"
+        :class="`popup ${setting.enable_blur? 'backfrop-blur-xl':''}`"
         v-show="props.index !== -1"
         :style="{ zIndex: 1000 + index }"
       >
@@ -14,7 +14,7 @@
     </template>
     <template v-else>
       <div
-        class="popup"
+        :class="`popup ${setting.enable_blur? 'backfrop-blur-xl':''}`"
         v-if="props.index !== -1"
         :style="{ zIndex: 1000 + index }"
       >
@@ -26,6 +26,7 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue';
+import { setting } from '@/store/setting'
 
 const showInner = ref(true);
 
@@ -52,6 +53,5 @@ const props = withDefaults(
   bottom 0
   left 0
   overflow hidden
-  backdrop-filter blur(16px)
   
 </style>

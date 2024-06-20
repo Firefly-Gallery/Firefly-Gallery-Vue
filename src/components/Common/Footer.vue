@@ -22,7 +22,7 @@
   </footer>
 </template>
   
-<style scoped>
+<style scoped lang="postcss">
 footer {
   @apply w-full h-auto flex flex-row justify-center items-center py-3;
   background-color: #000000;
@@ -52,7 +52,7 @@ footer {
   -webkit-text-fill-color: transparent;
 }
 </style>
-<style>
+<style lang="postcss">
 .title-container .site-icon {
   @apply h-32;
   filter: drop-shadow(0 0 4px white);

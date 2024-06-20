@@ -1,5 +1,5 @@
 <template>
-    <div :class="`image-item-container skeleton`"
+    <div :class="`image-item-container ${setting.animation ? 'skeleton':'bg-base-200'}`"
     ref="containerRef"
     :style="{aspectRatio: useMasonry ? imageData.width / imageData.height : 1}"
     @click="openWindow('imageViewer', {artwork: imageData})">
@@ -10,11 +10,12 @@
 
 
 <script lang="ts" setup>
-import { ref, onMounted, toValue } from 'vue';
+import { ref, onMounted } from 'vue';
 import { openWindow } from '@/components/Popup';
 import Image from '@/components/UI/Image.vue'
 import { type Artwork } from '@/assets/data/artworks'
 import componentsVar from '@/store/componentsVar'
+import { setting } from '@/store/setting'
 
 const props = withDefaults(
   defineProps<{
@@ -43,7 +44,7 @@ onMounted(() => {
   container = containerRef.value;
 
   srcFilled = false;
-  emit('mounted', container)
+  emit('mounted', container, fillSrc)
 })
 
 const fillSrc = () => {
@@ -71,8 +72,12 @@ const handleEffects = (e:any) => {
 
 const showImage = () => {
   if (container) {
-    container.onmousemove = handleEffects;
-    container.classList.remove("skeleton");
+    if(setting.animation) {
+      container.classList.remove("skeleton");
+    }
+    if(setting.mouse_animation) {
+      container.onmousemove = handleEffects;
+    }
   }
 }
 

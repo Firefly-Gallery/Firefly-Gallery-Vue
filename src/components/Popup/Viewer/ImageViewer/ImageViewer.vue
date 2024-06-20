@@ -29,7 +29,7 @@
         </div>
       </div>
       <div class="image-info-container">
-        <div :class="`image-info ${showDetails? 'detail':''}`" ref="infoContainer">
+        <div :class="{'image-info': true, 'detail': showDetails, 'backgrop-blur-lg': setting.enable_blur}" ref="infoContainer">
           <p v-if="showDetails" class="m-3 mt-4">
             画师：@{{ imageAuthor }}
           </p>
@@ -92,6 +92,7 @@ import PinchScrollZoom, {
   type PinchScrollZoomExposed
 } from './PinchScrollZoom';
 import { gsap } from 'gsap';
+import { setting } from '@/store/setting'
 
 const infoContainer = ref()
 
@@ -340,7 +341,7 @@ a.download-link
   z-index 100
   .image-info
     @apply m-3 bg-base-200/75 rounded-3xl p-2 flex flex-col justify-end items-stretch;
-    backdrop-filter blur(16px)
+
     box-shadow 0 7px 17px 0 #000000c2
     pointer-events all
     overflow hidden

@@ -13,7 +13,7 @@
   </custom-scrollbar>
 <!--  </div>-->
   <!-- 加载 -->
-  <Loading ref="loadingRef" @check-loading="CheckLoadingState()" />
+  <Loading v-if="setting.loading" ref="loadingRef" @check-loading="CheckLoadingState()" />
   <!-- 弹窗组件 -->
   <Component
     v-for="(item, key) in popupComponents"
@@ -59,9 +59,6 @@ const CheckLoadingState = () => {
       
       navbarRef.value.setTransparency(true);
 
-      // 淡出
-      loadingRef.value.outTransition();
-
       // 回顶
       if(scroll.value) {
         scroll.value.scrollEl.scrollTop = 0;
@@ -73,7 +70,9 @@ const CheckLoadingState = () => {
         }
       }
 
-
+      if(!setting.loading) return;
+      // 淡出
+      loadingRef.value.outTransition();
     }
   }, 500);
 }
@@ -87,7 +86,6 @@ const isMobile = () => {
 onMounted(() => {
   console.log(scroll.value)
   if(isMobile()) {
-    setting.scrollbar_damping = 0.006;
   }
   if(scroll.value) {
     // componentsVar.scroll = scroll.value;
@@ -99,6 +97,11 @@ onMounted(() => {
   CheckLoadingState();
   // 切换页面时接入加载动画
   router.beforeEach((to, from, next) => {
+    if(!setting.loading) {
+      next();
+      return
+    }
+    console.log("loading overlay in")
     loadingRef.value.inTransition(next);
   });
   const DEFAULT_TITLE = '首页 | 流萤图站';

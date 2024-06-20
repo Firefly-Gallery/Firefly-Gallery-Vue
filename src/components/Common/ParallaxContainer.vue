@@ -25,6 +25,7 @@ import Image from '../UI/Image.vue'
 import { gsap } from "gsap";
 
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { setting } from '@/store/setting'
 
 const isExtraLoaded = ref(false)
 
@@ -133,6 +134,7 @@ onMounted(() => {
 });
 
 const setScrollAnimation = () => {
+  if(!setting.parallax_bg) return;
   if(!bgValue) {return;}
   let start = -props.margin;
   let end = props.margin;

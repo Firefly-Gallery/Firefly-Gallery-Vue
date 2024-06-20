@@ -23,12 +23,6 @@ app.use(VueMasonry);
 
 // Register Custom Scrollbar
 
-declare module 'vue' {
-  export interface GlobalComponents {
-    CustomScrollbar: typeof CustomScrollbar;
-  }
-}
-
 app.component("custom-scrollbar", CustomScrollbar)
 
 

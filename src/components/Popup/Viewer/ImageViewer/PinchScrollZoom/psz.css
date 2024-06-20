@@ -2,7 +2,7 @@
     position:relative;
     touch-action:none;
     user-select:none;
-    user-zoom:none;
+    user-zoom: none;
     overflow:hidden
 }
 .pinch-scroll-zoom :active{
