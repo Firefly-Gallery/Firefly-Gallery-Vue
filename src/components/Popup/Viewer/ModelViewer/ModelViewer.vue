@@ -8,7 +8,7 @@
       
     </template>
     <div class="viewer-container" ref="imageContainerRef">
-      <iframe src="https://model.firefly-gallery.cn/"
+      <iframe src="https://model-preview.hsr-firefly.com.cn/"
       ref="iframeRef" @load="loaded=true" v-show="loaded" allowtransparency="true"></iframe>
     </div>
   </Viewer>

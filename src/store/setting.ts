@@ -7,7 +7,7 @@ export const setting = reactive<{
   transition: boolean
   /** 界面动画 */
   animation: boolean
-  /** 模糊 */
+  /** 鼠标动画 */
   mouse_animation: boolean
   /** 视差背景 */
   parallax_bg: boolean
@@ -16,11 +16,11 @@ export const setting = reactive<{
   /** 懒加载 */
   lazy_load: boolean
 }>({
-  loading: false,
+  loading: true,
   transition: false,
-  animation: false,
-  mouse_animation: false,
+  animation: true,
+  mouse_animation: true,
   parallax_bg: false,
-  enable_blur: false,
-  lazy_load: false
+  enable_blur: true,
+  lazy_load: true
 })

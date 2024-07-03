@@ -108,7 +108,7 @@
         <div class="sidebar-card">
           <h2>反馈社区</h2>
           <a class="sidebar-link-share"
-             target="_blank" href="https://github.com/Firefly-Gallery/Firefly-Gallery-Backend/issues">
+             target="_blank" href="https://github.com/Firefly-Gallery/Firefly-Gallery-Vue/issues">
             <i class="fa-brands fa-github"></i>
             Github Issues
           </a>

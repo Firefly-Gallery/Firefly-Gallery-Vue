@@ -5,7 +5,7 @@
   >
     <template v-if="props.useShow">
       <div
-        :class="`popup ${setting.enable_blur? 'backfrop-blur-xl':''}`"
+        :class="`popup ${setting.enable_blur? 'backdrop-blur-xl':''}`"
         v-show="props.index !== -1"
         :style="{ zIndex: 1000 + index }"
       >
@@ -14,7 +14,7 @@
     </template>
     <template v-else>
       <div
-        :class="`popup ${setting.enable_blur? 'backfrop-blur-xl':''}`"
+        :class="`popup ${setting.enable_blur? 'backdrop-blur-xl':''}`"
         v-if="props.index !== -1"
         :style="{ zIndex: 1000 + index }"
       >

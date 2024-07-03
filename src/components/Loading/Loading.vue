@@ -1,5 +1,5 @@
 <template>
-    <div id="loading" ref="loading_anim loading_out">
+    <div id="loading" ref="loading_anim">
       <iframe ref="iframeRef" :src="loadingAnim"></iframe>
       <div id="loading_indicator" ref="loading_icon">
         <LoadingIcon :isLoading="true" />
@@ -22,7 +22,6 @@ const loading_icon = ref<HTMLDivElement>()
 
 // 加入
 const inTransition = (next: Function) => {
-  console.log(1123123123123123123123123123123)
   if(iframeRef.value) {iframeRef.value.contentWindow?.postMessage("reload");}
   // 最后一片淡入时长
   loading_anim.value?.classList.remove("loading_out");
@@ -38,6 +37,7 @@ const outTransition = () => {
   loading_icon.value?.classList.add("loading_out");
   setTimeout(() => {
     loading_anim.value?.classList.add("loading_out");
+    console.log(loading_anim.value)
     if('onLoadingEnd' in window) window.onLoadingEnd();
   }, 750);
 }

@@ -45,14 +45,6 @@
                         星核猎手
                     </td>
                 </tr>
-                <tr>
-                    <th>常驻/限定</th>
-                    <td colspan="3">限定</td>
-                </tr>
-                <tr>
-                    <th>实装日期</th>
-                    <td colspan="3">未实装</td>
-                </tr>
             </tbody>
             </table>
             <div class="bottom-right">
