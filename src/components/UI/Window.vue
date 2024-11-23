@@ -52,8 +52,6 @@
 
 <script lang="ts" setup>
 import Close from './Close.vue'
-import viewport from '@/store/viewport'
-import { toRef } from 'vue';
 
 
 const props = withDefaults(

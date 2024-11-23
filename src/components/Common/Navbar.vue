@@ -1,5 +1,6 @@
 <template>
-  <div :class="{'nav-root': true, 'navbar-transparent': isTransparent, 'backdrop-blur-sm': setting.enable_blur }">
+  <div :class="{'nav-root': true, 'navbar-transparent': isTransparent, 'backdrop-blur-sm': setting.enable_blur,
+  'bg-[#181818f0]': !setting.enable_blur, 'bg-base-100/80': setting.enable_blur }">
     <div class="navbar-start">
       <!-- 手机版下拉式导航列表 -->
       <div class="dropdown hidden">
@@ -71,7 +72,7 @@ import { setting } from '@/store/setting'
 
 onMounted(() => {
   componentsVar.SetNavbarTransparent = setTransparency
-
+  setTransparency(true);
 })
 
 const prop = defineProps({
@@ -111,7 +112,7 @@ defineExpose({ updateThemeStatus, setTransparency })
 
 <style scoped lang="postcss">
 .nav-root {
-  @apply navbar fixed top-0 bg-base-100/70 shadow-md;
+  @apply navbar fixed top-0 shadow-md;
   z-index: 20;
   transition: all 250ms ease;
 }
@@ -124,12 +125,11 @@ defineExpose({ updateThemeStatus, setTransparency })
 }
 
 .icon {
-  @apply text-white;
   transition: scale 250ms ease, transform 250ms ease-out;
 }
 
 .theme-toggle svg {
-  @apply text-white w-5;
+  @apply w-5;
   transition: scale 250ms ease, transform 250ms ease-out !important;
 }
 

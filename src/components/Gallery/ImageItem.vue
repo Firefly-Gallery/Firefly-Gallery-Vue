@@ -1,8 +1,8 @@
 <template>
     <div :class="`image-item-container ${setting.animation ? 'skeleton':'bg-base-200'}`"
     ref="containerRef"
-    :style="{aspectRatio: useMasonry ? imageData.width / imageData.height : 1}"
-    @click="openWindow('imageViewer', {artwork: imageData})">
+    :style="{aspectRatio: useMasonry ? imageData.size[0] / imageData.size[1] : 1}"
+    @click="openWindow('imageViewer', {artworkItem: imageData})">
         <Image ref="imageRef" :src="imgSrc" :class="`image-item ${useMasonry? '':'square'}`"
                :img-alt="imageData.id" @onload="showImage" />
     </div>
@@ -13,13 +13,13 @@
 import { ref, onMounted } from 'vue';
 import { openWindow } from '@/components/Popup';
 import Image from '@/components/UI/Image.vue'
-import { type Artwork } from '@/assets/data/artworks'
+import { type ArtworkItem } from '@/assets/data/artworks'
 import componentsVar from '@/store/componentsVar'
 import { setting } from '@/store/setting'
 
 const props = withDefaults(
   defineProps<{
-    imageData: Artwork
+    imageData: ArtworkItem
     index: number
     useMasonry: boolean
   }>(),
@@ -49,34 +49,13 @@ onMounted(() => {
 
 const fillSrc = () => {
   srcFilled = true;
-  console.log(props.imageData.thumb)
   imgSrc.value = props.imageData.thumb;
-}
-
-const handleEffects = (e:any) => {
-  const scroll = componentsVar.scroll
-  if (!scroll || !container) {return}
-
-  setTimeout(function(){
-    const x = e.pageX - container.offsetLeft;
-    const y = e.pageY - container.offsetTop - (window.innerHeight - scroll?.scrollTop);
-    const ox = (container.offsetWidth / 2 - x);
-    const oy = (container.offsetHeight / 2 - y);
-    container.style.setProperty('--ox', -ox + "px")
-    container.style.setProperty('--oy', -oy + "px")
-    container.style.setProperty('--mx', x + "px")
-    container.style.setProperty('--my', y + "px")
-  }, 100)
-
 }
 
 const showImage = () => {
   if (container) {
     if(setting.animation) {
       container.classList.remove("skeleton");
-    }
-    if(setting.mouse_animation) {
-      container.onmousemove = handleEffects;
     }
   }
 }
@@ -100,13 +79,13 @@ defineExpose({getContainer, srcFilled, fillSrc, isFading, setFading})
   margin-bottom 8px;
   transform translate(0, 0)
   transform-origin center center
-  transition scale 250ms ease, outline 250ms ease, aspect-ratio 250ms ease, opacity 250ms ease, transform 100ms linear, box-shadow 250ms ease
+  transition scale 150ms ease, outline 150ms ease, aspect-ratio 250ms ease, opacity 250ms ease, transform 100ms linear, box-shadow 150ms ease
   @media screen and (min-width: 700px)
     margin-bottom 20px
 
   &:hover
     @apply shadow-cyan-500/50;
-    scale 1.12
+    scale 1.06
     z-index 20
     outline 5px solid #80ffce
     transform translate(calc(var(--ox) / 40), calc(var(--oy) / 45))
@@ -117,19 +96,6 @@ defineExpose({getContainer, srcFilled, fillSrc, isFading, setFading})
     scale 1.10
     z-index 20
     opacity 0.7
-
-  &:before
-    content ""
-    position absolute
-    top var(--my)
-    left var(--mx)
-    transform translate(-50%, -50%)
-    background radial-gradient(rgba(255, 255, 255, 0.5), transparent, transparent)
-    width 700px
-    height 700px
-    opacity 0
-    transition opacity 250ms ease;
-    pointer-events none
 
 </style>
 <style lang="stylus">

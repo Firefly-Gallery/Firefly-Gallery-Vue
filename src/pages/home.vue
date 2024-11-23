@@ -1,35 +1,34 @@
 <template>
-  <MouseParallaxImage :artworks="galleryData" :blur="blurBG"></MouseParallaxImage>
-  <div :class="`home-content ${blurBG ? 'bg-black/70' : 'bg-black/50'}`" ref="headerRef">
+  <MouseParallaxImage ref="randomImageRef" @load="setActivaArtwork()" :blur="blurBG" :enabled="!blurBG"></MouseParallaxImage>
+  <div :class="`home-content ${blurBG ? 'bg-base-300/70' : 'bg-base-100/50'}`" ref="headerRef">
       <HelloWorld
         @hover="() => {if(setting.enable_blur){blurBG=true;}}"
         @unhover="() => {if(setting.enable_blur){blurBG=false;}}" :active-artwork="activeArtwork"></HelloWorld>
   </div>
-  <div :class="`gallery-container ${setting.enable_blur? 'backdrop-blur-lg' : ''}`">
-    <ArtworksContainer ref="artworkContainerRef" :artworks="galleryData"/>
+  <div :class="`gallery-container`">
+    <ArtworksContainer :artworks="galleryData" @need-update="update()" :loaded="allLoaded" :total="total" />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref, watch } from 'vue'
-import HelloWorld from "@/components/Home/HelloWorld.vue";
+import { onMounted, ref, watch } from 'vue'
+import HelloWorld from '@/components/Home/HelloWorld.vue'
 import componentsVar from '@/store/componentsVar'
 import MouseParallaxImage from '@/components/Home/MouseParallaxImage.vue'
 import ArtworksContainer from '@/components/Gallery/ArtworksContainer.vue'
-import { Artwork } from '@/assets/data/artworks'
+import { api_endpoint, type Artwork, type ArtworkItem } from '@/assets/data/artworks'
 import { setting } from '@/store/setting'
-import set = gsap.set
+import { AJAX } from '@/assets/data/requests'
 
 const blurBG = ref(false)
+const allLoaded = ref(false)
 
-// let page_data = galleryData.value.slice(0, 50)
-// Declare a reactive reference to store the input value
-
-const artworkContainerRef = ref();
+const randomImageRef = ref();
 const headerRef = ref();
-const galleryData = ref<Artwork[]>([])
+const galleryData = ref<ArtworkItem[]>([])
 
 const activeArtwork = ref<Artwork>()
+const total = ref(0)
 
 const handleScroll = () => {
 
@@ -44,29 +43,41 @@ const handleScroll = () => {
   }
 }
 
+let maxPage = 999;
+
+function update() {
+  page++;
+  if(page > maxPage) {
+    allLoaded.value = true;
+    return
+  }
+  AJAX("GET", `${api_endpoint}/list?page=${page}`, function(status, resp) {
+    if(status === 200) {
+      const images = JSON.parse(resp).images as ArtworkItem[]
+      const original = [...galleryData.value]
+      maxPage = JSON.parse(resp).pages;
+      galleryData.value = original.concat(images);
+      total.value = JSON.parse(resp).total;
+    }
+  })
+}
 onMounted(() => {
   const scroll = componentsVar.scroll
   scroll?.addEventListener("scroll", handleScroll);
+  if(componentsVar.SetNavbarTransparent !== null) componentsVar.SetNavbarTransparent(true);
 
-  fetch('/metadata.json')
-    .then(response => response.json()) // Parse JSON response
-    .then(data => {
-      // Assign fetched data to galleryData
-      const artworks: Artwork[] = [];
-      Object.entries(data).forEach(([key, value]) => {
-        artworks.push(new Artwork(key, value))
-      });
-
-      galleryData.value = artworks.reverse();
-    })
-    .catch(error => {
-      console.error('Error fetching data:', error);
-    });
-  if(artworkContainerRef.value) {
-    console.log(artworkContainerRef.value);
-    activeArtwork.value = artworkContainerRef.value.activeArtwork
-  }
 })
+let page = 0;
+
+
+
+function setActivaArtwork(){
+  if(randomImageRef.value) {
+    activeArtwork.value = randomImageRef.value.activeArtwork
+  }
+}
+
+
 </script>
 
 <style lang="postcss">
@@ -88,7 +99,7 @@ onMounted(() => {
 }
 .gallery-container {
   @apply px-2 md:px-16 lg:px-20 pb-20 pt-8 w-full min-h-[200vh]
-  bg-base-300/30;
+  bg-base-300/30 relative z-[2];
 }
 [data-theme='dark'] .gallery-container {
   @apply bg-base-300/90

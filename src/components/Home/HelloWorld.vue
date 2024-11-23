@@ -9,31 +9,32 @@
             </h1>
             <p class="subtitle">Firefly's Album</p>
             <span v-if="activeArtwork" class="text-xs font-medium ml-2">背景：
-              <a :href="activeArtwork.src" target="_blank">
+              <a :href="formatSrcURL(activeArtwork.src)" target="_blank">
                 @{{ activeArtwork.author }}
               </a>
             </span>
         </div>
     </div>
-  <div class="absolute bottom-0 left-0 right-0 flex p-2 justify-between items-center z-[-1]">
+  <div class="absolute bottom-0 left-0 right-0 flex p-2 justify-between items-center z-[-1]"
+       ref="bottomRef">
     <div class="badge badge-primary ml-2 opacity-0">v 1.0</div>
-    <ChevronDoubleDownIcon class="h-6 w-6 text-white ud_animatiom" />
-    <div class="badge badge-primary ml-2">v 1.0</div>
+    <ChevronDoubleDownIcon class="h-6 w-6 ud_animatiom" />
+    <div class="badge badge-primary ml-2">v 1.2</div>
   </div>
 </template>
 <script lang='ts' setup>
 
 import { onMounted, ref } from 'vue'
-import { gsap } from 'gsap'
 import componentsVar from '@/store/componentsVar'
 import { ChevronDoubleDownIcon } from "@heroicons/vue/24/outline";
-import type { Artwork } from '@/assets/data/artworks'
+import { type Artwork, formatSrcURL } from '@/assets/data/artworks'
 import { setting } from '@/store/setting'
 
 const emit = defineEmits(['hover', 'unhover'])
-const titleRef = ref();
+const titleRef = ref<HTMLDivElement>();
+const bottomRef = ref<HTMLDivElement>();
 
-const props = withDefaults(
+withDefaults(
   defineProps<{
     activeArtwork?: Artwork;
   }>(),
@@ -42,7 +43,6 @@ const props = withDefaults(
 )
 
 let hoverControl = true
-let animationPlayed = false;
 
 const hoverChanged = (s:string) => {
   if (!hoverControl) return;
@@ -51,55 +51,6 @@ const hoverChanged = (s:string) => {
   } else {
     emit("unhover")
   }
-}
-const initAnimation = () => {
-  const title: HTMLDivElement | null  = document.querySelector(".title")
-  if(!title) return;
-  title.style.opacity = "0";
-
-}
-const playAnimations = () => {
-  if(animationPlayed) return;
-  animationPlayed = true;
-  const title: HTMLDivElement | null  = document.querySelector(".title")
-  if(!title) return;
-  const titleH1: HTMLHeadingElement | null = document.querySelector(".title h1")
-  if(!titleH1) return;
-  const subtitle: HTMLParagraphElement | null = document.querySelector(".subtitle")
-  if(!subtitle) return;
-  gsap.from(titleH1, {
-    fontSize: "50px",
-    letterSpacing: "7vw",
-    duration: 1,
-    ease: "circ.inOut",
-    onComplete: () => {
-      gsap.killTweensOf(titleH1)
-      titleH1.style.fontSize = ""
-      titleH1.style.letterSpacing = ""
-    }
-  });
-  gsap.from(subtitle, {
-    fontSize: "50px",
-    letterSpacing: "3vw",
-    duration: 1,
-    ease: "circ.inOut",
-    onComplete: () => {
-      gsap.killTweensOf(subtitle)
-      subtitle.style.fontSize = ""
-      subtitle.style.letterSpacing = ""
-    }
-  });
-  gsap.fromTo(title, {
-    fontSize: "10px",
-    opacity: "0.01"
-  }, {
-    duration: 2,
-    opacity: "1.0",
-    ease: "circ.out",
-    onComplete: () => {
-      gsap.killTweensOf(titleH1)
-    }
-  });
 }
 const handleScroll = () => {
   if(!titleRef.value) return;
@@ -122,15 +73,10 @@ const handleScroll = () => {
   if(setting.parallax_bg) {
     if (wScroll <= headerHeight) {
       titleRef.value.style.transform = `translate(0px, ${wScroll/2}px)`;
+      const opacity = Math.min(1, 1.2 - (wScroll / headerHeight) * 1.2).toString()
+      titleRef.value.style.opacity = opacity
+      if(bottomRef.value) bottomRef.value.style.opacity = opacity
     }
-  }
-}
-window.onLoadingEnd = () => {
-  if(setting.animation) {
-    initAnimation();
-    setTimeout(() => {
-      playAnimations()
-    }, 250);
   }
 }
 onMounted(() => {
@@ -151,7 +97,7 @@ onMounted(() => {
   justify-center items-center;
 }
 .title {
-  @apply text-white gap-5
+  @apply gap-5
   flex flex-col justify-center;
 }
 .title h1 {
@@ -166,12 +112,15 @@ onMounted(() => {
   -webkit-text-fill-color: transparent;
   text-wrap: nowrap;
 }
+html[data-theme='light'] .title h1 {
+  background: linear-gradient(to right, #ff7c3a, #1affb2);
+  background-clip: text;
+}
 .title h2 {
   @apply z-[10]
   text-[4vw] sm:text-[1.5rem] md:text-2xl lg:text-3xl
   font-bold;
   text-shadow: 0 3px 15px #ffffff3a;
-  color: #ffffffc0;
 }
 .title p{
   @apply text-[1.5vw] sm:text-[1rem] lg:text-lg

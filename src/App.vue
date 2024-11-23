@@ -3,15 +3,11 @@
   <!-- 导航栏 -->
   <Navbar ref="navbarRef" />
   <!-- 页面视图 -->
-<!--  <div class="page-main" ref="scroll">-->
   <custom-scrollbar :class="'scrollContainer'" ref="scroll"
                     :autoHideDelay="1000" :thumbWidth="10">
-    <Header v-if="!(GetPage($route.name)?.noHeader)" ref="headerRef"
-    :title="GetPage($route.name)?.displayName" :subTitle="$route.name" />
     <router-view />
     <Footer ref="footerRef" />
   </custom-scrollbar>
-<!--  </div>-->
   <!-- 加载 -->
   <Loading v-if="setting.loading" ref="loadingRef" @check-loading="CheckLoadingState()" />
   <!-- 弹窗组件 -->
@@ -25,10 +21,11 @@
   />
   <!-- aplayer -->
    <Player />
+  <ErrorLogModal />
 </template>
 
 <script lang="ts" setup>
-import { Navbar, Header, Footer } from "@/components/Common";
+import { Navbar, Footer } from "@/components/Common";
 import { Player } from "./components/Common";
 import { Loading } from "@/components/Loading";
 import { ref, onMounted, nextTick } from 'vue'
@@ -37,6 +34,7 @@ import componentsVar from '@/store/componentsVar';
 import { GetPage } from '@/navigations';
 import { closeWindow, popupComponents } from '@/components/Popup';
 import { setting } from '@/store/setting'
+import ErrorLogModal from '@/components/Popup/ErrorLogModal.vue'
 
 const router = useRouter();
 
@@ -44,8 +42,6 @@ const loadingRef = ref();
 const navbarRef = ref();
 const scroll = ref<{ scrollEl: HTMLDivElement; }>();
 // const scroll = ref<HTMLDivElement>();
-
-const headerRef = ref();
 const footerRef = ref();
 
 const CheckLoadingState = () => {
@@ -56,18 +52,11 @@ const CheckLoadingState = () => {
       console.log("page loading completed");
       clearInterval(timer);
 
-      
-      navbarRef.value.setTransparency(true);
-
       // 回顶
       if(scroll.value) {
         scroll.value.scrollEl.scrollTop = 0;
         // scroll.value.scrollTop = 0;
         // 由于App.vue的onMounted再子组件之后，头部（依赖于页面滚动）初始化需要后置
-        if(headerRef.value) {
-          headerRef.value.Init(scroll.value.scrollEl);
-          // headerRef.value.Init(scroll.value);
-        }
       }
 
       if(!setting.loading) return;
@@ -84,14 +73,11 @@ const isMobile = () => {
   }
 }
 onMounted(() => {
-  console.log(scroll.value)
   if(isMobile()) {
   }
   if(scroll.value) {
     // componentsVar.scroll = scroll.value;
-    // headerRef.value.Init(scroll.value);
     componentsVar.scroll = scroll.value.scrollEl;
-    headerRef.value.Init(scroll.value.scrollEl);
   }
 
   CheckLoadingState();
@@ -109,7 +95,7 @@ onMounted(() => {
     // Use next tick to handle router history correctly
     // see: https://github.com/vuejs/vue-router/issues/914#issuecomment-384477609
     nextTick(() => {
-      document.title = to.meta.title || DEFAULT_TITLE;
+      document.title = <string>to.meta.title || DEFAULT_TITLE;
     });
   });
 });
@@ -130,11 +116,6 @@ defineExpose({CheckLoadingState});
 .scrollContainer
   @apply w-screen h-screen overflow-x-hidden overflow-y-scroll;
   height 100svh
-//perspective 1px
-//transform-style preserve-3d
-//.scrollbar__content
-//  position relative
-//  transform-style inherit
 .scrollbar__thumbPlaceholder
   z-index 20
   .scrollbar__thumb

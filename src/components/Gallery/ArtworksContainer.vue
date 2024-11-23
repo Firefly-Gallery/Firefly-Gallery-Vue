@@ -1,5 +1,6 @@
 <template>
-  <div class="flex mx-5 mt-14 mb-8 gap-3">
+  <div class="flex items-center mx-5 mt-14 mb-8 gap-3">
+    <p>共 {{total}} 张画作</p>
     <div class="grow"></div>
     <div role="tablist" class="tabs tabs-boxed gap-2 p-2 rounded-xl">
       <button role="tab" :class="`tab btn btn-sm ${useMasonry ? 'btn-ghost':'btn-primary'}`"
@@ -14,14 +15,16 @@
   </div>
 
   <masonry
-    :cols="{default: 6, 1440: 5, 1200: 4, 720: 3, 512: 2}"
+    :cols="{default: 6, 1440: 5, 1200: 4, 720: 3, 512: 2}" :key="updateKey"
     :gutter="{default: '20px', 700: '8px'}" :class="'masonry-root'"
   >
     <ImageItem
-      v-for="(item, index) in artworks"
+      v-for="(item, index) in artworks.concat(Array(6 * <number>!loaded).fill({id: '-1', size: [100, 100], thumb: ''}))"
       :imageData="item"
+      :key="item.id"
       :index="index"
       :art_index="index"
+      :art_id="item.id"
       :useMasonry="useMasonry"
       ref="containersRef"
       @mounted="applyObserver"
@@ -32,14 +35,19 @@
 <script setup lang="ts">
 import { nextTick, ref, watch } from 'vue'
 import { gsap } from 'gsap'
-import { Artwork } from '@/assets/data/artworks'
 import ImageItem from '@/components/Gallery/ImageItem.vue'
 import { Squares2X2Icon, AdjustmentsVerticalIcon } from "@heroicons/vue/24/outline";
 import { setting } from '@/store/setting'
+import type { ArtworkItem } from '@/assets/data/artworks'
+
+const updateKey = ref(0)
+let updating = false;
 
 const props = withDefaults(
   defineProps<{
-    artworks: Artwork[]
+    artworks: ArtworkItem[]
+    loaded: boolean
+    total: number
   }>(),
   {
   }
@@ -49,6 +57,8 @@ const useMasonry = ref(true);
 const containersRef = ref<typeof ImageItem[]>([]);
 const artIndexList = ref<number[]>([])
 
+const emit = defineEmits(['needUpdate'])
+
 watch(() => props.artworks, () => {
   nextTick(() => {
     containersRef.value.forEach((element, index) => {
@@ -56,12 +66,19 @@ watch(() => props.artworks, () => {
       if(!imageIndex && imageIndex !== 0) return;
       artIndexList.value[imageIndex] = index;
     });
+    setTimeout(() => {updating = false;}, 200);
   })
 })
 
 const getElementArtIndex = (element:Element) => {
   let imageIndexAttr = element.getAttribute("art_index")
-  if (imageIndexAttr || imageIndexAttr === "0") {return parseInt(imageIndexAttr);} else return undefined;
+  let imageId = element.getAttribute("art_id")
+  if (
+    (imageIndexAttr) &&
+    (imageId && imageId !=="-1")
+  ) {
+    return parseInt(imageIndexAttr);
+  } else return undefined;
 }
 
 // const fields = ['author', 'img', 'size', 'src', 'thumb', 'time']
@@ -73,6 +90,11 @@ const toggleMasonry = (v:boolean) => {
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     const imageElement = entry.target
+    if(imageElement.getAttribute("art_id") === "-1") {
+      if(!updating) {emit("needUpdate");console.log("next page")}
+      updating = true;
+      return;
+    }
     const imageIndex = getElementArtIndex(imageElement)
     if(!imageIndex && imageIndex !== 0) {return;}
     const realIndex = artIndexList.value[imageIndex];
@@ -136,6 +158,7 @@ const setFadeInAnim = (imageItem:(typeof ImageItem), direction:number) => {
   });
 
 }
+
 </script>
 
 <style lang="postcss">

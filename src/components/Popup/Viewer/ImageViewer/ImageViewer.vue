@@ -45,7 +45,7 @@
                 <ArrowDownTrayIcon class="h-5 w-5" />
               </a>
               <button class="btn btn-circle btn-sm btn-ghost" :disabled="isAnimating"
-                      @click="toggleDetails" v-if="imageViewerData.artwork">
+                      @click="toggleDetails()" v-if="imageViewerData.artwork">
                 <EllipsisVerticalIcon class="h-6 w-6"/>
               </button>
             </div>
@@ -93,6 +93,8 @@ import PinchScrollZoom, {
 } from './PinchScrollZoom';
 import { gsap } from 'gsap';
 import { setting } from '@/store/setting'
+import { AJAX } from '@/assets/data/requests'
+import { api_endpoint, type Artwork, formatSrcURL, GetImageURL } from '@/assets/data/artworks'
 
 const infoContainer = ref()
 
@@ -192,18 +194,31 @@ const currentImageUrl = computed(() => {
   return imageViewerData.src[imageViewerData.currentPage];
 });
 
-// viewer每次事件初始化入口
-watch(imageViewerData, () => {
-  if(imageViewerData.artwork) {
-    imageViewerData.src = imageViewerData.artwork.img;
-    imageAuthor.value = imageViewerData.artwork.author;
-    imageLink.value = imageViewerData.artwork.src;
-    imageViewerData.title = imageViewerData.artwork.id
-  }
-  if(showDetails.value) {toggleDetails()}
-  if(!imageViewerData.src) {return}
-  pageCount.value = imageViewerData.src.length;
+watch(() => imageViewerData.currentPage, () => {
   loaded.value = false;
+})
+
+// viewer每次事件初始化入口
+watch(() => imageViewerData.artworkItem, () => {
+  if(!imageViewerData.artworkItem) return;
+  if(showDetails.value) {toggleDetails()}
+  AJAX("GET", `${api_endpoint}/detail?id=${imageViewerData.artworkItem?.id}`, function(status, response) {
+    if(status === 200) {
+      imageViewerData.artwork = JSON.parse(response) as Artwork;
+      const images: string[] = []
+      imageViewerData.artwork.img.forEach((i) => {
+        images.push(GetImageURL(i))
+      })
+      imageViewerData.src = images;
+      imageAuthor.value = imageViewerData.artwork.author;
+      imageLink.value = formatSrcURL(imageViewerData.artwork.src);
+      imageViewerData.title = imageViewerData.artwork.id
+    }
+    if(!imageViewerData.src) {return}
+    pageCount.value = imageViewerData.src.length;
+    imageViewerData.currentPage = 0;
+    loaded.value = false;
+  })
 });
 
 const saveAsBlob = (imageUrl:string, filename:string) => {

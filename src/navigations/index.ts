@@ -44,6 +44,7 @@ const navigations: RouteRecord[] =
         icon: InformationCircleIcon,
         pageName: "about",
         path: "/about",
+        noHeader: true,
         component: About
     },
     {

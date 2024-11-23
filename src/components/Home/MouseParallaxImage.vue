@@ -6,24 +6,24 @@
 
 <script setup lang="ts">
 import Image from '@/components/UI/Image.vue'
-import type { Artwork } from '@/assets/data/artworks'
+import { api_endpoint, type Artwork, type ArtworkItem, GetImageURL } from '@/assets/data/artworks'
 import { onMounted, reactive, ref, watch } from 'vue'
 import componentsVar from '@/store/componentsVar'
 import { setting } from '@/store/setting'
+import { AJAX } from '@/assets/data/requests'
 
-function randint(min:number, max:number) { // min and max included
-  return Math.floor(Math.random() * (max - min + 1) + min);
-}
+const emit = defineEmits(['load'])
 
 const props = withDefaults(
   defineProps<{
-    artworks: Artwork[];
     margin?: number;
-    blur?: boolean
+    blur?: boolean;
+    enabled: boolean;
   }>(),
   {
     margin: 100,
     blur: false,
+    enabled: true
   }
 )
 
@@ -36,22 +36,10 @@ const bgStyle = reactive({ zIndex: "-1", height: "0px", width: "0px" })
 const imageSrc = ref<string>("")
 let windowRatio = 1;
 
-watch(() => props.artworks, () => {
-  windowRatio = window.innerWidth / (window.innerHeight);
-  console.log(windowRatio)
-
-  let randomList: Artwork[] = [...props.artworks]
-  // let randomList: Artwork[] = props.artworks
-  randomList.sort((a: Artwork, b: Artwork) => {
-    const diff1 = Math.abs((a.width / a.height) - windowRatio);
-    const diff2 = Math.abs((b.width / b.height) - windowRatio);
-    return diff1 - diff2;
-  })
-  randomList = randomList.slice(0, 23)
-  console.log(windowRatio)
-  activeArtwork.value = randomList[randint(0, 23)]
-  imageSrc.value = activeArtwork.value.img[0];
-  setBGSize();
+watch(() => props.enabled, (val) => {
+  if(!setting.mouse_animation) return;
+  if(val) {window.addEventListener("mousemove", handleEffects);}
+  else window.removeEventListener("mousemove", handleEffects);
 })
 
 function GetViewportSize() {
@@ -66,8 +54,8 @@ defineExpose({activeArtwork})
 const setBGSize = () => {
   const { w, h } = GetViewportSize()
   if(!activeArtwork.value) return;
-  const bw = activeArtwork.value?.width;
-  const bh = activeArtwork.value?.height;
+  const bw = activeArtwork.value?.size[0];
+  const bh = activeArtwork.value?.size[1];
   let realH = (h + props.margin)
   bgStyle.height = realH + 'px'
   let realW = realH / bh * bw
@@ -76,7 +64,19 @@ const setBGSize = () => {
 window.onresize = setBGSize;
 
 onMounted(() => {
-  if(setting.mouse_animation) window.onmousemove = handleEffects;
+  if(setting.mouse_animation) window.addEventListener("mousemove", handleEffects);
+  windowRatio = window.innerWidth / (window.innerHeight);
+
+  AJAX("GET", `${api_endpoint}/random?ratio=${windowRatio}`, function(status, resp) {
+    if(status === 200) {
+      const image = JSON.parse(resp)
+      console.log(image)
+      activeArtwork.value = image as Artwork;
+      imageSrc.value = GetImageURL(image.img[0]);
+      emit('load');
+      setBGSize();
+    }
+  })
 })
 const handleEffects = (e:any) => {
   const scroll = componentsVar.scroll

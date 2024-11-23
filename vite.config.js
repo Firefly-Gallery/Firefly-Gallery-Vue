@@ -29,11 +29,6 @@ export default defineConfig({
   build: {
     assetsInlineLimit: 0,
     rollupOptions: {
-      external: [
-        // "vue",
-        // "vue-router",
-        // "aplayer",
-      ],
       output: {
         entryFileNames: `js/${prefix}.[hash].js`,
         chunkFileNames: `js/${prefix}.[name].[hash].js`,
@@ -45,11 +40,6 @@ export default defineConfig({
             return `images/${assetFile}`
           }
           return `assets/${assetFile}`
-        },
-        paths: {
-          // aplayer: 'https://cdn.staticfile.net/aplayer/1.10.1/APlayer.min.js',
-          // "vue": 'https://cdn.staticfile.net/vue/3.3.4/vue.runtime.esm-browser.js',
-          // "vue-router": 'https://cdn.staticfile.net/vue-router/4.2.5/vue-router.esm-browser.js'
         },
       }
     }

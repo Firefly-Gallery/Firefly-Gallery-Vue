@@ -8,7 +8,7 @@
     <div class="chardesc-container">
         <div class="Up">
             <div class="char-name-block">
-              <Image src="/Introduction_FireflyIconWhite.svg" class="h-[200px] min-w-[350px] drop-shadow-md" />
+              <Image src="/Introduction_FireflyIconWhite.svg" :otherFormats="[]" class="h-[200px] min-w-[350px] drop-shadow-md" />
                 <div class="icons">
                     <Image src="/Introduction_FiveStarsIcon.svg" class="h-7 min-w-[110px] drop-shadow-md" :otherFormats="[]" />
                     <Image src="/Introduction_FireIcon.png" class="w-10 h-10 drop-shadow-md" />
@@ -120,7 +120,6 @@ const fillSrc = () => {
 
 
 const receiveMessage = (ev: any) => {
-  console.log(ev.data)
   if(ev.data.message === 'spineCompleteLoad' && spineIframeSrcFilled) {
     setTimeout(() => {
       spineLoaded.value = true;

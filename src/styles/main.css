@@ -185,3 +185,9 @@ a:hover, .theme-toggle {
     transform: scaleX(1);
   }
 }
+
+
+.modal {
+  background-color: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(5px);
+}

@@ -25,7 +25,8 @@ const goBack = () => {
 <style scoped lang="postcss">
 
 .error_root {
-  @apply sticky top-0 w-screen h-[100svh] flex flex-col gap-5 items-center justify-center;
+  @apply w-screen h-screen flex flex-col gap-5 items-center justify-center;
+  z-index: 1;
 }
 
 .error_root > *:not(h2.title) {

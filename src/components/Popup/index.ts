@@ -1,5 +1,4 @@
 import ChangeLogVue from './ChangeLog.vue'
-import DataManagerVue from './DataManager.vue'
 
 import { imageViewerClose, imageViewerOpen } from './Viewer/ImageViewer'
 import ImageViewerVue from './Viewer/ImageViewer/ImageViewer.vue'
@@ -10,7 +9,6 @@ import { computed, markRaw, reactive, ref, type Component, type ComputedRef } fr
 
 const components = {
   log: ChangeLogVue,
-  data: DataManagerVue,
   imageViewer: ImageViewerVue,
   modelViewer: ModelViewerVue
 }

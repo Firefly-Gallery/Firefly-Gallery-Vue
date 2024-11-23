@@ -20,7 +20,6 @@
 <script lang="ts" setup>
 import { ref, onMounted, onBeforeUnmount, toRaw, reactive, type Ref, watch } from 'vue'
 import componentsVar from '@/store/componentsVar'
-import viewport from '@/store/viewport'
 import Image from '../UI/Image.vue'
 import { gsap } from "gsap";
 

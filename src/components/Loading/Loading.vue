@@ -37,10 +37,13 @@ const outTransition = () => {
   loading_icon.value?.classList.add("loading_out");
   setTimeout(() => {
     loading_anim.value?.classList.add("loading_out");
-    console.log(loading_anim.value)
     if('onLoadingEnd' in window) window.onLoadingEnd();
   }, 750);
 }
+onMounted(() => {
+  if(!loading_anim.value) return;
+  loading_anim.value.addEventListener('touchstart', (e) => e.preventDefault());
+})
 defineExpose({inTransition, outTransition})
 </script>
 <style scoped lang="postcss">
@@ -48,7 +51,7 @@ defineExpose({inTransition, outTransition})
   --delay: 1000ms;
 }
 
-#loading.loading_out {
+#loading.loading_out, #loading.loading_out iframe {
   opacity: 0;
   pointer-events: none;
   transition: pointer-events 0s linear calc(var(--delay)),

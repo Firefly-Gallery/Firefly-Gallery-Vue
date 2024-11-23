@@ -27,14 +27,14 @@
             </a>（有改动）
           </p>
         </div>
-        <div class="text-lg mt-5">
+        <div class="lg:text-lg mt-5">
           流萤图站(库)，立项于2023-12-23，是一个精选集合了崩坏:星穹铁道的角色流萤的同人画作的网站。<br>
           虽然说是立项，但是几个月过去了都没有正式上线呢（笑）<br>
           本网站设立的初衷本来是一个同人网站，后为满足同人社区的需要转型为一个同人图站<br>
           当然网站主体还是以厨为主（连角色介绍都有了），重点看个人理解罢。<br>
           总而言之，希望大家玩的开心！<br>
         </div>
-        <Image class="mt-16 rounded-box shadow-lg" src="http://image-cdn.firefly-gallery.cn/pixiv/115952605_p0.jpg"></Image>
+        <Image class="mt-16 rounded-box shadow-lg" src="httpS://image-cdn.firefly-gallery.cn/pixiv/115952605_p0.jpg"></Image>
 
       </div>
       <div class="sidebar">
@@ -60,7 +60,7 @@
           </div>
           <h3>管饭的 | 部分文案</h3>
           <div class="sidebar-link">
-            <span>@一位旅行者啊（一位行者旅啊）</span>
+            <span>@一位旅行者啊</span>
             <div class="links">
               <a class="btn btn-sm btn-ghost btn-circle"
                  target="_blank" href="https://www.miyoushe.com/sr/accountCenter/postList?id=332560835">
@@ -136,6 +136,12 @@
 
 <script lang="ts" setup>
 import Image from '@/components/UI/Image.vue'
+import { onMounted } from 'vue'
+import componentsVar from '@/store/componentsVar'
+
+onMounted(() => {
+  if(componentsVar.SetNavbarTransparent !== null) componentsVar.SetNavbarTransparent(false);
+})
 </script>
 <style lang="postcss" scoped>
 .chat-bubble::before {
@@ -144,10 +150,10 @@ import Image from '@/components/UI/Image.vue'
 
 .title-container {
   @apply grow flex flex-col gap-5
-  justify-center items-center mb-8;
+  justify-center items-center my-8;
 }
 .title {
-  @apply text-white gap-5
+  @apply gap-5
   flex flex-col justify-center;
 }
 .title h1 {
@@ -156,7 +162,6 @@ import Image from '@/components/UI/Image.vue'
   font-bold;
   background: linear-gradient(to right, #ebe1a3, #94e1c8);
   text-shadow: 0 3px 15px #ffffff3a;
-  color: #ffffffc0;
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -166,7 +171,6 @@ import Image from '@/components/UI/Image.vue'
   text-2xl md:text-lg lg:text-3xl
   font-bold;
   text-shadow: 0 3px 15px #ffffff3a;
-  color: #ffffffc0;
 }
 
 .quote {
@@ -183,24 +187,19 @@ import Image from '@/components/UI/Image.vue'
   rounded-box shadow-md;
 }
 .sidebar-card h2 {
-  @apply text-white text-3xl;
+  @apply text-3xl;
 }
 .sidebar-card h3 {
   @apply mt-3
 }
 .sidebar-link {
   @apply btn btn-ghost rounded-full w-full justify-between no-animation;
-  color: white;
 }
 .sidebar-link-share {
   @apply btn rounded-full w-full justify-start;
-  color: white;
 }
 .sidebar-link .p-link {
   @apply btn btn-sm btn-ghost btn-circle;
-}
-.m {
-  color: #80fff2;
 }
 .general-container {
   @apply px-10 xl:px-20

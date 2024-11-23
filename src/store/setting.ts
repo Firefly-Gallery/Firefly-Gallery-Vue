@@ -20,7 +20,7 @@ export const setting = reactive<{
   transition: false,
   animation: true,
   mouse_animation: true,
-  parallax_bg: false,
+  parallax_bg: true,
   enable_blur: true,
   lazy_load: true
 })
